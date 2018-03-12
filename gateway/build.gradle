@@ -1,0 +1,44 @@
+buildscript {
+	ext {
+		springBootVersion = '1.4.4.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+jar {
+	baseName = 'gateway'
+	version = '0.0.1-SNAPSHOT'
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	maven { url "https://repo.spring.io/milestone" }
+}
+
+
+dependencies {
+    //this can be reverted after https://github.com/spring-cloud/spring-cloud-netflix/issues/1663
+    compile ('org.springframework.cloud:spring-cloud-starter-zuul:1.2.3.RELEASE'){
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-netflix-core'
+    }
+    compile('org.springframework.cloud:spring-cloud-netflix-core:1.2.3.RELEASE')
+    compile('org.springframework.boot:spring-boot-starter-web')
+	testCompile('org.springframework.boot:spring-boot-starter-test:')
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:Dalston.M1"
+	}
+}

@@ -1,0 +1,122 @@
+package io.abnd.security;
+
+import io.abnd.entity.User;
+import io.abnd.entity.UserRole;
+import io.abnd.service.intf.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.provider.ClientDetails;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.ClientRegistrationException;
+import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Component
+public class UserClientDetailsService implements ClientDetailsService {
+  @Autowired
+  UserService userService;
+
+  @Value("${security.session-valid-time}")
+  int sessionValidTime;
+
+  private class CustomClientDetails implements ClientDetails {
+
+    String username;
+    String password;
+    Set<GrantedAuthority> authorities;
+
+    final Set<String> authorizedGrantTypes =
+    Arrays.stream(new String[] { "authorization_code", "refresh_token", "password" })
+    .collect(Collectors.toSet());
+
+    final Set<String> scopes =
+    Arrays.stream(new String[] { "read", "write" })
+    .collect(Collectors.toSet());
+
+
+    public CustomClientDetails(final String username, final String password, final Set<UserRole> roles) {
+      this.username = username;
+      this.password = password;
+
+      this.authorities =
+      roles.stream().map(r -> new SimpleGrantedAuthority(r.getRoleName())).collect(Collectors.toSet());
+    }
+
+    @Override public String getClientId() {
+      return username;
+    }
+
+    @Override public Set<String> getResourceIds() {
+      return null;
+    }
+
+    @Override public boolean isSecretRequired() {
+      return true;
+    }
+
+    @Override public String getClientSecret() {
+      return password;
+    }
+
+    @Override public boolean isScoped() {
+      return false;
+    }
+
+    @Override public Set<String> getScope() {
+      return scopes;
+    }
+
+    @Override public Set<String> getAuthorizedGrantTypes() {
+      return authorizedGrantTypes;
+    }
+
+    @Override public Set<String> getRegisteredRedirectUri() {
+      return null;
+    }
+
+    @Override public Collection<GrantedAuthority> getAuthorities() {
+      return authorities;
+    }
+
+    @Override public Integer getAccessTokenValiditySeconds() {
+      return sessionValidTime;
+    }
+
+    @Override public Integer getRefreshTokenValiditySeconds() {
+      return null;
+    }
+
+    @Override public boolean isAutoApprove(final String scope) {
+      return false;
+    }
+
+    @Override public Map<String, Object> getAdditionalInformation() {
+      return null;
+    }
+  }
+
+  @Override public ClientDetails loadClientByClientId(final String clientId) throws ClientRegistrationException {
+    return userService.getUser(clientId).map(user -> {
+      return getClientDetailsFromUser(user);
+    }).orElseThrow(() -> new UsernameNotFoundException(
+    "No user found with username: " + clientId));
+  }
+
+  private Set<GrantedAuthority> getAuthorities (Set<UserRole> roles) {
+    return roles.stream().map(r -> new SimpleGrantedAuthority(r.getRoleName())).collect(Collectors.toSet());
+  }
+
+  private ClientDetails getClientDetailsFromUser(User user) {
+    return new CustomClientDetails(user.getUsername(), user.getPassword(), user.getRoles());
+  }
+}

@@ -1,0 +1,101 @@
+// backend build.gradle
+
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		// spring
+		classpath('org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE')
+		classpath('org.springframework:springloaded:1.2.6.RELEASE')
+        classpath "org.liquibase:liquibase-gradle-plugin:${liquibaseGradleVersion}"
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'org.liquibase.gradle'
+
+jar {
+    archiveName = 'time-api.jar'
+    version = "${apiVersion}"
+}
+
+repositories {
+	mavenCentral()
+}
+
+sourceSets {
+    main { resources { srcDir 'src/liquibase' } }
+}
+
+eclipse {
+	classpath {
+		 containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+		 containers('org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8')
+	}
+}
+
+idea {
+    module {
+        inheritOutputDirs = false
+        outputDir = file("${buildDir}/classes/main/")
+    }
+}
+
+sourceCompatibility = 1.9
+targetCompatibility = 1.9
+
+configurations {
+	dev
+}
+
+dependencies {
+	// google gson
+	compile('com.google.code.gson:gson:2.7')
+
+	// spring dev tools
+	dev('org.springframework.boot:spring-boot-devtools')
+
+    compile("org.liquibase:liquibase-core:${liquibaseVersion}")
+    compile("com.mattbertolini:liquibase-slf4j:$liquibaseSlf4jVersion")
+    runtime('com.h2database:h2')
+
+    compile("org.immutables:value:2.4.2")
+
+    //Rest
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.security.oauth:spring-security-oauth2")
+    compile("org.springframework.session:spring-session")
+    compile("org.springframework.boot:spring-boot-starter-redis")
+    compile("com.allanditzel:spring-security-csrf-token-filter:1.1")
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jdk8")
+
+    // Enable Spring Data Redis and provide an embedded Redis server for local testing
+    compile("com.github.kstyrc:embedded-redis:0.6")
+
+    // domain
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("org.hibernate:hibernate-core")
+    //compile ("javax.validation:validation-api")
+    //compile ("org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final")
+    //compile("com.fasterxml.jackson.core:jackson-annotations")
+    compile("org.hibernate:hibernate-java8:5.1.0.Final")
+
+	// testing
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+// run spring boot app
+bootRun {
+	//addResources = true
+	classpath = sourceSets.main.runtimeClasspath + configurations.dev
+}
+
+// run all task
+task runAll {}
+runAll.dependsOn(bootRun)

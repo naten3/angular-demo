@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet author="nate.nelles" id="initial-setup">
+        <createTable tableName="USER">
+            <column autoIncrement="true" name="USER_ID" type="int">
+                <constraints primaryKey="true" primaryKeyName="PK_USER" />
+            </column>
+            <column name="USERNAME" type="nvarchar(100)">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column name="PASSWORD" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EMAIL" type="varchar(300)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="DESIRED_CALORIES" type="int"/>
+        </createTable>
+
+        <createTable tableName="ROLE">
+            <column name="ROLE_NAME" type="nvarchar(100)">
+                <constraints nullable="false" unique="true" />
+            </column>
+        </createTable>
+
+        <createTable tableName="USER_ROLE">
+            <column autoIncrement="true" name="USER_ROLE_ID" type="int">
+                <constraints primaryKey="true" primaryKeyName="PK_USER_ROLE" />
+            </column>
+            <column name="USER_ID" type="int">
+                <!--TODO figuree out how to delete these orphans and readd FK-->
+                <constraints nullable="false" />
+            </column>
+            <column name="ROLE_NAME" type="nvarchar(100)">
+                <constraints nullable="false" references="ROLE(ROLE_NAME)" foreignKeyName="FK_USER_ROLE_ROLE"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint columnNames="USER_ID, ROLE_NAME" tableName="USER_ROLE" />
+
+        <createTable tableName="MEAL">
+            <column autoIncrement="true" name="MEAL_ID" type="int">
+                <constraints primaryKey="true" primaryKeyName="PK_MEAL" />
+            </column>
+            <column name="USER_ID" type="int">
+                <constraints nullable="false" references="USER(USER_ID)" foreignKeyName="FK_MEAL_USER"/>
+            </column>
+            <column name="MEAL_TIME" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="CALORIE_VALUE" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="DESCRIPTION" type="nvarchar2(500)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>

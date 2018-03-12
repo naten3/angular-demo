@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+<!--TODO do we need those disable identity inserts? -->
+
+    <changeSet author="nate.nelles" id="enable-identity-insert-user" context="testdata" dbms="mssql" runAlways="true">
+        <sql>SET IDENTITY_INSERT USER ON</sql>
+    </changeSet>
+    <changeSet author="nate.nelles" id="user data" context="testdata">
+        <loadData tableName="USER" file="user.csv" relativeToChangelogFile="true" />
+    </changeSet>
+    <changeSet author="nate.nelles" id="disable-identity-insert-user" context="testdata" dbms="mssql" runAlways="true">
+        <sql>SET IDENTITY_INSERT USER OFF</sql>
+    </changeSet>
+
+    <changeSet author="nate.nelles" id="enable-identity-insert-role" context="testdata" dbms="mssql" runAlways="true">
+        <sql>SET IDENTITY_INSERT ROLE ON</sql>
+    </changeSet>
+    <changeSet author="nate.nelles" id="role data" context="testdata">
+        <loadData tableName="ROLE" file="role.csv" relativeToChangelogFile="true" />
+    </changeSet>
+    <changeSet author="nate.nelles" id="disable-identity-insert-role" context="testdata" dbms="mssql" runAlways="true">
+        <sql>SET IDENTITY_INSERT ROLE OFF</sql>
+    </changeSet>
+
+    <changeSet author="nate.nelles" id="enable-identity-insert-user-role" context="testdata" dbms="mssql" runAlways="true">
+        <sql>SET IDENTITY_INSERT USER_ROLE ON</sql>
+    </changeSet>
+    <changeSet author="nate.nelles" id="user_role data" context="testdata">
+        <loadData tableName="USER_ROLE" file="user_role.csv" relativeToChangelogFile="true" />
+    </changeSet>
+    <changeSet author="nate.nelles" id="disable-identity-insert-user-role" context="testdata" dbms="mssql" runAlways="true">
+        <sql>SET IDENTITY_INSERT USER_ROLE OFF</sql>
+    </changeSet>
+
+    <changeSet author="nate.nelles" id="enable-identity-insert-meal" context="testdata" dbms="mssql" runAlways="true">
+        <sql>SET IDENTITY_INSERT MEAL ON</sql>
+    </changeSet>
+    <changeSet author="nate.nelles" id="user_meal_data" context="testdata">
+        <loadData tableName="MEAL" file="meal.csv" relativeToChangelogFile="true" />
+    </changeSet>
+    <changeSet author="nate.nelles" id="disable-identity-insert-meal" context="testdata" dbms="mssql" runAlways="true">
+        <sql>SET IDENTITY_INSERT MEAL OFF</sql>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,13 @@
+zuul:
+  routes:
+    api:
+      path: /api/**
+      url: http://localhost:8080
+    ui:
+      path: /**
+      url: http://localhost:4200
+
+ribbon.eureka.enabled: false
+
+server:
+  port: 8090
