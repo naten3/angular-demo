@@ -35,11 +35,11 @@ export class LauncherComponent implements AfterViewInit {
         private store: Store<fromRoot.State>) {
         this.userInfo$ = store.select(fromRoot.getUserInfo);
         this.enableButton$ = store.select(fromRoot.getPendingSessionUpdate).map(b => !b);
-        this.userInfo$.subscribe(userInfo => {
-            if (!!userInfo) {
-              this.router.navigate(['home']);
-            }
-        });
+        // this.userInfo$.subscribe(userInfo => {
+        //     if (!!userInfo) {
+        //       this.router.navigate(['home']);
+        //     }
+        // });
     }
 
     ngAfterViewInit() {

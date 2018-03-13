@@ -27,7 +27,7 @@ import { HomeContainerComponent } from './home/home-container.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { LauncherComponent } from 'app/home/launcher.component';
 import { AuthEffects } from 'app/core/effects';
-import { AuthGuard } from 'app/core/guards';
+import { AuthGuard, LoginGuard } from 'app/core/guards';
 
 @NgModule({
   declarations: [
@@ -53,7 +53,7 @@ import { AuthGuard } from 'app/core/guards';
     RouterModule.forRoot(routes, { useHash: true }),
     EffectsModule.run(AuthEffects)
   ],
-  providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }, AuthGuard],
+  providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }, AuthGuard, LoginGuard],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

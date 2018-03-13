@@ -10,7 +10,7 @@ import { State } from 'app/core/models/session/session.state';
 import * as fromRoot from 'app/core/store';
 // make sure we're authenticated before hitting a route
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class LoginGuard implements CanActivate {
 
     hasUpdatedAuth$: Observable<boolean>;
     userInfo$: Observable<any>;
@@ -27,16 +27,12 @@ export class AuthGuard implements CanActivate {
       return (s as State).hasFetchedStatus;
     }))
     .map(s => {
-      if (!!(s as State).userInfo) {
+      if (!(s as State).userInfo) {
         return true;
       } else {
-        this.router.navigate(['/']);
+        this.router.navigate(['/home']);
         return false;
       }
     });
-  }
-
-  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.canActivate(route, state);
   }
 }
