@@ -18,9 +18,7 @@
             <column name="EMAIL_VERIFIED" type="varchar(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="EMAIL_VERIFICATION_TOKEN" type="boolean" defaultValue="false">
-                <constraints nullable="false"/>
-            </column>
+            <column name="EMAIL_VERIFICATION_TOKEN" type="varchar(100)" defaultValue="false"/>
         </createTable>
 
         <createTable tableName="ROLE">

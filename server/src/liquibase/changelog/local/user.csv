@@ -1,5 +1,5 @@
-USER_ID,USERNAME,PASSWORD,EMAIL,EMAIL_VERIFIED
-1,nate,password,nate@fakedomain.com,true
-2,admin,password2,nate2@fakedomain.com,true
-3,useradmin,password3,nate3@fakedomain.com,true
-4,nate2,password,nate4@fakedomain.com,false
+USER_ID,USERNAME,PASSWORD,EMAIL,EMAIL_VERIFIED,EMAIL_VERIFICATION_TOKEN
+1,nate,password,nate@fakedomain.com,true,a
+2,admin,password2,nate2@fakedomain.com,true,a
+3,useradmin,password3,nate3@fakedomain.com,true,a
+4,nate2,password,nate4@fakedomain.com,false,a

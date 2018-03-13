@@ -56,8 +56,9 @@ public class UserServiceImpl implements UserService {
     String emailVerificationToken = UUID.randomUUID().toString();
 
     User user = convertToUser(ucr,emailVerificationToken);
-    emailService.sendUserVerificationEmail(user.getEmail(), emailVerificationToken, user.getUsername());
-    return convertToUserResponse(userRepository.save(user));
+    User savedUser = userRepository.save(user);
+    emailService.sendUserVerificationEmail(user.getEmail(), emailVerificationToken, savedUser.getId());
+    return convertToUserResponse(savedUser);
   }
 
   @Override
