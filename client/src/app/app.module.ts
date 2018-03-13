@@ -26,6 +26,7 @@ import { AutoSaveContainerComponent } from './home/auto-save-container.component
 import { HomeContainerComponent } from './home/home-container.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { LauncherComponent } from 'app/home/launcher.component';
+import { AuthEffects } from 'app/core/effects';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { LauncherComponent } from 'app/home/launcher.component';
     CoreModule,
     SharedModule,
     RouterModule.forRoot(routes, { useHash: true }),
+    EffectsModule.run(AuthEffects)
   ],
   providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }],
   bootstrap: [AppComponent],

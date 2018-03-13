@@ -10,19 +10,19 @@ import { initialState } from 'app/core/models/session';
 
 export function reducer(state = initialState, action: Action) {
     switch (action.type) {
-        case fromActions.REQUEST_STATUS:
+        case fromActions.LOGIN:
             return {
-              sessionInfo: state.sessionState,
+                userInfo: state.userInfo,
               pendingUpdate: true
             };
-        case fromActions.REQUEST_STATUS_ERROR:
+        case fromActions.LOGIN_FAILURE:
             return {
-              sessionInfo: null,
+                userInfo: null,
               pendingUpdate: false
             };
-        case fromActions.SESSION_INFO_UPDATE:
+        case fromActions.LOGIN_STATUS_CHANGE:
          return {
-            sessionInfo: action.payload,
+            userInfo: action.payload,
             pendingUpdate: false
           };
         default:

@@ -1,13 +1,13 @@
 
 
-import { SessionInfo } from 'app/core/models/session';
+import { UserInfo } from 'app/core/models/session';
 
 export interface State {
-    sessionInfo?: SessionInfo;
+    userInfo?: UserInfo;
     pendingUpdate: boolean;
 }
 
 export const initialState = {
-    sessionState: null,
+    userInfo: null,
     pendingUpdate: false
 }

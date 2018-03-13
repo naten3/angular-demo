@@ -1,13 +1,12 @@
 package io.abnd.rest;
 
-import io.abnd.entity.Meal;
 import io.abnd.entity.UserRole;
 import io.abnd.exception.ResourceNotFoundException;
 import io.abnd.exception.UnauthorizedException;
 import io.abnd.model.BooleanWrapper;
 import io.abnd.model.UserCreateRequest;
-import io.abnd.model.UserUpdateRequest;
 import io.abnd.model.UserResponse;
+import io.abnd.model.UserUpdateRequest;
 import io.abnd.security.CustomSpringUser;
 import io.abnd.service.intf.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 

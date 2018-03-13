@@ -28,8 +28,10 @@ public class User {
   private String password;
   private String email;
 
+  @Column(name = "EMAIL_VERIFIED")
   private  boolean emailVerified;
 
+  @Column(name = "EMAIL_VERIFICATION_TOKEN")
   private String emailVerificationToken;
 
   @ManyToMany(fetch = FetchType.EAGER)

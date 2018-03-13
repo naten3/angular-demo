@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SessionService } from 'app/core/services';
 import * as fromRoot from 'app/core/store';
 import { State } from 'app/core/models/app.state';
-import { SessionInfo } from 'app/core/models/session';
+import { UserInfo } from 'app/core/models/session';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +15,7 @@ import { SessionInfo } from 'app/core/models/session';
 
 export class AppComponent implements AfterViewInit{
 
-  sessionInfo$: Observable<SessionInfo>;
+  userInfo$: Observable<UserInfo>;
 
   constructor(
     private sessionService: SessionService,
@@ -23,19 +23,19 @@ export class AppComponent implements AfterViewInit{
     private router: Router,
     private store: Store<fromRoot.State>) {
 
-    this.sessionInfo$ = store.select(fromRoot.getSessionInfo);
+    this.userInfo$ = store.select(fromRoot.getUserInfo);
   }
 
   ngAfterViewInit() {
 
-    if (!this.sessionService.getSessionId()) {
+    if (!SessionService.getSessionId()) {
       this.router.navigate(['/']);
     } else {
       this.sessionService.getSessionStatus();
     }
     console.log('After view init ran');
-    this.sessionInfo$.subscribe(sessionInfo => {
-      if (!sessionInfo) {
+    this.userInfo$.subscribe(userInfo => {
+      if (!userInfo) {
         this.router.navigate(['/']);
       }
     });

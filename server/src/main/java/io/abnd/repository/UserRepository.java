@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-  @Query("select u from User u where u.username = ?1 and u.emailVerified = true")
+  @Query("select u from User u where u.username = ?1 and u.emailVerified = 'true'")
   Optional<User> findVerifiedEmailByUsername(String username);
 
   @Query("select case when (count(u) > 0)  then true else false end  \n"
