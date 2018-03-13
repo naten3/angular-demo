@@ -1,6 +1,6 @@
 
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA, ErrorHandler } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, ErrorHandler, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { StoreModule, INITIAL_STATE } from '@ngrx/store';
@@ -27,7 +27,7 @@ import { HomeContainerComponent } from './home/home-container.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { LauncherComponent } from 'app/home/launcher.component';
 import { AuthEffects } from 'app/core/effects';
-
+import { AuthGuard } from 'app/core/guards';
 
 @NgModule({
   declarations: [
@@ -53,7 +53,7 @@ import { AuthEffects } from 'app/core/effects';
     RouterModule.forRoot(routes, { useHash: true }),
     EffectsModule.run(AuthEffects)
   ],
-  providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }],
+  providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }, AuthGuard],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

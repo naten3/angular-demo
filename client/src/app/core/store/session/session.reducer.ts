@@ -12,18 +12,21 @@ export function reducer(state = initialState, action: Action) {
     switch (action.type) {
         case fromActions.LOGIN:
             return {
-                userInfo: state.userInfo,
-              pendingUpdate: true
+              userInfo: state.userInfo,
+              pendingUpdate: true,
+              hasFetchedStatus: state.hasFetchedStatus
             };
         case fromActions.LOGIN_FAILURE:
             return {
                 userInfo: null,
-              pendingUpdate: false
+              pendingUpdate: false,
+              hasFetchedStatus: true
             };
         case fromActions.LOGIN_STATUS_CHANGE:
          return {
             userInfo: action.payload,
-            pendingUpdate: false
+            pendingUpdate: false,
+            hasFetchedStatus: true
           };
         default:
             return state;

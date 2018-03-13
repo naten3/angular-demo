@@ -1,5 +1,5 @@
 export const LOGIN = '[Auth] login';
-export const LOGIN_STATUS_CHANGE = '[Auth] login success';
+export const LOGIN_STATUS_CHANGE = '[Auth] login status change';
 export const LOGIN_FAILURE = '[Auth] login failure';
 export const REQUEST_STATUS = '[Session] request';
 export const REQUEST_STATUS_ERROR = '[Session] request';

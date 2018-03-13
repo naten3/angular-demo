@@ -19,5 +19,7 @@ export const getTreeState = (state: State) => state.tree;
 export const getAllNodes = createSelector(getTreeState, fromTree.getNodes);
 
 export const getSessionState = (state: State) => state.session;
+export const getSession = createSelector(getSessionState, fromSession.identity);
 export const getUserInfo = createSelector(getSessionState, fromSession.getUserInfo);
 export const getPendingSessionUpdate = createSelector(getSessionState, fromSession.getPendingUpdate);
+export const getHasFetchedSessionStatus = createSelector(getSessionState, fromSession.getHasFetchedStatus);

@@ -33,11 +33,11 @@ export class SessionService {
     const sessionId = SessionService.getSessionId();
     if (!sessionId) {
         this.store.dispatch({
-            type: sessionActions.SESSION_INFO_UPDATE,
-            payload: initialState
+            type: sessionActions.LOGIN_STATUS_CHANGE,
+            payload: null
         });
     } else {
-        this.http.get('/api/user/me', {headers: this.getSessionHeader()})
+        this.getSessionStatusObservable()
         .map(res => {
             if (!res.ok) {
                 SessionService.clearSessionId();
@@ -53,6 +53,10 @@ export class SessionService {
             payload: null });
         }).subscribe(action => this.store.dispatch(action));
     }
+  }
+
+  public getSessionStatusObservable() {
+    return this.http.get('/api/user/me', {headers: this.getSessionHeader()});
   }
 
   public getSessionHeader(): Headers {
