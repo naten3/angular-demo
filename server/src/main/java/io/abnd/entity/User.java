@@ -26,8 +26,11 @@ public class User {
   private String username;
 
   private String password;
-  private Integer desiredCalories;
   private String email;
+
+  private  boolean emailVerified;
+
+  private String emailVerificationToken;
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "USER_ROLE", joinColumns=@JoinColumn(name="USER_ID"),
@@ -58,20 +61,28 @@ public class User {
     this.password = password;
   }
 
-  public Integer getDesiredCalories() {
-    return desiredCalories;
-  }
-
-  public void setDesiredCalories(final Integer desiredCalories) {
-    this.desiredCalories = desiredCalories;
-  }
-
   public String getEmail() {
     return email;
   }
 
   public void setEmail(final String email) {
     this.email = email;
+  }
+
+  public boolean isEmailVerified() {
+    return emailVerified;
+  }
+
+  public void setEmailVerified(boolean emailVerified) {
+    this.emailVerified = emailVerified;
+  }
+
+  public String getEmailVerificationToken() {
+    return emailVerificationToken;
+  }
+
+  public void setEmailVerificationToken(String emailVerificationToken) {
+    this.emailVerificationToken = emailVerificationToken;
   }
 
   public Set<UserRole> getRoles() {

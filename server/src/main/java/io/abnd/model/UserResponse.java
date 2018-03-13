@@ -7,14 +7,12 @@ public class UserResponse {
 
   private Long id;
   private String username;
-  private Integer desiredCalories;
   private String email;
   private Set<String> roles;
 
-  public UserResponse(final Long id, final String username, final String email, final Integer desiredCalories, final Set<String> roles) {
+  public UserResponse(final Long id, final String username, final String email, final Set<String> roles) {
     this.id = id;
     this.username = username;
-    this.desiredCalories = desiredCalories;
     this.email = email;
     this.roles = roles;
   }
@@ -33,14 +31,6 @@ public class UserResponse {
 
   public void setUsername(final String username) {
     this.username = username;
-  }
-
-  public Integer getDesiredCalories() {
-    return desiredCalories;
-  }
-
-  public void setDesiredCalories(final Integer desiredCalories) {
-    this.desiredCalories = desiredCalories;
   }
 
   public String getEmail() {

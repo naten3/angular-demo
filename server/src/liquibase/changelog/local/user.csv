@@ -1,5 +1,5 @@
-USER_ID,USERNAME,PASSWORD,DESIRED_CALORIES,EMAIL
-1,nate,password,100,nate@fakedomain.com
-2,admin,password2,null,nate2@fakedomain.com
-3,useradmin,password3,null,nate3@fakedomain.com
-4,nate2,password,null,nate4@fakedomain.com
+USER_ID,USERNAME,PASSWORD,EMAIL,EMAIL_VERIFIED
+1,nate,password,nate@fakedomain.com,true
+2,admin,password2,nate2@fakedomain.com,true
+3,useradmin,password3,nate3@fakedomain.com,true
+4,nate2,password,nate4@fakedomain.com,false

@@ -11,18 +11,20 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-  public Optional<User> findByUsername(String username);
+
+  @Query("select u from User u where u.username = ?1 and u.emailVerified = true")
+  Optional<User> findVerifiedEmailByUsername(String username);
 
   @Query("select case when (count(u) > 0)  then true else false end  \n"
   + "from User u where u.username = :username")
-  public boolean doesUserExist(String username);
+  boolean doesUserExist(String username);
 
   @Query("select u FROM User AS u JOIN u.roles AS r WHERE r.roleName = ?1")
-  public Page<User> findAllByRole(String roleName, Pageable pageable);
+  Page<User> findAllByRole(String roleName, Pageable pageable);
 
   @Query("select count(u) FROM User u where u.username = ?1")
-  public int usernameCount(String username);
+  int usernameCount(String username);
 
   @Query("select count(u) FROM User u where u.email = ?1")
-  public int emailCount(String email);
+  int emailCount(String email);
 }

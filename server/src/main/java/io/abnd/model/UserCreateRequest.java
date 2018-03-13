@@ -9,7 +9,6 @@ public class UserCreateRequest {
   private String username;
   @Size(max = 100)
   private String password;
-  private Optional<Integer> desiredCalories;
   @Size(max = 300)
   private String email;
 
@@ -27,14 +26,6 @@ public class UserCreateRequest {
 
   public void setPassword(final String password) {
     this.password = password;
-  }
-
-  public Optional<Integer> getDesiredCalories() {
-    return desiredCalories;
-  }
-
-  public void setDesiredCalories(final Optional<Integer> desiredCalories) {
-    this.desiredCalories = desiredCalories;
   }
 
   public String getEmail() {

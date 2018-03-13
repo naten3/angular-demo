@@ -8,6 +8,7 @@ import io.abnd.model.UserResponse;
 import io.abnd.model.UserUpdateRequest;
 import io.abnd.repository.MealRepository;
 import io.abnd.repository.UserRepository;
+import io.abnd.service.intf.EmailService;
 import io.abnd.service.intf.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -25,11 +27,13 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
   UserRepository userRepository;
   MealRepository mealRepository;
+  EmailService emailService;
 
   @Autowired
-  public UserServiceImpl(final UserRepository userRepository, final MealRepository mealRepository) {
+  public UserServiceImpl(final UserRepository userRepository, final MealRepository mealRepository, final EmailService emailService) {
     this.userRepository = userRepository;
     this.mealRepository = mealRepository;
+    this.emailService = emailService;
   }
 
   @Override
@@ -39,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Optional<User> getSecurityUser(String username){
-    return userRepository.findByUsername(username);
+    return userRepository.findVerifiedEmailByUsername(username);
   }
 
   @Override
@@ -49,7 +53,10 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserResponse createUser(final UserCreateRequest ucr) {
-    User user = convertToUser(ucr);
+    String emailVerificationToken = UUID.randomUUID().toString();
+
+    User user = convertToUser(ucr,emailVerificationToken);
+    emailService.sendUserVerificationEmail(user.getEmail(), emailVerificationToken, user.getUsername());
     return convertToUserResponse(userRepository.save(user));
   }
 
@@ -81,18 +88,18 @@ public class UserServiceImpl implements UserService {
     Set<String> roles = user.getRoles().stream()
     .map(role -> role.getRoleName())
     .collect(Collectors.toSet());
-    return new UserResponse(user.getId(), user.getUsername(), user.getEmail(), user.getDesiredCalories(), roles);
+    return new UserResponse(user.getId(), user.getUsername(), user.getEmail(), roles);
   }
 
   /**
    * Converts a new user to a User, adds USER role
    */
-  private User convertToUser(UserCreateRequest ucr) {
+  private User convertToUser(UserCreateRequest ucr, String emailVerificationToken) {
     User user = new User();
     user.setUsername(ucr.getUsername());
     user.setPassword(ucr.getPassword()); //TODO Bcrypt
     user.setEmail(ucr.getEmail());
-    user.setDesiredCalories(ucr.getDesiredCalories().orElse(null));
+    user.setEmailVerificationToken(emailVerificationToken);
 
     Set<UserRole> roles = new HashSet<>();
     roles.add(new UserRole(UserRole.USER));
@@ -106,7 +113,6 @@ public class UserServiceImpl implements UserService {
     newUser.setUsername(user.getUsername());
     newUser.setPassword(user.getPassword());
     newUser.setEmail(uur.getEmail());
-    newUser.setDesiredCalories(uur.getDesiredCalories().orElse(null));
     newUser.setRoles(user.getRoles());
     return newUser;
   }
