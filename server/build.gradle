@@ -81,6 +81,7 @@ dependencies {
 
     // Enable Spring Data Redis and provide an embedded Redis server for local testing
     compile("com.github.kstyrc:embedded-redis:0.6")
+    compile('org.apache.commons:commons-text')
 
     // domain
     compile("org.springframework.boot:spring-boot-starter-data-jpa")

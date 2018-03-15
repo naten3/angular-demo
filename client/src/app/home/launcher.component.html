@@ -23,5 +23,12 @@
     </form>
 
     <button (click)="register()" class="btn btn-primary">Register</button>
+    <form action="/api/signin/facebook" method="POST" ngNoForm>
+        <div class="control-group info">
+            <input type="hidden" name="scope" value="public_profile" />
+            <input type="hidden" name="redirect_uri" value="http://localhost:8090/home" />
+            <input type="submit" value="Login using Facebook" class="btn btn-primary"/>
+        </div>
+    </form>
     <cc-add-update-user-modal (userSave)="handleRegistrationRequest($event)" #addUpdateUser></cc-add-update-user-modal>
 </div>

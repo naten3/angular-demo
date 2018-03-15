@@ -13,12 +13,17 @@
                 <constraints nullable="false"/>
             </column>
             <column name="EMAIL" type="varchar(300)">
-                <constraints nullable="false" unique="true"/>
             </column>
-            <column name="EMAIL_VERIFIED" type="varchar(100)">
+            <column name="EMAIL_VERIFIED" type="boolean" defaultValue="false">
                 <constraints nullable="false"/>
             </column>
             <column name="EMAIL_VERIFICATION_TOKEN" type="varchar(100)" defaultValue="false"/>
+            <column name="FACEBOOK_USER" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TWITTER_USER" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
         <createTable tableName="ROLE">

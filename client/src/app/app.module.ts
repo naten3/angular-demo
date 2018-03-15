@@ -7,6 +7,7 @@ import { StoreModule, INITIAL_STATE } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { RouterModule } from '@angular/router';
+import { FacebookModule } from 'ngx-facebook';
 
 import { AppComponent } from './app.component';
 
@@ -51,7 +52,8 @@ import { AuthGuard, LoginGuard } from 'app/core/guards';
     CoreModule,
     SharedModule,
     RouterModule.forRoot(routes, { useHash: true }),
-    EffectsModule.run(AuthEffects)
+    EffectsModule.run(AuthEffects),
+    FacebookModule.forRoot()
   ],
   providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }, AuthGuard, LoginGuard],
   bootstrap: [AppComponent],
