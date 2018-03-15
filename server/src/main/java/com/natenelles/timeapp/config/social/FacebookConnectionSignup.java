@@ -23,10 +23,13 @@ public class FacebookConnectionSignup implements ConnectionSignUp {
         org.springframework.social.facebook.api.User facebookUser = getFacebookUser(connection);
         User user = new User();
         user.setUsername(FACEBOOK_NAME_PREFIX + facebookUser.getId());
+        user.setPassword("");
         user.setEmail(facebookUser.getEmail());
+        user.setEmailVerified(true);
         user.setPassword("");
         user.setRoles(ImmutableSet.of(new UserRole(UserRole.USER), new UserRole(UserRole.FACEBOOK_USER)));
         user.setFacebookUser(true);
+        userRepository.save(user);
 
         return user.getUsername();
     }

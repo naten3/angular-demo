@@ -1,5 +1,6 @@
 package com.natenelles.timeapp.service.impl;
 
+import com.natenelles.timeapp.config.social.FacebookConnectionSignup;
 import com.natenelles.timeapp.entity.UserRole;
 import com.natenelles.timeapp.exception.ResourceNotFoundException;
 import com.natenelles.timeapp.model.UserCreateRequest;
@@ -25,6 +26,8 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 public class UserServiceImpl implements UserService {
+  private static final String invalidFacebookRegex = String.format( "^%s.*",FacebookConnectionSignup.FACEBOOK_NAME_PREFIX);
+
   UserRepository userRepository;
   MealRepository mealRepository;
   EmailService emailService;
@@ -42,6 +45,11 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public Optional<User> getByUsername(String username) {
+    return Optional.ofNullable(userRepository.findByUsername(username));
+  }
+
+  @Override
   public Optional<User> getSecurityUser(String username){
     return userRepository.findVerifiedEmailByUsername(username);
   }
@@ -53,6 +61,10 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserResponse createUser(final UserCreateRequest ucr) {
+    if (ucr.getUsername().matches(invalidFacebookRegex)) {
+      throw new IllegalArgumentException("username is invalid");
+    }
+
     String emailVerificationToken = UUID.randomUUID().toString();
 
     User user = convertToUser(ucr,emailVerificationToken);

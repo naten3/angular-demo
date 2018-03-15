@@ -13,6 +13,8 @@ import java.util.Optional;
 public interface UserService {
   public Optional<UserResponse> getUser(long id);
 
+  public Optional<User> getByUsername(String username);
+
   public Optional<User> getSecurityUser(String username);
 
   public Page<UserResponse> getAllNonadminUsers(Pageable pageable);

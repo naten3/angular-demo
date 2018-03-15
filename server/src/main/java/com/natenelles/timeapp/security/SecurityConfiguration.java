@@ -86,16 +86,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   }
 
   @Bean
-  public ProviderSignInController providerSignInController(@Value("${social-redirect-url}") String socialRedirectUrl) {
+  public ProviderSignInController providerSignInController(
+          FacebookSignInAdapter facebookSignInAdapter,
+          @Value("${social-login-host}") String socialLoginHost,
+          @Value("${social-redirect-url}") String socialRedirectUrl) {
     ((InMemoryUsersConnectionRepository) usersConnectionRepository)
             .setConnectionSignUp(facebookConnectionSignup);
 
     ProviderSignInController signInController = new ProviderSignInController(
             connectionFactoryLocator,
             usersConnectionRepository,
-            new FacebookSignInAdapter());
+            facebookSignInAdapter);
     signInController.setSessionStrategy(new SocialSessionStrategy());
-    signInController.setApplicationUrl(socialRedirectUrl);
+    signInController.setApplicationUrl(socialLoginHost);
+    signInController.setPostSignInUrl(socialRedirectUrl);
 
     return signInController;
   }
