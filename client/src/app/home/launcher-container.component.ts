@@ -13,9 +13,9 @@ import { login } from 'app/core/store/actions/session.actions';
 
 @Component({
     selector: 'app-launcher',
-    templateUrl: './launcher.component.html'
+    templateUrl: './launcher-container.component.html'
 })
-export class LauncherComponent implements AfterViewInit {
+export class LauncherContainerComponent implements AfterViewInit {
     model: any = {};
     @ViewChild('username') username: ElementRef;
     @ViewChild('password') password: ElementRef;

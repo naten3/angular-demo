@@ -12,6 +12,8 @@ import com.natenelles.timeapp.model.UserUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -82,6 +84,15 @@ public class UserController {
       throw new UnauthorizedException();
     }
     userService.deleteUser(id);
+  }
+
+  @GetMapping("/users/verify-email")
+  public HttpEntity verifyEmail(@RequestParam("userId") long userId, @RequestParam("token") String token) {
+    if (userService.verifyEmail(userId, token)) {
+      return new HttpEntity(HttpStatus.OK);
+    } else {
+      return new HttpEntity(HttpStatus.BAD_REQUEST);
+    }
   }
 
 }

@@ -13,6 +13,8 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
+  Optional<User> findById(Long id);
+
   @Query("select u from User u where u.username = ?1 and u.emailVerified = true")
   Optional<User> findVerifiedEmailByUsername(String username);
 

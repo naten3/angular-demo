@@ -28,4 +28,6 @@ public interface UserService {
   boolean isEmailAvailable(String email);
 
   void deleteUser(long id);
+
+  boolean verifyEmail(long userId, String token);
 }

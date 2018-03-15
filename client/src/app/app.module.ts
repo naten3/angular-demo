@@ -26,7 +26,7 @@ import { routes } from 'app/app.routes';
 import { AutoSaveContainerComponent } from './home/auto-save-container.component';
 import { HomeContainerComponent } from './home/home-container.component';
 import { SharedModule } from 'app/shared/shared.module';
-import { LauncherComponent } from 'app/home/launcher.component';
+import { LauncherContainerComponent } from 'app/home/launcher-container.component';
 import { AuthEffects } from 'app/core/effects';
 import { AuthGuard, LoginGuard, SocialLoginGuard } from 'app/core/guards';
 
@@ -42,7 +42,7 @@ import { AuthGuard, LoginGuard, SocialLoginGuard } from 'app/core/guards';
     TreeNodeComponent,
     TreeNodeListComponent,
     TreeContainerComponent,
-    LauncherComponent
+    LauncherContainerComponent
   ],
   imports: [
     RouterModule,

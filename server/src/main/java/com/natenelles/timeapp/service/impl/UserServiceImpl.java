@@ -97,6 +97,23 @@ public class UserServiceImpl implements UserService {
     return userRepository.emailCount(email) == 0;
   }
 
+  @Override
+  public boolean verifyEmail(long userId, String token) {
+    Optional<User> userOpt = userRepository.findById(userId);
+    if (!userOpt.isPresent()) {
+      return false;
+    }
+
+    User user = userOpt.get();
+    if (user.getEmailVerificationToken().equals(token)) {
+      user.setEmailVerified(true);
+      userRepository.save(user);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   private UserResponse convertToUserResponse(User user) {
     Set<String> roles = user.getRoles().stream()
     .map(role -> role.getRoleName())
