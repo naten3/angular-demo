@@ -28,7 +28,7 @@ import { HomeContainerComponent } from './home/home-container.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { LauncherComponent } from 'app/home/launcher.component';
 import { AuthEffects } from 'app/core/effects';
-import { AuthGuard, LoginGuard } from 'app/core/guards';
+import { AuthGuard, LoginGuard, SocialLoginGuard } from 'app/core/guards';
 
 @NgModule({
   declarations: [
@@ -55,7 +55,7 @@ import { AuthGuard, LoginGuard } from 'app/core/guards';
     EffectsModule.run(AuthEffects),
     FacebookModule.forRoot()
   ],
-  providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }, AuthGuard, LoginGuard],
+  providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }, AuthGuard, LoginGuard, SocialLoginGuard],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

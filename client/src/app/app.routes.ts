@@ -4,7 +4,7 @@ import { TreeContainerComponent } from 'app/tree/tree-container.component';
 import { TodoContainerComponent } from 'app/todos/todo-container.component';
 import { HomeContainerComponent } from './home/home-container.component';
 import { LauncherComponent } from 'app/home/launcher.component';
-import { AuthGuard, LoginGuard} from 'app/core/guards';
+import { AuthGuard, LoginGuard, SocialLoginGuard} from 'app/core/guards';
 
 export const routes: Routes = [
   {
@@ -22,6 +22,11 @@ export const routes: Routes = [
         path: 'todo',
         component: TodoContainerComponent
       }]
+  },
+  {
+    path: 'social/login',
+    component: LauncherComponent,
+    pathMatch: 'full', canActivate: [SocialLoginGuard]
   },
   {
     path: '', pathMatch: 'full', component: LauncherComponent, canActivate: [LoginGuard]

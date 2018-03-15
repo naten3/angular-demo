@@ -1,10 +1,7 @@
 import { createSelector } from 'reselect';
 import { Action, combineReducers } from '@ngrx/store';
-import {
-    append, filter, prop, assoc, lensPath, over,
-    propSatisfies, when, not, map, compose, evolve, __,
-    identity, view, find, propEq
-} from 'ramda';
+import { cloneDeep } from 'lodash';
+
 import * as fromActions from '../actions/session.actions';
 import { initialState } from 'app/core/models/session';
 
@@ -23,11 +20,15 @@ export function reducer(state = initialState, action: Action) {
               hasFetchedStatus: true
             };
         case fromActions.LOGIN_STATUS_CHANGE:
-         return {
-            userInfo: action.payload,
-            pendingUpdate: false,
-            hasFetchedStatus: true
-          };
+            return {
+                userInfo: action.payload,
+                 pendingUpdate: false,
+                 hasFetchedStatus: true
+            };
+        case fromActions.INVALIDATE_SESSION_INFO:
+            const clone = cloneDeep(state);
+            clone.hasFetchedStatus = false;
+            return clone;
         default:
             return state;
     };
