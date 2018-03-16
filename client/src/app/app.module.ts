@@ -7,7 +7,6 @@ import { StoreModule, INITIAL_STATE } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { RouterModule } from '@angular/router';
-import { FacebookModule } from 'ngx-facebook';
 
 import { AppComponent } from './app.component';
 
@@ -24,11 +23,11 @@ import { MyErrorHandler } from './error-handler';
 import { CoreModule } from 'app/core/core.module';
 import { routes } from 'app/app.routes';
 import { AutoSaveContainerComponent } from './home/auto-save-container.component';
-import { HomeContainerComponent } from './home/home-container.component';
 import { SharedModule } from 'app/shared/shared.module';
-import { LauncherContainerComponent } from 'app/home/launcher-container.component';
+import { LauncherContainerComponent, EmailVerifyComponent, HomeContainerComponent } from 'app/home';
 import { AuthEffects } from 'app/core/effects';
 import { AuthGuard, LoginGuard, SocialLoginGuard } from 'app/core/guards';
+import { EmailVerifyResolver } from 'app/core/resolve';
 
 @NgModule({
   declarations: [
@@ -42,7 +41,8 @@ import { AuthGuard, LoginGuard, SocialLoginGuard } from 'app/core/guards';
     TreeNodeComponent,
     TreeNodeListComponent,
     TreeContainerComponent,
-    LauncherContainerComponent
+    LauncherContainerComponent,
+    EmailVerifyComponent
   ],
   imports: [
     RouterModule,
@@ -52,10 +52,9 @@ import { AuthGuard, LoginGuard, SocialLoginGuard } from 'app/core/guards';
     CoreModule,
     SharedModule,
     RouterModule.forRoot(routes, { useHash: true }),
-    EffectsModule.run(AuthEffects),
-    FacebookModule.forRoot()
+    EffectsModule.run(AuthEffects)
   ],
-  providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }, AuthGuard, LoginGuard, SocialLoginGuard],
+  providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }, AuthGuard, LoginGuard, SocialLoginGuard, EmailVerifyResolver],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

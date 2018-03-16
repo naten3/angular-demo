@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
     }
 
     User user = userOpt.get();
-    if (user.getEmailVerificationToken().equals(token)) {
+    if (user.getEmailVerificationToken().equals(token) && !user.isEmailVerified()) {
       user.setEmailVerified(true);
       userRepository.save(user);
       return true;

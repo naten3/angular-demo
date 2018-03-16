@@ -2,18 +2,18 @@ package com.natenelles.timeapp.rest;
 
 import com.natenelles.timeapp.entity.UserRole;
 import com.natenelles.timeapp.exception.ResourceNotFoundException;
+import com.natenelles.timeapp.exception.UnauthorizedException;
 import com.natenelles.timeapp.model.BooleanWrapper;
 import com.natenelles.timeapp.model.UserCreateRequest;
 import com.natenelles.timeapp.model.UserResponse;
+import com.natenelles.timeapp.model.UserUpdateRequest;
 import com.natenelles.timeapp.security.CustomSpringUser;
 import com.natenelles.timeapp.service.intf.UserService;
-import com.natenelles.timeapp.exception.UnauthorizedException;
-import com.natenelles.timeapp.model.UserUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -87,11 +87,11 @@ public class UserController {
   }
 
   @GetMapping("/users/verify-email")
-  public HttpEntity verifyEmail(@RequestParam("userId") long userId, @RequestParam("token") String token) {
+  public ResponseEntity verifyEmail(@RequestParam("userId") long userId, @RequestParam("token") String token) {
     if (userService.verifyEmail(userId, token)) {
-      return new HttpEntity(HttpStatus.OK);
+      return new ResponseEntity(HttpStatus.OK);
     } else {
-      return new HttpEntity(HttpStatus.BAD_REQUEST);
+      return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
   }
 
