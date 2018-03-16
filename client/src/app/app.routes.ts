@@ -2,8 +2,8 @@ import { Routes } from '@angular/router';
 
 import { TreeContainerComponent } from 'app/tree/tree-container.component';
 import { TodoContainerComponent } from 'app/todos/todo-container.component';
-import { HomeContainerComponent } from './home/home-container.component';
-import { LauncherContainerComponent } from 'app/home/launcher-container.component';
+import { HomeContainerComponent, LauncherContainerComponent, EmailVerifyComponent } from './home';
+import { EmailVerifyResolver } from 'app/core/resolve';
 import { AuthGuard, LoginGuard, SocialLoginGuard} from 'app/core/guards';
 
 export const routes: Routes = [
@@ -27,6 +27,12 @@ export const routes: Routes = [
     path: 'social/login',
     component: LauncherContainerComponent,
     pathMatch: 'full', canActivate: [SocialLoginGuard]
+  },
+  {
+    path: 'email-verify',
+    pathMatch: 'full',
+    component: EmailVerifyComponent,
+    resolve: { success: EmailVerifyResolver }
   },
   {
     path: '', pathMatch: 'full', component: LauncherContainerComponent, canActivate: [LoginGuard]

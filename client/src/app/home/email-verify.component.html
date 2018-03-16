@@ -1,0 +1,11 @@
+<div class="col-md-6 col-md-offset-3">
+    <div *ngIf="verifySuccess">
+        Email Verified! Please log in.
+        <div class="form-group">
+                <button (click)="goToLogin()" class="btn btn-primary">Go To Login</button>
+        </div>
+    </div>
+    <div *ngIf="!verifySuccess">
+        Email verification failed. The url was not valid.
+    </div>
+</div>

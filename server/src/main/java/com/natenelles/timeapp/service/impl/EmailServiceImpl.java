@@ -12,7 +12,7 @@ import javax.mail.internet.MimeMessage;
 
 @Service
 public class EmailServiceImpl implements EmailService{
-    @Value("${email-verification-base-url}")
+    @Value("${email-verification-url}")
     private String emailVerificationBaseUrl;
 
     JavaMailSender emailSender;
@@ -46,6 +46,6 @@ public class EmailServiceImpl implements EmailService{
     }
 
     private String getUserVerificationUrl(long userId, String token) {
-        return String.format("%s/verify?uid=%s&token=%s", emailVerificationBaseUrl, userId, token);
+        return String.format("%s?userId=%s&token=%s", emailVerificationBaseUrl, userId, token);
     }
 }
