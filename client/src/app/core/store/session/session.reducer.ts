@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { Action, combineReducers } from '@ngrx/store';
 import { cloneDeep } from 'lodash';
 
-import * as fromActions from '../actions/session.actions';
+import * as fromActions from 'app/core/store/actions/session.actions';
 import { initialState } from 'app/core/models/session';
 
 export function reducer(state = initialState, action: Action) {

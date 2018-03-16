@@ -15,6 +15,9 @@ public class EmailServiceImpl implements EmailService{
     @Value("${email-verification-url}")
     private String emailVerificationBaseUrl;
 
+    @Value("${user-invite-url}")
+    private String userInviteUrl;
+
     JavaMailSender emailSender;
 
     @Autowired
@@ -40,6 +43,24 @@ public class EmailServiceImpl implements EmailService{
         }
     }
 
+    @Override
+    public void sendUserInviteEmail(String email, String token) {
+        String userInviteUrl = getUserInviteUrl(token);
+        String messageText = getUserInviteMessage(userInviteUrl);
+
+        MimeMessage message = emailSender.createMimeMessage();
+        MimeMessageHelper helper;
+        try {
+            helper = new MimeMessageHelper(message, true);
+            helper.setTo(email);
+            helper.setSubject("Time Viewer Registration Invite");
+            helper.setText(messageText);
+            emailSender.send(message);
+        } catch (MessagingException m) {
+            throw new RuntimeException(m);
+        }
+    }
+
     private static String getEmailVerificationMessageText(String url) {
         return String.format("Thank you for signing up for Time Viewer! Please follow the verification link to activate your account: %s " +
                 "If you did not sign up please disregard this email.", url);
@@ -47,5 +68,13 @@ public class EmailServiceImpl implements EmailService{
 
     private String getUserVerificationUrl(long userId, String token) {
         return String.format("%s?userId=%s&token=%s", emailVerificationBaseUrl, userId, token);
+    }
+
+    private static String getUserInviteMessage(String url) {
+        return String.format("You've been invited to register to Time Viewer! Follow the link to complete registration: %s", url);
+    }
+
+    private String getUserInviteUrl(String token) {
+        return String.format("%s?token=%s", userInviteUrl, token);
     }
 }

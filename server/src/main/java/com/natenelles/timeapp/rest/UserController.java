@@ -8,11 +8,14 @@ import com.natenelles.timeapp.model.SuccessResponse;
 import com.natenelles.timeapp.model.UserCreateRequest;
 import com.natenelles.timeapp.model.UserResponse;
 import com.natenelles.timeapp.model.UserUpdateRequest;
+import com.natenelles.timeapp.model.errors.UserSaveError;
+import com.natenelles.timeapp.model.users.SignupInvite;
 import com.natenelles.timeapp.security.CustomSpringUser;
 import com.natenelles.timeapp.service.intf.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -61,9 +64,11 @@ public class UserController {
   }
 
   @PostMapping("/users")
-  public UserResponse createUser(
+  public SuccessResponse<UserSaveError> createUser(
                                  @RequestBody UserCreateRequest userCreateRequest) {
-    return userService.createUser(userCreateRequest);
+    Set<UserSaveError> errors = userService.createUser(userCreateRequest);
+
+    return new SuccessResponse<UserSaveError>(errors.isEmpty(), Optional.of(errors).filter(es -> !es.isEmpty()));
   }
 
   @PutMapping("/users/{id}")
@@ -97,4 +102,18 @@ public class UserController {
     }
   }
 
+  @PostMapping("/users/signup-invite")
+  public SuccessResponse inviteUser(SignupInvite signupInvite) {
+    if (userService.inviteUser(signupInvite)) {
+      return new SuccessResponse(true, Optional.empty());
+    } else {
+      return new SuccessResponse(false, Optional.empty());
+    }
+  }
+
+  @GetMapping("/users/signup-invite")
+  public ResponseEntity<SignupInvite> getUserInvite(@Param("token") String token) {
+    return userService.getSignupInvite(token).map(signupInvite -> new ResponseEntity<>(signupInvite, HttpStatus.OK))
+            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+  }
 }

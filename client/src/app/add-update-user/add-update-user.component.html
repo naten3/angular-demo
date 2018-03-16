@@ -1,0 +1,50 @@
+
+    <div class="modal-dialog modal-sm">
+      <div class="content">
+        <div class="header">
+            <h4 class="modal-title pull-left">{{modalTitle}}</h4>
+         <button type="button" class="close pull-right" aria-label="Close" (click)="addUpdateModal.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="body">
+        <form name="form" (ngSubmit)="save(userForm.value, userForm.valid)"  *ngIf="!success$">
+          <div class="form-group" [ngClass]="{ 'has-error': submitted && !username.valid }">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" name="username" />
+            <div *ngIf="submitted && !username.valid" class="help-block">
+              Username is required and must be less than 100 characters
+            </div>
+          </div>
+          <div class="form-group" [ngClass]="{ 'has-error': submitted && !password.invalid }">
+            <label for="password">Initial Password</label>
+            <input type="password" id="password" class="form-control" name="password" maxLength="100"/>
+            <div *ngIf="submitted && !password.valid" class="help-block">
+              Password is required and must be between 8 and 100 characters
+            </div>
+          </div>
+          <div class="form-group" [ngClass]="{ 'has-error': submitted && !email.valid }">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" name="email" [maxLength]="300"/>
+              <div *ngIf="submitted && !email.valid" class="help-block">
+                Email is required
+              </div>
+          </div>
+          <div class="form-group">
+            <div class="control-group info">
+                <div class="controls">
+                  <button [disabled]="pendingUpdate$" class="btn btn-primary">Save User</button>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div  *ngIf="success$">
+            Success! A confirmation email will be sent to the address provided
+            <div class="controls">
+                <button (click)="goHome()" class="btn btn-primary">Return to Login</button>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    

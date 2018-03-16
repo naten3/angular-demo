@@ -6,6 +6,7 @@ import * as fromTodo from 'app/core/models/todo';
 import * as fromTree from 'app/core/models/tree';
 import * as fromSession from 'app/core/models/session';
 import * as fromSave from 'app/core/models/common/save.state';
+import * as fromUserSave from 'app/core/models/user-save';
 
 export const getAppState = (state: State) => state;
 
@@ -23,3 +24,11 @@ export const getSession = createSelector(getSessionState, fromSession.identity);
 export const getUserInfo = createSelector(getSessionState, fromSession.getUserInfo);
 export const getPendingSessionUpdate = createSelector(getSessionState, fromSession.getPendingUpdate);
 export const getHasFetchedSessionStatus = createSelector(getSessionState, fromSession.getHasFetchedStatus);
+export const isAdmin = createSelector(getSessionState, fromSession.isAdmin);
+export const isUserAdmin = createSelector(getSessionState, fromSession.isUserAdmin);
+
+export const getUserSave = (state: State) => state.addUser;
+export const getUserSavePending = createSelector(getUserSave, fromUserSave.getPendingUpdate);
+export const getUserSaveSubmitted = createSelector(getUserSave, fromUserSave.getSubmitted);
+export const getUserSaveSuccess = createSelector(getUserSave, fromUserSave.getSuccess);
+export const getUserSaveErrors = createSelector(getUserSave, fromUserSave.getErrors);

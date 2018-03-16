@@ -36,4 +36,8 @@ export class LauncherContainerComponent {
     login(myForm: NgForm) {
         this.store.dispatch(login(this.model.username, this.model.password));
     }
+
+    register() {
+        this.router.navigate(['user-create']);
+    }
 }

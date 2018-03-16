@@ -17,7 +17,7 @@
             <column name="EMAIL_VERIFIED" type="boolean" defaultValue="false">
                 <constraints nullable="false"/>
             </column>
-            <column name="EMAIL_VERIFICATION_TOKEN" type="varchar(100)" defaultValue="false"/>
+            <column name="EMAIL_VERIFICATION_TOKEN" type="varchar(100)"/>
             <column name="FACEBOOK_USER" type="boolean" defaultValue="false">
                 <constraints nullable="false"/>
             </column>
@@ -63,6 +63,16 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
+
+        <createTable tableName="USER_INVITE">
+            <column name="EMAIL" type="varchar(300)">
+                <constraints primaryKey="true" primaryKeyName="PK_USER_INVITE" />
+            </column>
+            <column name="VERIFICATION_TOKEN" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
 
     </changeSet>
 

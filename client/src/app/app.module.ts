@@ -25,6 +25,7 @@ import { routes } from 'app/app.routes';
 import { AutoSaveContainerComponent } from './home/auto-save-container.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { LauncherContainerComponent, EmailVerifyComponent, HomeContainerComponent } from 'app/home';
+import { AddUserComponent } from 'app/add-update-user';
 import { AuthEffects } from 'app/core/effects';
 import { AuthGuard, LoginGuard, SocialLoginGuard } from 'app/core/guards';
 import { EmailVerifyResolver } from 'app/core/resolve';
@@ -42,7 +43,8 @@ import { EmailVerifyResolver } from 'app/core/resolve';
     TreeNodeListComponent,
     TreeContainerComponent,
     LauncherContainerComponent,
-    EmailVerifyComponent
+    EmailVerifyComponent,
+    AddUserComponent
   ],
   imports: [
     RouterModule,

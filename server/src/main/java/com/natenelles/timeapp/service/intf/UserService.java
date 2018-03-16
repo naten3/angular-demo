@@ -5,23 +5,26 @@ import com.natenelles.timeapp.model.UserCreateRequest;
 import com.natenelles.timeapp.model.UserResponse;
 import com.natenelles.timeapp.entity.User;
 import com.natenelles.timeapp.model.UserUpdateRequest;
+import com.natenelles.timeapp.model.errors.UserSaveError;
+import com.natenelles.timeapp.model.users.SignupInvite;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
+import java.util.Set;
 
 public interface UserService {
-  public Optional<UserResponse> getUser(long id);
+  Optional<UserResponse> getUser(long id);
 
-  public Optional<User> getByUsername(String username);
+  Optional<User> getByUsername(String username);
 
-  public Optional<User> getSecurityUser(String username);
+  Optional<User> getSecurityUser(String username);
 
-  public Page<UserResponse> getAllNonadminUsers(Pageable pageable);
+  Page<UserResponse> getAllNonadminUsers(Pageable pageable);
 
-  public UserResponse createUser(UserCreateRequest ucr);
+  Set<UserSaveError> createUser(UserCreateRequest ucr);
 
-  public UserResponse updateUser(long userId, UserUpdateRequest uur) throws ResourceNotFoundException;
+  UserResponse updateUser(long userId, UserUpdateRequest uur) throws ResourceNotFoundException;
 
   boolean isUsernameAvailable(String username);
 
@@ -30,4 +33,11 @@ public interface UserService {
   void deleteUser(long id);
 
   boolean verifyEmail(long userId, String token);
+
+  /**
+   * @return true if the invite was successful or false if the email is taken;
+   */
+  boolean inviteUser(SignupInvite signupInvite);
+
+  Optional<SignupInvite> getSignupInvite(String token);
 }
