@@ -26,7 +26,7 @@ import { AutoSaveContainerComponent } from './home/auto-save-container.component
 import { SharedModule } from 'app/shared/shared.module';
 import { LauncherContainerComponent, EmailVerifyComponent, HomeContainerComponent } from 'app/home';
 import { AddUserComponent } from 'app/add-update-user';
-import { AuthEffects } from 'app/core/effects';
+import { AuthEffects, UserUpdateEffects } from 'app/core/effects';
 import { AuthGuard, LoginGuard, SocialLoginGuard } from 'app/core/guards';
 import { EmailVerifyResolver } from 'app/core/resolve';
 
@@ -54,7 +54,8 @@ import { EmailVerifyResolver } from 'app/core/resolve';
     CoreModule,
     SharedModule,
     RouterModule.forRoot(routes, { useHash: true }),
-    EffectsModule.run(AuthEffects)
+    EffectsModule.run(AuthEffects),
+    EffectsModule.run(UserUpdateEffects)
   ],
   providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }, AuthGuard, LoginGuard, SocialLoginGuard, EmailVerifyResolver],
   bootstrap: [AppComponent],

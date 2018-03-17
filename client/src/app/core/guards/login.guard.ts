@@ -30,6 +30,7 @@ export class LoginGuard implements CanActivate {
       if (!(s as State).userInfo) {
         return true;
       } else {
+        console.log('user logged in, navigating home');
         this.router.navigate(['/home']);
         return false;
       }

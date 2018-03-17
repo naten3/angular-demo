@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromevent';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import * as fromRouter from '@ngrx/router-store';
 
 import { SessionService } from 'app/core/services';
 import { UserInfo } from 'app/core/models/session';
@@ -28,7 +29,7 @@ export class LauncherContainerComponent {
         this.enableButton$ = store.select(fromRoot.getPendingSessionUpdate).map(b => !b);
         this.userInfo$.subscribe(userInfo => {
              if (!!userInfo) {
-               this.router.navigate(['home']);
+                this.store.dispatch(fromRouter.go('home'));
              }
         });
     }
@@ -38,6 +39,6 @@ export class LauncherContainerComponent {
     }
 
     register() {
-        this.router.navigate(['user-create']);
+        this.store.dispatch(fromRouter.go('user-create'));
     }
 }

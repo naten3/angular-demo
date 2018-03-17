@@ -15,11 +15,9 @@ export class UserUpdateEffects {
 
   /* tslint:disable member-ordering*/
   @Effect() login$ = this.actions$
-      // Listen for the 'LOGIN' action
       .ofType(CREATE_USER_REQUEST)
       .switchMap(action => {
         return this.http.post('/api/login', action.payload)
-        // If successful, dispatch success action with result
         .map(res => {
             if (res.json().success) {
                 return fromUserUpdate.userCreateSuccess();
