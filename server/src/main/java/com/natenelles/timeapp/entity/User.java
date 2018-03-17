@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -35,11 +36,14 @@ public class User {
   inverseJoinColumns=@JoinColumn(name="ROLE_NAME"))
   private Set<UserRole> roles = new HashSet<>();
 
-  private boolean facebookUser = false;
-
-  private boolean twitterUser = false;
+  private String facebookId;
+  private String twitterId;
 
   private String profileImage;
+  private String socialProfileImage;
+
+  private String firstName;
+  private String lastName;
 
   public long getId() {
     return id;
@@ -89,28 +93,52 @@ public class User {
     this.emailVerificationToken = emailVerificationToken;
   }
 
-  public boolean isFacebookUser() {
-    return facebookUser;
+  public Optional<String> getFacebookId() {
+    return Optional.ofNullable(facebookId);
   }
 
-  public void setFacebookUser(boolean facebookUser) {
-    this.facebookUser = facebookUser;
+  public void setFacebookId(Optional<String> facebookId) {
+    this.facebookId = facebookId.orElse(null);
   }
 
-  public boolean isTwitterUser() {
-    return twitterUser;
+  public Optional<String> getTwitterId() {
+    return Optional.ofNullable(twitterId);
   }
 
-  public void setTwitterUser(boolean twitterUser) {
-    this.twitterUser = twitterUser;
+  public void setTwitterId(Optional<String> twitterId) {
+    this.twitterId = twitterId.orElse(null);
   }
 
-  public String getProfileImage() {
-    return profileImage;
+  public Optional<String> getProfileImage() {
+    return Optional.ofNullable(profileImage);
   }
 
-  public void setProfileImage(String profileImage) {
-    this.profileImage = profileImage;
+  public void setProfileImage(Optional<String> profileImage) {
+    this.profileImage = profileImage.orElse(null);
+  }
+
+  public Optional<String> getSocialProfileImage() {
+    return Optional.ofNullable(profileImage);
+  }
+
+  public void setSocialProfileImage(Optional<String> profileImage) {
+    this.profileImage = profileImage.orElse(null);
+  }
+
+  public String getFirstName() {
+    return firstName;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
   }
 
   public Set<UserRole> getRoles() {

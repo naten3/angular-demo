@@ -46,8 +46,7 @@ export class HomeContainerComponent implements OnDestroy {
     ) {
       this.userInfo$ = store.select(fromRoot.getUserInfo);
       this.profileUrl$ = this.userInfo$.map(u => {
-        console.log("image url is " + u.profileImage);
-        return u.profileImage;
+        return u.profileImage || u.socialProfileImage;
       });
     }
     ngOnDestroy() {

@@ -8,14 +8,17 @@ public class UserResponse {
   private Long id;
   private String username;
   private String email;
-  private String profileImage;
+  private Optional<String> profileImage;
+  private Optional<String> socialProfileImage;
   private Set<String> roles;
 
-  public UserResponse(Long id, String username, String email, String profileImages, Set<String> roles) {
+  public UserResponse(Long id, String username, String email, Optional<String> profileImage,
+                      Optional<String> socialProfileImage, Set<String> roles) {
     this.id = id;
     this.username = username;
     this.email = email;
-    this.profileImage = profileImages;
+    this.profileImage = profileImage;
+    this.socialProfileImage = socialProfileImage;
     this.roles = roles;
   }
 
@@ -47,12 +50,20 @@ public class UserResponse {
     return roles;
   }
 
-  public String getProfileImage() {
+  public Optional<String> getProfileImage() {
     return profileImage;
   }
 
-  public void setProfileImage(String profileImage) {
+  public void setProfileImage(Optional<String> profileImage) {
     this.profileImage = profileImage;
+  }
+
+  public Optional<String> getSocialProfileImage() {
+    return socialProfileImage;
+  }
+
+  public void setSocialProfileImage(Optional<String> socialProfileImage) {
+    this.socialProfileImage = socialProfileImage;
   }
 
   public void setRoles(final Set<String> roles) {

@@ -162,7 +162,8 @@ public class UserServiceImpl implements UserService {
     Set<String> roles = user.getRoles().stream()
     .map(role -> role.getRoleName())
     .collect(Collectors.toSet());
-    return new UserResponse(user.getId(), user.getUsername(), user.getEmail(), user.getProfileImage(), roles);
+    return new UserResponse(user.getId(), user.getUsername(), user.getEmail(), user.getProfileImage(),
+            user.getSocialProfileImage(), roles);
   }
 
   /**
@@ -173,8 +174,10 @@ public class UserServiceImpl implements UserService {
     user.setUsername(ucr.getUsername());
     user.setPassword(ucr.getPassword()); //TODO Bcrypt
     user.setEmail(ucr.getEmail());
+    user.setFirstName(ucr.getFirstName());
+    user.setLastName(ucr.getLastName());
     user.setEmailVerificationToken(emailVerificationToken);
-    user.setProfileImage(defaultProfileUrl);
+    user.setProfileImage(Optional.of(defaultProfileUrl));
 
     Set<UserRole> roles = new HashSet<>();
     roles.add(new UserRole(UserRole.USER));
@@ -185,10 +188,10 @@ public class UserServiceImpl implements UserService {
   private User mergeUser(User user, UserUpdateRequest uur) {
     User newUser = new User();
     newUser.setId(user.getId());
-    newUser.setUsername(user.getUsername());
     newUser.setPassword(user.getPassword());
-    newUser.setEmail(uur.getEmail());
     newUser.setRoles(user.getRoles());
+    newUser.setFirstName(user.getFirstName());
+    newUser.setLastName(user.getLastName());
     return newUser;
   }
 

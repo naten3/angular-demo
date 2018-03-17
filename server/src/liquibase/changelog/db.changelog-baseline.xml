@@ -9,22 +9,25 @@
             <column name="USERNAME" type="nvarchar(100)">
                 <constraints nullable="false" unique="true" />
             </column>
-            <column name="PASSWORD" type="varchar(100)">
+            <column name="PASSWORD" type="nvarchar(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="EMAIL" type="varchar(300)">
+            <column name="EMAIL" type="nvarchar(300)">
             </column>
             <column name="EMAIL_VERIFIED" type="boolean" defaultValue="false">
                 <constraints nullable="false"/>
             </column>
-            <column name="EMAIL_VERIFICATION_TOKEN" type="varchar(100)"/>
-            <column name="FACEBOOK_USER" type="boolean" defaultValue="false">
+            <column name="EMAIL_VERIFICATION_TOKEN" type="nvarchar(100)"/>
+            <column name="FACEBOOK_ID" type="nvarchar(300)"/>
+            <column name="TWITTER_ID" type="nvarchar(300)"/>
+            <column name="PROFILE_IMAGE" type="nvarchar(700)"/>
+            <column name="SOCIAL_PROFILE_IMAGE" type="nvarchar(700)"/>
+            <column name="FIRST_NAME" type="nvarchar(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="TWITTER_USER" type="boolean" defaultValue="false">
+            <column name="LAST_NAME" type="nvarchar(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="PROFILE_IMAGE" type="varchar(700)"/>
         </createTable>
 
         <createTable tableName="ROLE">
@@ -66,10 +69,10 @@
         </createTable>
 
         <createTable tableName="USER_INVITE">
-            <column name="EMAIL" type="varchar(300)">
+            <column name="EMAIL" type="nvarchar(300)">
                 <constraints primaryKey="true" primaryKeyName="PK_USER_INVITE" />
             </column>
-            <column name="VERIFICATION_TOKEN" type="varchar(100)">
+            <column name="VERIFICATION_TOKEN" type="nvarchar(100)">
                 <constraints nullable="false" />
             </column>
         </createTable>

@@ -36,6 +36,8 @@ export class AddUserComponent {
       userSaveRequest.email = this.model.email;
       userSaveRequest.username = this.model.username;
       userSaveRequest.password = this.model.password;
+      userSaveRequest.firstName = this.model.firstName;
+      userSaveRequest.lastName = this.model.lastName;
 
       this.store.dispatch(createUser(userSaveRequest));
   }

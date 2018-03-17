@@ -9,6 +9,8 @@ import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 import static com.natenelles.timeapp.config.social.SocialUtils.getFacebookUser;
 
 @Service
@@ -27,9 +29,9 @@ public class FacebookConnectionSignup implements ConnectionSignUp {
         user.setEmail(facebookUser.getEmail());
         user.setEmailVerified(true);
         user.setPassword("");
-        user.setProfileImage(connection.getImageUrl());
+        user.setSocialProfileImage(Optional.of(connection.getImageUrl()));
         user.setRoles(ImmutableSet.of(new UserRole(UserRole.USER), new UserRole(UserRole.FACEBOOK_USER)));
-        user.setFacebookUser(true);
+        user.setFacebookId(Optional.of(facebookUser.getId()));
         userRepository.save(user);
 
         return user.getUsername();
