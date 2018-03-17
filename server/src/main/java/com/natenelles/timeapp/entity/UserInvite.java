@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class UserInviteEntity {
+public class UserInvite {
     @Id
     String email;
     String verificationToken;

@@ -17,13 +17,14 @@ export class UserUpdateEffects {
   @Effect() login$ = this.actions$
       .ofType(CREATE_USER_REQUEST)
       .switchMap(action => {
-        return this.http.post('/api/login', action.payload)
+        return this.http.post('/api/users', action.payload)
         .map(res => {
             if (res.json().success) {
                 return fromUserUpdate.userCreateSuccess();
             } else {
               return fromUserUpdate.userCreateFailure(res.json().errors);
             }
-        });
+        })
+        .catch(e => Observable.of(fromUserUpdate.userCreateFailure([])));
       });
 }

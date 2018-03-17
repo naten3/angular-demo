@@ -1,7 +1,7 @@
 package com.natenelles.timeapp.service.impl;
 
 import com.natenelles.timeapp.config.social.FacebookConnectionSignup;
-import com.natenelles.timeapp.entity.UserInviteEntity;
+import com.natenelles.timeapp.entity.UserInvite;
 import com.natenelles.timeapp.entity.UserRole;
 import com.natenelles.timeapp.exception.ResourceNotFoundException;
 import com.natenelles.timeapp.model.UserCreateRequest;
@@ -18,8 +18,6 @@ import com.natenelles.timeapp.service.intf.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -48,6 +46,7 @@ public class UserServiceImpl implements UserService {
     this.userRepository = userRepository;
     this.mealRepository = mealRepository;
     this.emailService = emailService;
+    this.userInviteRepository = userInviteRepository;
   }
 
   @Override
@@ -146,10 +145,10 @@ public class UserServiceImpl implements UserService {
       return false;
     } else {
       String verificationToken = UUID.randomUUID().toString();
-      UserInviteEntity userInviteEntity = new UserInviteEntity();
-      userInviteEntity.setEmail(signupInvite.getEmail());
-      userInviteEntity.setVerificationToken(verificationToken);
-      userInviteRepository.save(userInviteEntity);
+      UserInvite userInvite = new UserInvite();
+      userInvite.setEmail(signupInvite.getEmail());
+      userInvite.setVerificationToken(verificationToken);
+      userInviteRepository.save(userInvite);
       emailService.sendUserInviteEmail(signupInvite.getEmail(), verificationToken);
       return true;
     }

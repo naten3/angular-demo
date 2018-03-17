@@ -20,7 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   @Query("select case when (count(u) > 0)  then true else false end  \n"
   + "from User u where u.username = :username")
-  boolean doesUserExist(String username);
+  boolean doesUserExist(@Param("username") String username);
 
   @Query("select u from User AS u where u.email = :email")
   Optional<User> findByEmail(@Param("email") String email);

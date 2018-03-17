@@ -8,7 +8,7 @@ import * as fromRouter from '@ngrx/router-store';
 
 import * as fromRoot from 'app/core/store';
 import { UserSaveRequest } from 'app/core/models/user-save';
-import { createUser } from 'app/core/store/actions/user-update.actions';
+import { createUser, userCreateReset } from 'app/core/store/actions/user-update.actions';
 
 @Component({
   templateUrl: './add-user.component.html'
@@ -27,19 +27,33 @@ export class AddUserComponent {
       this.success$ = store.select(fromRoot.getUserSaveSuccess);
       this.submitted$ = store.select(fromRoot.getUserSaveSubmitted);
       this.pendingUpdate$ = store.select(fromRoot.getUserSavePending);
-      this.errors$ = store.select(fromRoot.getUserSaveErrors);
+      this.errors$ = store.select(fromRoot.getUserSaveErrors)
+      .map(codes => codes.map(this.mapErrorCodeToMessage));
   }
 
   save(value: any) {
       const userSaveRequest = new UserSaveRequest;
-      userSaveRequest.email = value.email;
-      userSaveRequest.username = value.username;
-      userSaveRequest.password = value.password;
+      userSaveRequest.email = this.model.email;
+      userSaveRequest.username = this.model.username;
+      userSaveRequest.password = this.model.password;
 
       this.store.dispatch(createUser(userSaveRequest));
   }
 
   goToLogin() {
     this.store.dispatch(fromRouter.go('/'));
+  }
+
+  private mapErrorCodeToMessage(errorCode: string): string {
+    switch (errorCode) {
+      case 'USERNAME_IN_USE':
+      return 'The username is already in use';
+      case 'EMAIL_IN_USE':
+      return 'The email address is already in use';
+      case 'ILLEGAL_USERNAME':
+      return 'The username is illegal';
+      default:
+      return 'There was an error with registration';
+    }
   }
 }

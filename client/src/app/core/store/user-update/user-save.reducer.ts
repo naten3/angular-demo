@@ -28,6 +28,8 @@ export function reducer(state = initialState, action: Action) {
             pendingUpdate: false,
             errors: action.payload
           };
+        case fromActions.USER_CREATE_RESET:
+          return initialState;
         default:
             return state;
     };

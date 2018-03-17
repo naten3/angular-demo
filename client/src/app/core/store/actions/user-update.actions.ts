@@ -1,6 +1,7 @@
 export const CREATE_USER_REQUEST = '[User Update] CREATE';
 export const USER_CREATE_SUCCESS = '[User Update] CREATE SUCCESS';
 export const USER_CREATE_FAILURE = '[User Update] CREATE FAILURE';
+export const USER_CREATE_RESET = '[User Update] CREATE RESET';
 import { UserSaveRequest } from 'app/core/models/user-save';
 
 export const createUser = (userSaveRequest: UserSaveRequest) => {
@@ -10,3 +11,4 @@ export const userCreateSuccess = () => { return {'type': USER_CREATE_SUCCESS}; }
 export const userCreateFailure = (errors: Array<string>) => {
     return {'type': USER_CREATE_FAILURE, 'payload': errors};
 };
+export const userCreateReset = () => { return {'type': USER_CREATE_RESET}; };

@@ -10,6 +10,6 @@ export const initialState = {
     success: false,
     submitted: false,
     pendingUpdate: false,
-    errors: null
+    errors: []
 };
 

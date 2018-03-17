@@ -1,14 +1,18 @@
 package com.natenelles.timeapp.model;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Optional;
 
 public class UserCreateRequest {
 
+  @NotNull
   @Size(min = 1, max = 100)
   private String username;
+  @NotNull
   @Size(min = 8, max = 100)
   private String password;
+  @NotNull
   @Size(max = 300)
   private String email;
 
