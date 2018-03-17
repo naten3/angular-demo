@@ -39,6 +39,8 @@ public class User {
 
   private boolean twitterUser = false;
 
+  private String profileImage;
+
   public long getId() {
     return id;
   }
@@ -101,6 +103,14 @@ public class User {
 
   public void setTwitterUser(boolean twitterUser) {
     this.twitterUser = twitterUser;
+  }
+
+  public String getProfileImage() {
+    return profileImage;
+  }
+
+  public void setProfileImage(String profileImage) {
+    this.profileImage = profileImage;
   }
 
   public Set<UserRole> getRoles() {

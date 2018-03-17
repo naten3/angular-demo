@@ -7,6 +7,7 @@ import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/observable/timer';
 
 import { State } from 'app/core/models/app.state';
+import { UserInfo } from 'app/core/models/session';
 import * as saveActions from 'app/core/store/actions/save.actions';
 import * as fromRoot from 'app/core/store';
 @Component({
@@ -17,6 +18,7 @@ import * as fromRoot from 'app/core/store';
     <div class="container-fluid">
       <div class="navbar-header">
         <a class="navbar-brand" href="#">NgRx-Store-Sample-App</a>
+        <img id="homeProfileImage" [src]="profileUrl$ | async">
       </div>
       <ul class="nav navbar-nav">
         <li routerLinkActive="active" [routerLink]="['tree']" routerLinkActiveOptions="{exact:true}"><a>Tree</a></li>
@@ -25,7 +27,6 @@ import * as fromRoot from 'app/core/store';
     </div>
   </nav>
 <router-outlet></router-outlet>
- <app-auto-save>  </app-auto-save>
 `
 })
 
@@ -35,13 +36,19 @@ export class HomeContainerComponent implements OnDestroy {
     onSave$: Subject<any> = new Subject<any>();
     appState$: Observable<State>;
     loading$: Observable<boolean>;
+    userInfo$: Observable<UserInfo>;
+    profileUrl$: Observable<string>;
     _key$: any;
     _onSave$: any;
     constructor(
         private route: ActivatedRoute,
         private store: Store<fromRoot.State>
     ) {
-
+      this.userInfo$ = store.select(fromRoot.getUserInfo);
+      this.profileUrl$ = this.userInfo$.map(u => {
+        console.log("image url is " + u.profileImage);
+        return u.profileImage;
+      });
     }
     ngOnDestroy() {
         if (this._key$) {

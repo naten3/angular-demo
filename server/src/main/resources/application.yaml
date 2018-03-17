@@ -27,6 +27,7 @@ user-invite-url: "http://localhost:8090/user-invite"
 #needs to be on social provider whitelists
 social-login-host: "http://localhost:8090/api"
 social-redirect-url: "http://localhost:8090/#/social/login"
+default-profile-url: "https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg"
 
 spring.mail:
   host: smtp.gmail.com

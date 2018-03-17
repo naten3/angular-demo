@@ -22,7 +22,6 @@ import { TreeContainerComponent } from 'app/tree/tree-container.component';
 import { MyErrorHandler } from './error-handler';
 import { CoreModule } from 'app/core/core.module';
 import { routes } from 'app/app.routes';
-import { AutoSaveContainerComponent } from './home/auto-save-container.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { LauncherContainerComponent, EmailVerifyComponent, HomeContainerComponent } from 'app/home';
 import { AddUserComponent } from 'app/add-update-user';
@@ -34,7 +33,6 @@ import { EmailVerifyResolver } from 'app/core/resolve';
   declarations: [
     AppComponent,
     HomeContainerComponent,
-    AutoSaveContainerComponent,
     NewTodoInputComponent,
     TodoComponent,
     TodoListComponent,

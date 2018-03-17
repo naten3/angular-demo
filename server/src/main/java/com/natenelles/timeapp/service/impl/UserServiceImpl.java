@@ -1,11 +1,11 @@
 package com.natenelles.timeapp.service.impl;
 
 import com.natenelles.timeapp.config.social.FacebookConnectionSignup;
+import com.natenelles.timeapp.entity.User;
 import com.natenelles.timeapp.entity.UserInvite;
 import com.natenelles.timeapp.entity.UserRole;
 import com.natenelles.timeapp.exception.ResourceNotFoundException;
 import com.natenelles.timeapp.model.UserCreateRequest;
-import com.natenelles.timeapp.entity.User;
 import com.natenelles.timeapp.model.UserResponse;
 import com.natenelles.timeapp.model.UserUpdateRequest;
 import com.natenelles.timeapp.model.errors.UserSaveError;
@@ -16,6 +16,7 @@ import com.natenelles.timeapp.repository.UserRepository;
 import com.natenelles.timeapp.service.intf.EmailService;
 import com.natenelles.timeapp.service.intf.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -35,10 +36,13 @@ import java.util.stream.Stream;
 public class UserServiceImpl implements UserService {
   private static final String invalidFacebookRegex = String.format( "^%s.*",FacebookConnectionSignup.FACEBOOK_NAME_PREFIX);
 
-  UserRepository userRepository;
-  MealRepository mealRepository;
-  EmailService emailService;
-  UserInviteRepository userInviteRepository;
+  private UserRepository userRepository;
+  private MealRepository mealRepository;
+  private EmailService emailService;
+  private UserInviteRepository userInviteRepository;
+
+  @Value("${default-profile-url}")
+  private String defaultProfileUrl;
 
   @Autowired
   public UserServiceImpl(final UserRepository userRepository, final MealRepository mealRepository, final EmailService emailService,
@@ -88,7 +92,7 @@ public class UserServiceImpl implements UserService {
 
     if (errors.isEmpty()) {
       String emailVerificationToken = UUID.randomUUID().toString();
-      User user = convertToUser(ucr,emailVerificationToken);
+      User user = convertToNewUser(ucr,emailVerificationToken);
       User savedUser = userRepository.save(user);
       emailService.sendUserVerificationEmail(user.getEmail(), emailVerificationToken, savedUser.getId());
       return Collections.emptySet();
@@ -158,18 +162,19 @@ public class UserServiceImpl implements UserService {
     Set<String> roles = user.getRoles().stream()
     .map(role -> role.getRoleName())
     .collect(Collectors.toSet());
-    return new UserResponse(user.getId(), user.getUsername(), user.getEmail(), roles);
+    return new UserResponse(user.getId(), user.getUsername(), user.getEmail(), user.getProfileImage(), roles);
   }
 
   /**
    * Converts a new user to a User, adds USER role
    */
-  private User convertToUser(UserCreateRequest ucr, String emailVerificationToken) {
+  private User convertToNewUser(UserCreateRequest ucr, String emailVerificationToken) {
     User user = new User();
     user.setUsername(ucr.getUsername());
     user.setPassword(ucr.getPassword()); //TODO Bcrypt
     user.setEmail(ucr.getEmail());
     user.setEmailVerificationToken(emailVerificationToken);
+    user.setProfileImage(defaultProfileUrl);
 
     Set<UserRole> roles = new HashSet<>();
     roles.add(new UserRole(UserRole.USER));

@@ -27,6 +27,7 @@ public class FacebookConnectionSignup implements ConnectionSignUp {
         user.setEmail(facebookUser.getEmail());
         user.setEmailVerified(true);
         user.setPassword("");
+        user.setProfileImage(connection.getImageUrl());
         user.setRoles(ImmutableSet.of(new UserRole(UserRole.USER), new UserRole(UserRole.FACEBOOK_USER)));
         user.setFacebookUser(true);
         userRepository.save(user);
