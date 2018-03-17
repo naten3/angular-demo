@@ -5,6 +5,8 @@ import { filter } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
+import { replace } from '@ngrx/router-store';
+
 import { State } from 'app/core/models/session/session.state';
 
 import * as fromRoot from 'app/core/store';
@@ -16,7 +18,7 @@ export class LoginGuard implements CanActivate {
     userInfo$: Observable<any>;
     sessionState$: Observable<State>;
 
-  constructor(private router: Router, store: Store<fromRoot.State>) {
+  constructor(private router: Router, private store: Store<fromRoot.State>) {
       this.hasUpdatedAuth$ = store.select(fromRoot.getHasFetchedSessionStatus);
       this.userInfo$ = store.select(fromRoot.getUserInfo);
       this.sessionState$ = store.select(fromRoot.getSession);
@@ -31,7 +33,7 @@ export class LoginGuard implements CanActivate {
         return true;
       } else {
         console.log('user logged in, navigating home');
-        this.router.navigate(['/home']);
+        this.store.dispatch(replace('/home'));
         return false;
       }
     });
