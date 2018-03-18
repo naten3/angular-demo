@@ -162,7 +162,10 @@ public class UserServiceImpl implements UserService {
     Set<String> roles = user.getRoles().stream()
     .map(role -> role.getRoleName())
     .collect(Collectors.toSet());
-    return new UserResponse(user.getId(), user.getUsername(), user.getEmail(), user.getProfileImage(),
+    return new UserResponse(user.getId(), user.getUsername(),
+            user.getFirstName(),
+            user.getLastName(),
+            user.getEmail(), user.getProfileImage(),
             user.getSocialProfileImage(), roles);
   }
 

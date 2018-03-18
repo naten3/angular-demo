@@ -3,36 +3,37 @@
       <h4>{{modalTitle}}</h4>
   </div>
   <div class="body">
+      <form name="passwordForm" (ngSubmit)="pf.form.valid && updatePassword(pf)" #pf="ngForm"  *ngIf="!(success$ | async)" 
+      novalidate ngNativeValidate>
+    
+        <div *ngFor='let error of errors$ | async' class='help-block'>
+          {{error}}
+        </div>
+        
+        <div class="form-group" [ngClass]="{ 'has-error': pf.submitted && !password.valid }">
+          <label for="password">Password</label>
+          <input type="password" id="password" [(ngModel)]="passwordModel.password" class="form-control" 
+          #password="ngModel" name="password" required maxLength="100"/>
+          <div *ngIf="pf.submitted && !password.valid" class="help-block">
+            Password is required and must be between 8 and 100 characters
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-group info">
+              <div class="controls">
+                <button [disabled]="pendingPasswordUpdate$ | async" class="btn btn-primary">Update</button>
+              </div>
+            </div>
+        </div>
+    </form>
+
+
+
   <form name="form" (ngSubmit)="f.form.valid && save(f)" #f="ngForm"  *ngIf="!(success$ | async)" 
   novalidate ngNativeValidate>
 
     <div *ngFor='let error of errors$ | async' class='help-block'>
       {{error}}
-    </div>
-    
-    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
-      <label for="username">Username</label>
-      <input type="text" class="form-control" [(ngModel)]="model.username" name="username" 
-      #username="ngModel" required maxlength="300"/>
-      <div *ngIf="f.submitted && !username.valid" class="help-block">
-        Username is required and must be less than 100 characters
-      </div>
-    </div>
-    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
-      <label for="password">Password</label>
-      <input type="password" id="password" [(ngModel)]="model.password" class="form-control" 
-      #password="ngModel" name="password" required maxLength="100"/>
-      <div *ngIf="f.submitted && !password.valid" class="help-block">
-        Password is required and must be between 8 and 100 characters
-      </div>
-    </div>
-    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !email.valid }">
-        <label for="email">Email</label>
-        <input type="email" class="form-control" [(ngModel)]="model.email" name="email" 
-        #email="ngModel" required maxLength="300"/>
-        <div *ngIf="f.submitted && !email.valid" class="help-block">
-          Email is required
-        </div>
     </div>
     <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !firstName.valid }">
         <label for="firstName">First Name</label>
@@ -53,16 +54,16 @@
     <div class="form-group">
       <div class="control-group info">
           <div class="controls">
-            <button [disabled]="pendingUpdate$ | async" class="btn btn-primary">Register</button>
+            <button [disabled]="pendingUpdate$ | async" class="btn btn-primary">Update</button>
           </div>
         </div>
       </div>
     </form>
     <div  *ngIf="success$ | async">
-      Success! A confirmation email will be sent to the address provided
+      Updated
       <div class="controls">
           <button (click)="goToLogin()" class="btn btn-primary">Return to Login</button>
-        </div>
+      </div>
     </div>
   </div>
 </div>

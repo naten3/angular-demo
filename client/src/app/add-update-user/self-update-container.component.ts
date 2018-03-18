@@ -9,12 +9,12 @@ import { UserUpdateForm } from 'app/core/models/user-update';
 import { UserInfo } from 'app/core/models/session';
 
 @Component({
-    templateUrl: './add-user.component.html'
+    templateUrl: './update-user.component.html'
   })
   export class SelfUpdateComponent extends UpdateUserComponent {
 
     static getInitialUserForm(store: Store<fromRoot.State>): Observable<UserUpdateForm> {
-      return store.select(fromRoot.getUserInfo).map(userInfo => { 
+      return store.select(fromRoot.getUserInfo).map(userInfo => {
         return {
           password: null,
           firstName: userInfo.firstName,
@@ -23,7 +23,7 @@ import { UserInfo } from 'app/core/models/session';
     }
 
     static getUserId(route: ActivatedRoute): number {
-      return route.snapshot.data['userInfo'].id;
+      return route.snapshot.data['userId'];
     }
 
     constructor( store: Store<fromRoot.State>, route: ActivatedRoute) {

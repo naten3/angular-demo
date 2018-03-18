@@ -27,7 +27,7 @@ import { LauncherContainerComponent, EmailVerifyComponent, HomeContainerComponen
 import { AddUserComponent, SelfUpdateComponent } from 'app/add-update-user';
 import { AuthEffects, UserUpdateEffects } from 'app/core/effects';
 import { AuthGuard, LoginGuard, SocialLoginGuard } from 'app/core/guards';
-import { EmailVerifyResolver, UserInfoResolver } from 'app/core/resolve';
+import { EmailVerifyResolver, IdResolver } from 'app/core/resolve';
 
 @NgModule({
   declarations: [
@@ -57,7 +57,7 @@ import { EmailVerifyResolver, UserInfoResolver } from 'app/core/resolve';
     EffectsModule.run(UserUpdateEffects)
   ],
   providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }, AuthGuard, LoginGuard, SocialLoginGuard, 
-    EmailVerifyResolver, UserInfoResolver],
+    EmailVerifyResolver, IdResolver],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

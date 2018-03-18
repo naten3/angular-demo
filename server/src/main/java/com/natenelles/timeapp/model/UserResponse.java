@@ -7,15 +7,19 @@ public class UserResponse {
 
   private Long id;
   private String username;
+  private String firstName;
+  private String lastName;
   private String email;
   private Optional<String> profileImage;
   private Optional<String> socialProfileImage;
   private Set<String> roles;
 
-  public UserResponse(Long id, String username, String email, Optional<String> profileImage,
+  public UserResponse(Long id, String username, String firstName, String lastName, String email, Optional<String> profileImage,
                       Optional<String> socialProfileImage, Set<String> roles) {
     this.id = id;
     this.username = username;
+    this.firstName = firstName;
+    this.lastName = lastName;
     this.email = email;
     this.profileImage = profileImage;
     this.socialProfileImage = socialProfileImage;
@@ -36,6 +40,22 @@ public class UserResponse {
 
   public void setUsername(final String username) {
     this.username = username;
+  }
+
+  public String getFirstName() {
+    return firstName;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
   }
 
   public String getEmail() {

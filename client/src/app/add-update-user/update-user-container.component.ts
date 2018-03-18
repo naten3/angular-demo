@@ -11,29 +11,44 @@ import { UserInfo } from 'app/core/models/session';
 import { UserUpdateForm } from 'app/core/models/user-update';
 import { updateUser } from 'app/core/store/actions/user-update.actions';
 
-@Component({
-  templateUrl: './add-user.component.html'
-})
-export class UpdateUserComponent {
+export class UpdateUserComponent implements OnDestroy{
   modalTitle = 'Update';
   success$: Observable<boolean>;
   submitted$: Observable<boolean>;
   pendingUpdate$: Observable<boolean>;
   errors$: Observable<Array<string>>;
 
+  passwordModel: any = {};
   model: any = {};
+  formDataSubcription: Subscription;
 
-  constructor( private store: Store<fromRoot.State>, private initialForm: Observable<UserUpdateForm>,
+  constructor( private store: Store<fromRoot.State>, private currentFormData$: Observable<UserUpdateForm>,
   private userId: number) {
       this.success$ = store.select(fromRoot.getUserSaveSuccess);
       this.submitted$ = store.select(fromRoot.getUserSaveSubmitted);
       this.pendingUpdate$ = store.select(fromRoot.getUserSavePending);
       this.errors$ = store.select(fromRoot.getUserSaveErrors)
       .map(codes => codes.map(this.mapErrorCodeToMessage));
+
+      this.formDataSubcription = currentFormData$.subscribe(fd => {
+        this.model.firstName = fd.firstName;
+        this.model.lastName = fd.lastName;
+      });
   }
 
   save(value: any) {
-      this.store.dispatch(updateUser(this.userId));
+      const form: UserUpdateForm = {
+        firstName: this.model.firstName,
+        lastName: this.model.lastName
+      };
+      this.store.dispatch(updateUser({
+        userId: this.userId,
+        userUpdateForm: form
+      }));
+  }
+
+  updatePassword(pf) {
+    
   }
 
   back() {
@@ -45,5 +60,9 @@ export class UpdateUserComponent {
       default:
       return 'There was an error with user update';
     }
+  }
+
+  ngOnDestroy() {
+    this.formDataSubcription.unsubscribe();
   }
 }

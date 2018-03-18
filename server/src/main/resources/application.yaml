@@ -22,7 +22,7 @@ datasource:
     driver-class-name: "org.h2.Driver"
     url: "jdbc:h2:mem:timeDb"
 
-email-verification-url: "http://73.9.33.2:8090/#/email-verify"
+email-verification-url: "http://localhost:8090/#/email-verify"
 user-invite-url: "http://localhost:8090/user-invite"
 #needs to be on social provider whitelists
 social-login-host: "http://localhost:8090/api"

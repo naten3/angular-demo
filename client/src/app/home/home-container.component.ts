@@ -21,6 +21,8 @@ import * as fromRoot from 'app/core/store';
         <img id="homeProfileImage" [src]="profileUrl$ | async">
       </div>
       <ul class="nav navbar-nav">
+        <li routerLinkActive="active" [routerLink]="['users/me/update']" 
+        routerLinkActiveOptions="{exact:true}"><a>Update My Profile</a></li>
         <li routerLinkActive="active" [routerLink]="['tree']" routerLinkActiveOptions="{exact:true}"><a>Tree</a></li>
         <li routerLinkActive="active" routerLinkActiveOptions="{exact:true}" [routerLink]="['todo']"><a>Todo</a></li>
       </ul>

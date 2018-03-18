@@ -8,7 +8,7 @@ export const USER_UPDATE_SUCCESS = '[User Update] UPDATE SUCCESS';
 export const USER_UPDATE_FAILURE = '[User Update] UPDATE FAILURE';
 
 import { UserSaveRequest } from 'app/core/models/user-save';
-import { UserUpdateForm } from 'app/core/models/user-update';
+import { UserUpdateForm, UserUpdateRequest } from 'app/core/models/user-update';
 
 export const createUser = (userSaveRequest: UserSaveRequest) => {
     return { 'type': CREATE_USER_REQUEST, 'payload': userSaveRequest };
@@ -20,8 +20,8 @@ export const userCreateFailure = (errors: Array<string>) => {
 
 export const userCreateReset = () => { return {'type': USER_CREATE_RESET}; };
 
-export const updateUser = (id: number) => {
-    return {'type': UPDATE_USER_REQUEST, 'payload': id};
+export const updateUser = (userUpdateRequest: UserUpdateRequest) => {
+    return {'type': UPDATE_USER_REQUEST, 'payload': userUpdateRequest};
 };
 export const userUpdateSuccess = () => { return {'type': USER_UPDATE_SUCCESS}; };
 export const userUpdateFailure = (errors: Array<string>) => {

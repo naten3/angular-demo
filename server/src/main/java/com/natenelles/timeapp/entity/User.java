@@ -118,11 +118,11 @@ public class User {
   }
 
   public Optional<String> getSocialProfileImage() {
-    return Optional.ofNullable(profileImage);
+    return Optional.ofNullable(socialProfileImage);
   }
 
   public void setSocialProfileImage(Optional<String> profileImage) {
-    this.profileImage = profileImage.orElse(null);
+    this.socialProfileImage = profileImage.orElse(null);
   }
 
   public String getFirstName() {
