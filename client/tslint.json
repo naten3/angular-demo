@@ -29,9 +29,7 @@
     ],
     "member-access": false,
     "member-ordering": [
-      true,
-      "static-before-instance",
-      "variables-before-functions"
+      true
     ],
     "no-arg": true,
     "no-bitwise": true,
@@ -52,10 +50,8 @@
       true,
       "ignore-params"
     ],
-    "no-shadowed-variable": true,
     "no-string-literal": false,
     "no-string-throw": true,
-    "no-switch-case-fall-through": true,
     "no-trailing-whitespace": true,
     "no-unused-expression": true,
     "no-use-before-declare": true,

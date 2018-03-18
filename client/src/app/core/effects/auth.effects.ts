@@ -12,7 +12,6 @@ export class AuthEffects {
     private actions$: Actions
   ) { }
 
-  /* tslint:disable member-ordering*/
   @Effect() login$ = this.actions$
       // Listen for the 'LOGIN' action
       .ofType(LOGIN)

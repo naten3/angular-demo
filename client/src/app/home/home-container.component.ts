@@ -19,6 +19,7 @@ import * as fromRoot from 'app/core/store';
       <div class="navbar-header">
         <a class="navbar-brand" href="#">NgRx-Store-Sample-App</a>
         <img id="homeProfileImage" [src]="profileUrl$ | async">
+        <span>Welcome {{firstName$ | async}}!</span>
       </div>
       <ul class="nav navbar-nav">
         <li routerLinkActive="active" [routerLink]="['users/me/update']" 
@@ -40,6 +41,7 @@ export class HomeContainerComponent implements OnDestroy {
     loading$: Observable<boolean>;
     userInfo$: Observable<UserInfo>;
     profileUrl$: Observable<string>;
+    firstName$: Observable<string>;
     _key$: any;
     _onSave$: any;
     constructor(
@@ -50,7 +52,9 @@ export class HomeContainerComponent implements OnDestroy {
       this.profileUrl$ = this.userInfo$.map(u => {
         return u.profileImage || u.socialProfileImage;
       });
+      this.firstName$ = this.userInfo$.map(u => u.firstName);
     }
+
     ngOnDestroy() {
         if (this._key$) {
             this._key$.unsubscribe();

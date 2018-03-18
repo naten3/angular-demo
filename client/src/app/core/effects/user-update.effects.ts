@@ -14,7 +14,6 @@ export class UserUpdateEffects {
     private actions$: Actions
   ) { }
 
-  /* tslint:disable member-ordering*/
   @Effect() createUser$ = this.actions$
       .ofType(CREATE_USER_REQUEST)
       .switchMap(action => {
@@ -29,7 +28,6 @@ export class UserUpdateEffects {
         .catch(e => Observable.of(fromUserUpdate.userCreateFailure(['unknown'])));
       });
 
-    /* tslint:disable member-ordering*/
     @Effect() updateUser$ = this.actions$
     .ofType(UPDATE_USER_REQUEST)
     .switchMap(action => {
@@ -39,7 +37,7 @@ export class UserUpdateEffects {
       { headers: SessionService.getSessionHeader()} )
       .map(res => {
           if (res.ok) {
-              return fromUserUpdate.userUpdateSuccess(res.json().payload);
+              return fromUserUpdate.userUpdateSuccess(res.json());
           } else {
             return fromUserUpdate.userUpdateFailure(res.json().errors);
           }

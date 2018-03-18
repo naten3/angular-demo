@@ -24,9 +24,9 @@ export class UpdateUserComponent implements OnDestroy{
 
   constructor( private store: Store<fromRoot.State>, private currentFormData$: Observable<UserUpdateForm>,
   private userId: number) {
-      this.success$ = store.select(fromRoot.getUserSaveSuccess);
-      this.submitted$ = store.select(fromRoot.getUserSaveSubmitted);
-      this.pendingUpdate$ = store.select(fromRoot.getUserSavePending);
+      this.success$ = store.select(fromRoot.getUserUpdateSuccess);
+      this.submitted$ = store.select(fromRoot.getUserUpdateSubmitted);
+      this.pendingUpdate$ = store.select(fromRoot.getUserUpdatePending);
       this.errors$ = store.select(fromRoot.getUserSaveErrors)
       .map(codes => codes.map(this.mapErrorCodeToMessage));
 
@@ -36,6 +36,7 @@ export class UpdateUserComponent implements OnDestroy{
       });
   }
 
+  // TODO some indication when save succeeds
   save(value: any) {
       const form: UserUpdateForm = {
         firstName: this.model.firstName,

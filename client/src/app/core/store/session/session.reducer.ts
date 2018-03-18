@@ -4,6 +4,7 @@ import { cloneDeep } from 'lodash';
 
 import * as fromActions from 'app/core/store/actions/session.actions';
 import { initialState } from 'app/core/models/session';
+import * as fromUserUpdate from 'app/core/store/actions/user-update.actions';
 
 export function reducer(state = initialState, action: Action) {
     switch (action.type) {
@@ -29,6 +30,12 @@ export function reducer(state = initialState, action: Action) {
             const clone = cloneDeep(state);
             clone.hasFetchedStatus = false;
             return clone;
+        case fromUserUpdate.USER_UPDATE_SUCCESS:
+            if (action.payload.id === state.userInfo.id) {
+                const clone = cloneDeep(state);
+                clone.userInfo = action.payload;
+                return clone;
+            }
         default:
             return state;
     };
