@@ -14,16 +14,15 @@ import { UserInfo } from 'app/core/models/session';
   export class SelfUpdateComponent extends UpdateUserComponent {
 
     static getInitialUserForm(store: Store<fromRoot.State>): Observable<UserUpdateForm> {
-      return store.select(fromRoot.getUserInfo).map(userInfo => {
-        return {
-          password: null,
-          firstName: userInfo.firstName,
-          lastName: userInfo.lastName};
-        });
+       return store.select(fromRoot.getUserInfo).map(userInfo => {
+         return {
+           firstName: userInfo.firstName,
+           lastName: userInfo.lastName};
+         });
     }
 
-    static getSocialUser(store: Store<fromRoot.State>) {
-      return store.select(fromRoot.getUserInfo).map(ui => ui.socialUser);
+    static getNotSocialUser(store: Store<fromRoot.State>): Observable<boolean> {
+      return store.select(fromRoot.getUserInfo).map(userInfo => !userInfo.socialUser);
     }
 
     static getUserId(route: ActivatedRoute): number {
@@ -34,6 +33,6 @@ import { UserInfo } from 'app/core/models/session';
       super(store,
         SelfUpdateComponent.getInitialUserForm(store),
         SelfUpdateComponent.getUserId(route),
-        SelfUpdateComponent.getSocialUser(store));
+        SelfUpdateComponent.getNotSocialUser(store));
     }
   }

@@ -1,4 +1,4 @@
-package com.natenelles.timeapp.model;
+package com.natenelles.timeapp.model.users;
 
 import java.util.Optional;
 import java.util.Set;

@@ -3,11 +3,11 @@ package com.natenelles.timeapp.rest;
 import com.natenelles.timeapp.entity.UserRole;
 import com.natenelles.timeapp.exception.ResourceNotFoundException;
 import com.natenelles.timeapp.exception.UnauthorizedException;
-import com.natenelles.timeapp.model.BooleanWrapper;
 import com.natenelles.timeapp.model.SuccessResponse;
-import com.natenelles.timeapp.model.UserCreateRequest;
-import com.natenelles.timeapp.model.UserResponse;
-import com.natenelles.timeapp.model.UserUpdateRequest;
+import com.natenelles.timeapp.model.users.UpdatePasswordRequest;
+import com.natenelles.timeapp.model.users.UserCreateRequest;
+import com.natenelles.timeapp.model.users.UserResponse;
+import com.natenelles.timeapp.model.users.UserUpdateRequest;
 import com.natenelles.timeapp.model.errors.UserSaveError;
 import com.natenelles.timeapp.model.users.SignupInvite;
 import com.natenelles.timeapp.security.CustomSpringUser;
@@ -93,6 +93,16 @@ public class UserController {
     }
     return new ResponseEntity(userService.updateUser(id, userUpdateRequest), HttpStatus.OK);
   }
+
+  @PutMapping("/users/{id}")
+  public ResponseEntity updateUserPassword(@AuthenticationPrincipal CustomSpringUser principal, @PathVariable long id,
+                                   @RequestBody UpdatePasswordRequest updatePasswordRequest)
+          throws UnauthorizedException, ResourceNotFoundException{
+    Set<String> authorities = principal.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toSet());
+    //todo prevent password change for social user
+    return new ResponseEntity(HttpStatus.OK);
+  }
+
 
   @DeleteMapping("/users/{id}")
   public void deleteMeal(@AuthenticationPrincipal CustomSpringUser principal,

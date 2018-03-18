@@ -1,7 +1,7 @@
 package com.natenelles.timeapp.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.natenelles.timeapp.model.UserResponse;
+import com.natenelles.timeapp.model.users.UserResponse;
 import com.natenelles.timeapp.service.intf.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

@@ -1,10 +1,10 @@
 package com.natenelles.timeapp.service.intf;
 
 import com.natenelles.timeapp.exception.ResourceNotFoundException;
-import com.natenelles.timeapp.model.UserCreateRequest;
-import com.natenelles.timeapp.model.UserResponse;
+import com.natenelles.timeapp.model.users.UserCreateRequest;
+import com.natenelles.timeapp.model.users.UserResponse;
 import com.natenelles.timeapp.entity.User;
-import com.natenelles.timeapp.model.UserUpdateRequest;
+import com.natenelles.timeapp.model.users.UserUpdateRequest;
 import com.natenelles.timeapp.model.errors.UserSaveError;
 import com.natenelles.timeapp.model.users.SignupInvite;
 import org.springframework.data.domain.Page;
