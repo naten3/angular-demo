@@ -10,6 +10,7 @@ export class UserInfo {
     email: string;
     profileImage?: string;
     socialProfileImage?: string;
+    socialUser: boolean;
     roles: Set<string>;
     fromValues(values: UserInfo) {
         return Object.assign(this, values);

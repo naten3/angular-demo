@@ -7,6 +7,6 @@ import org.springframework.social.facebook.api.User;
 public class SocialUtils {
     public static User getFacebookUser(Connection<?> connection) {
         return ((Connection<Facebook>) connection).getApi()
-                .fetchObject("me", User.class, new String[]{"id", "email"});
+                .fetchObject("me", User.class, new String[]{"id", "email", "first_name", "last_name"});
     }
 }

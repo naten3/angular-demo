@@ -3,8 +3,8 @@
       <h4>{{modalTitle}}</h4>
   </div>
   <div class="body">
-      <form name="passwordForm" (ngSubmit)="pf.form.valid && updatePassword(pf)" #pf="ngForm"  *ngIf="!(success$ | async)" 
-      novalidate ngNativeValidate>
+      <form name="passwordForm" (ngSubmit)="pf.form.valid && updatePassword(pf)" #pf="ngForm"
+      novalidate ngNativeValidate *ngIf="!isSocialUser$ | async">
     
         <div *ngFor='let error of errors$ | async' class='help-block'>
           {{error}}
@@ -59,12 +59,6 @@
         </div>
       </div>
     </form>
-    <div  *ngIf="success$ | async">
-      Updated
-      <div class="controls">
-          <button (click)="goToLogin()" class="btn btn-primary">Return to Login</button>
-      </div>
-    </div>
   </div>
 </div>
     

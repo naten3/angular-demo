@@ -22,6 +22,10 @@ import { UserInfo } from 'app/core/models/session';
         });
     }
 
+    static getSocialUser(store: Store<fromRoot.State>) {
+      return store.select(fromRoot.getUserInfo).map(ui => ui.socialUser);
+    }
+
     static getUserId(route: ActivatedRoute): number {
       return route.snapshot.data['userId'];
     }
@@ -29,6 +33,7 @@ import { UserInfo } from 'app/core/models/session';
     constructor( store: Store<fromRoot.State>, route: ActivatedRoute) {
       super(store,
         SelfUpdateComponent.getInitialUserForm(store),
-        SelfUpdateComponent.getUserId(route));
+        SelfUpdateComponent.getUserId(route),
+        SelfUpdateComponent.getSocialUser(store));
     }
   }

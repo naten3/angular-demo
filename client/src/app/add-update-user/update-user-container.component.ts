@@ -18,17 +18,19 @@ export class UpdateUserComponent implements OnDestroy{
   pendingUpdate$: Observable<boolean>;
   errors$: Observable<Array<string>>;
 
+
   passwordModel: any = {};
   model: any = {};
   formDataSubcription: Subscription;
 
   constructor( private store: Store<fromRoot.State>, private currentFormData$: Observable<UserUpdateForm>,
-  private userId: number) {
+  private userId: number, private isSocialUser$: Observable<boolean>) {
       this.success$ = store.select(fromRoot.getUserUpdateSuccess);
       this.submitted$ = store.select(fromRoot.getUserUpdateSubmitted);
       this.pendingUpdate$ = store.select(fromRoot.getUserUpdatePending);
       this.errors$ = store.select(fromRoot.getUserSaveErrors)
       .map(codes => codes.map(this.mapErrorCodeToMessage));
+      
 
       this.formDataSubcription = currentFormData$.subscribe(fd => {
         this.model.firstName = fd.firstName;

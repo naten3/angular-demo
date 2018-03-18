@@ -184,7 +184,13 @@ public class UserServiceImpl implements UserService {
             user.getFirstName(),
             user.getLastName(),
             user.getEmail(), user.getProfileImage(),
-            user.getSocialProfileImage(), roles);
+            user.getSocialProfileImage(),
+            isSocialUser(user),
+            roles);
+  }
+
+  private static boolean isSocialUser(User user) {
+    return user.getFacebookId().isPresent();
   }
 
   /**

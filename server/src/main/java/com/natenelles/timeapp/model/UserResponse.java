@@ -10,12 +10,13 @@ public class UserResponse {
   private String firstName;
   private String lastName;
   private String email;
+  private boolean socialUser;
   private Optional<String> profileImage;
   private Optional<String> socialProfileImage;
   private Set<String> roles;
 
   public UserResponse(Long id, String username, String firstName, String lastName, String email, Optional<String> profileImage,
-                      Optional<String> socialProfileImage, Set<String> roles) {
+                      Optional<String> socialProfileImage, boolean socialUser, Set<String> roles) {
     this.id = id;
     this.username = username;
     this.firstName = firstName;
@@ -23,6 +24,7 @@ public class UserResponse {
     this.email = email;
     this.profileImage = profileImage;
     this.socialProfileImage = socialProfileImage;
+    this.socialUser = socialUser;
     this.roles = roles;
   }
 
@@ -84,6 +86,14 @@ public class UserResponse {
 
   public void setSocialProfileImage(Optional<String> socialProfileImage) {
     this.socialProfileImage = socialProfileImage;
+  }
+
+  public boolean isSocialUser() {
+    return socialUser;
+  }
+
+  public void setSocialUser(boolean socialUser) {
+    this.socialUser = socialUser;
   }
 
   public void setRoles(final Set<String> roles) {
