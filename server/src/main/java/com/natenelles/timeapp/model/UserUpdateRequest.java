@@ -4,22 +4,32 @@ import java.util.Optional;
 import java.util.Set;
 
 public class UserUpdateRequest {
-  private Optional<Integer> desiredCalories;
-  private String email;
+  private String firstName;
+  private String lastName;
+  // Right now role may be ADMIN or USER_ADMIN, they will be mutually exclusive
+  private Optional<String> adminRole = Optional.empty();
 
-  public Optional<Integer> getDesiredCalories() {
-    return desiredCalories;
+  public String getFirstName() {
+    return firstName;
   }
 
-  public void setDesiredCalories(final Optional<Integer> desiredCalories) {
-    this.desiredCalories = desiredCalories;
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
   }
 
-  public String getEmail() {
-    return email;
+  public String getLastName() {
+    return lastName;
   }
 
-  public void setEmail(final String email) {
-    this.email = email;
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  public Optional<String> getAdminRole() {
+    return adminRole;
+  }
+
+  public void setAdminRole(Optional<String> adminRole) {
+    this.adminRole = adminRole;
   }
 }

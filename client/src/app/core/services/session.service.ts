@@ -56,10 +56,11 @@ export class SessionService {
   }
 
   public getSessionStatusObservable() {
-    return this.http.get('/api/user/me', {headers: this.getSessionHeader()});
+    return this.http.get('/api/user/me', {headers: SessionService.getSessionHeader()});
   }
 
-  public getSessionHeader(): Headers {
+  /* tslint:disable member-ordering*/
+  public static getSessionHeader(): Headers {
       const headers: Headers = new Headers();
       headers.append('x-auth-token', SessionService.getSessionId());
       return headers;

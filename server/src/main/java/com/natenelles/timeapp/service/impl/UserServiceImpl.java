@@ -105,9 +105,27 @@ public class UserServiceImpl implements UserService {
   public UserResponse updateUser(long userId, final UserUpdateRequest uur) throws ResourceNotFoundException {
     return Optional.ofNullable(userRepository.findOne(userId))
     .map(originalUser -> {
-      User newUser = mergeUser(originalUser, uur);
-      return convertToUserResponse(userRepository.save(newUser));
+      originalUser.setFirstName(uur.getFirstName());
+      originalUser.setLastName(uur.getLastName());
+      if (uur.getAdminRole().isPresent()) {
+        Set<UserRole> baseRoles = originalUser.getRoles();
+        String role = uur.getAdminRole().get();
+        if (role.equals(UserRole.USER_ADMIN)) {
+          originalUser.setRoles(swapRole(UserRole.USER_ADMIN, UserRole.ADMIN, baseRoles));
+        } else if (role.equals(UserRole.ADMIN)) {
+          originalUser.setRoles(swapRole(UserRole.ADMIN, UserRole.USER_ADMIN, baseRoles));
+        } else throw new IllegalArgumentException("Unrecognized role");
+      }
+      return convertToUserResponse(userRepository.save(originalUser));
     }).orElseThrow(ResourceNotFoundException::new);
+  }
+
+  /**
+   * ADMIN and USER_ADMIN are mutually exclusive so remove one if present and add one
+   */
+  private static Set<UserRole> swapRole(String addRole, String removeRole, Set<UserRole> roles) {
+    return Stream.concat(roles.stream().filter(r -> !r.getRoleName().equals(removeRole)),
+            Stream.of(new UserRole(addRole))).collect(Collectors.toSet());
   }
 
   @Override public void deleteUser(final long id) {

@@ -12,6 +12,8 @@ import com.natenelles.timeapp.model.errors.UserSaveError;
 import com.natenelles.timeapp.model.users.SignupInvite;
 import com.natenelles.timeapp.security.CustomSpringUser;
 import com.natenelles.timeapp.service.intf.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,8 +35,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.natenelles.timeapp.entity.UserRole.USER_ADMIN;
+import static com.natenelles.timeapp.entity.UserRole.ADMIN;
+
 @RestController
 public class UserController {
+  Logger logger = LoggerFactory.getLogger(UserController.class);
   @Autowired
   UserService userService;
 
@@ -46,18 +52,10 @@ public class UserController {
   @GetMapping("/session-health")
   public void checkLogin(@AuthenticationPrincipal User user){}
 
-  @GetMapping("users/available")
-  BooleanWrapper isUserInfoAvailable(@RequestParam(value="username", required=false) String username,
-                                     @RequestParam(value="email", required=false) String email) {
-    boolean usernameAvailable = username == null ? true : userService.isUsernameAvailable(username);
-    boolean passwordAvailable = email == null ? true : userService.isEmailAvailable(email);
-    return new BooleanWrapper( usernameAvailable && passwordAvailable );
-  }
-
   @GetMapping("/admin/users")
   public Page<UserResponse> getAllNonadminUsers(@AuthenticationPrincipal CustomSpringUser user, Pageable pageable) throws UnauthorizedException{
     Set<String> authorities = user.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toSet());
-    if (!authorities.contains(UserRole.ADMIN) && !authorities.contains(UserRole.USER_ADMIN)) {
+    if (!authorities.contains(ADMIN) && !authorities.contains(USER_ADMIN)) {
       throw new UnauthorizedException();
     }
     return userService.getAllNonadminUsers(pageable);
@@ -68,18 +66,32 @@ public class UserController {
                                  @RequestBody UserCreateRequest userCreateRequest) {
     Set<UserSaveError> errors = userService.createUser(userCreateRequest);
 
-    return new SuccessResponse<UserSaveError>(errors.isEmpty(), Optional.of(errors).filter(es -> !es.isEmpty()));
+    return new SuccessResponse<>(errors.isEmpty(), Optional.of(errors).filter(es -> !es.isEmpty()));
   }
 
   @PutMapping("/users/{id}")
-  public UserResponse updateUser(@AuthenticationPrincipal CustomSpringUser principal, @PathVariable long id,
+  public ResponseEntity updateUser(@AuthenticationPrincipal CustomSpringUser principal, @PathVariable long id,
                                  @RequestBody UserUpdateRequest userUpdateRequest)
   throws UnauthorizedException, ResourceNotFoundException{
     Set<String> authorities = principal.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toSet());
-    if (!authorities.contains(UserRole.ADMIN) && !authorities.contains(UserRole.USER_ADMIN)) {
+    if (principal.getId() != id &&
+            !authorities.contains(ADMIN)
+            && !authorities.contains(USER_ADMIN)) {
       throw new UnauthorizedException();
     }
-    return userService.updateUser(id, userUpdateRequest);
+    if (userUpdateRequest.getAdminRole().isPresent()) {
+      String role = userUpdateRequest.getAdminRole().get();
+      if (role.equals(ADMIN)) {
+        if (!authorities.contains(ADMIN)) {
+          throw new UnauthorizedException("only admins can assign admin role");
+        }
+      } else if (role.equals(USER_ADMIN)) {
+        if (!authorities.contains(ADMIN) && !authorities.contains(USER_ADMIN)) {
+          throw new UnauthorizedException("only admins or user admins can assign user admin role");
+        }
+      }
+    }
+    return new ResponseEntity(userService.updateUser(id, userUpdateRequest), HttpStatus.OK);
   }
 
   @DeleteMapping("/users/{id}")
