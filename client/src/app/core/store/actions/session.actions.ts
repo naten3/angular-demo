@@ -9,6 +9,6 @@ export const INVALIDATE_SESSION_INFO = '[Session] info udpate';
 export const requestSessionStatus = () => { return { 'type': REQUEST_STATUS, 'payload': '' }; };
 export const loadUserInfo = (userInfo) => { return { 'type': SESSION_INFO_UPDATE, 'payload': userInfo }; };
 export const sessionStatusError = () => { return { 'type': REQUEST_STATUS_ERROR, 'payload': '' }; };
-export const invalidateSessionInfo = () => { return { 'type': INVALIDATE_SESSION_INFO}};
+export const invalidateSessionInfo = () => { return { 'type': INVALIDATE_SESSION_INFO}; };
 
 export const login = (username, password) => { return { 'type': LOGIN, 'payload': {username, password} }; };

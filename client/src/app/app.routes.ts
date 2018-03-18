@@ -3,8 +3,8 @@ import { Routes } from '@angular/router';
 import { TreeContainerComponent } from 'app/tree/tree-container.component';
 import { TodoContainerComponent } from 'app/todos/todo-container.component';
 import { HomeContainerComponent, LauncherContainerComponent, EmailVerifyComponent } from './home';
-import { AddUserComponent } from './add-update-user';
-import { EmailVerifyResolver } from 'app/core/resolve';
+import { AddUserComponent, SelfUpdateComponent } from './add-update-user';
+import { EmailVerifyResolver, UserInfoResolver } from 'app/core/resolve';
 import { AuthGuard, LoginGuard, SocialLoginGuard} from 'app/core/guards';
 
 export const routes: Routes = [
@@ -12,7 +12,6 @@ export const routes: Routes = [
     path: 'home',
     component: HomeContainerComponent,
     canActivate: [AuthGuard],
-    canActivateChild: [AuthGuard],
     children:
     [
       {
@@ -22,6 +21,11 @@ export const routes: Routes = [
       {
         path: 'todo',
         component: TodoContainerComponent
+      },
+      {
+        path: 'users/me/update',
+        component: SelfUpdateComponent,
+        resolve: { userInfo: UserInfoResolver }
       }]
   },
   {

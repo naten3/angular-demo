@@ -24,10 +24,10 @@ import { CoreModule } from 'app/core/core.module';
 import { routes } from 'app/app.routes';
 import { SharedModule } from 'app/shared/shared.module';
 import { LauncherContainerComponent, EmailVerifyComponent, HomeContainerComponent } from 'app/home';
-import { AddUserComponent } from 'app/add-update-user';
+import { AddUserComponent, SelfUpdateComponent } from 'app/add-update-user';
 import { AuthEffects, UserUpdateEffects } from 'app/core/effects';
 import { AuthGuard, LoginGuard, SocialLoginGuard } from 'app/core/guards';
-import { EmailVerifyResolver } from 'app/core/resolve';
+import { EmailVerifyResolver, UserInfoResolver } from 'app/core/resolve';
 
 @NgModule({
   declarations: [
@@ -42,7 +42,8 @@ import { EmailVerifyResolver } from 'app/core/resolve';
     TreeContainerComponent,
     LauncherContainerComponent,
     EmailVerifyComponent,
-    AddUserComponent
+    AddUserComponent,
+    SelfUpdateComponent
   ],
   imports: [
     RouterModule,
@@ -55,7 +56,8 @@ import { EmailVerifyResolver } from 'app/core/resolve';
     EffectsModule.run(AuthEffects),
     EffectsModule.run(UserUpdateEffects)
   ],
-  providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }, AuthGuard, LoginGuard, SocialLoginGuard, EmailVerifyResolver],
+  providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }, AuthGuard, LoginGuard, SocialLoginGuard, 
+    EmailVerifyResolver, UserInfoResolver],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

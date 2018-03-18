@@ -7,6 +7,7 @@ import * as fromTree from 'app/core/models/tree';
 import * as fromSession from 'app/core/models/session';
 import * as fromSave from 'app/core/models/common/save.state';
 import * as fromUserSave from 'app/core/models/user-save';
+import * as fromUserUpdate from 'app/core/models/user-update';
 
 export const getAppState = (state: State) => state;
 
@@ -32,3 +33,9 @@ export const getUserSavePending = createSelector(getUserSave, fromUserSave.getPe
 export const getUserSaveSubmitted = createSelector(getUserSave, fromUserSave.getSubmitted);
 export const getUserSaveSuccess = createSelector(getUserSave, fromUserSave.getSuccess);
 export const getUserSaveErrors = createSelector(getUserSave, fromUserSave.getErrors);
+
+export const getUserUpdate = (state: State) => state.updateUser;
+export const getUserUpdatePending = createSelector(getUserUpdate, fromUserUpdate.getPendingUpdate);
+export const getUserUpdateSubmitted = createSelector(getUserUpdate, fromUserUpdate.getSubmitted);
+export const getUserUpdateSuccess = createSelector(getUserUpdate, fromUserUpdate.getSuccess);
+export const getUserUpdateErrors = createSelector(getUserUpdate, fromUserUpdate.getErrors);

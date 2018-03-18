@@ -10,7 +10,7 @@ import { SessionService } from 'app/core/services';
 import { invalidateSessionInfo } from 'app/core/store/actions/session.actions';
 
 import * as fromRoot from 'app/core/store';
-// make sure we're authenticated before hitting a route
+// pull the token off the query param quickly
 @Injectable()
 export class SocialLoginGuard implements CanActivate {
 
