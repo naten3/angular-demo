@@ -1,5 +1,6 @@
 package com.natenelles.timeapp.service.impl;
 
+import com.google.common.collect.ImmutableSet;
 import com.natenelles.timeapp.config.social.FacebookConnectionSignup;
 import com.natenelles.timeapp.entity.User;
 import com.natenelles.timeapp.entity.UserInvite;
@@ -31,6 +32,8 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.natenelles.timeapp.util.StreamUtils.optStream;
 
 @Transactional
 @Service
@@ -77,7 +80,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public Set<UserSaveError> createUser(final UserCreateRequest ucr) {
     if (ucr.getUsername().matches(invalidFacebookRegex)) {
-      return Set.of(UserSaveError.ILLEGAL_USERNAME);
+      return ImmutableSet.of(UserSaveError.ILLEGAL_USERNAME);
     }
 
     Optional<UserSaveError> usernameInUseError = userRepository.doesUserExist(ucr.getUsername()) ? Optional.of(UserSaveError.USERNAME_IN_USE)
@@ -87,7 +90,7 @@ public class UserServiceImpl implements UserService {
             userInviteRepository.findByEmail(ucr.getEmail()).isPresent() ? Optional.of(UserSaveError.EMAIL_IN_USE) : Optional.empty();
 
     Set<UserSaveError> errors =
-            Stream.of(usernameInUseError.stream(), emailInUseError.stream())
+            Stream.of(optStream(usernameInUseError), optStream(emailInUseError))
                     .flatMap(Function.identity())
                     .collect(Collectors.toSet());
 
@@ -126,7 +129,7 @@ public class UserServiceImpl implements UserService {
     User user = Optional.ofNullable(userRepository.getOne(userId))
             .orElseThrow(() -> new IllegalArgumentException("No user with that ID"));
     if (user.getPassword().equals(password)) {
-      return Set.of(UpdatePasswordError.SAME_PASSWORD);
+      return ImmutableSet.of(UpdatePasswordError.SAME_PASSWORD);
     } else {
       //TODO hash
       user.setPassword(password);

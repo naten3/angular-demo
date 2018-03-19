@@ -16,7 +16,13 @@ spring:
     facebook:
       app-id: dummy
       app-secret: dummy
-
+  http:
+    multipart:
+     max-file-size: 100MB
+     max-request-size: 100MB
+  servlet.multipart:
+    max-file-size: 10MB
+    max-request-size: 10MB
 datasource:
   primary:
     driver-class-name: "org.h2.Driver"
@@ -34,3 +40,10 @@ spring.mail:
   port: 587
   properties.mail.smtp.auth: true
   properties.mail.smtp.starttls.enable: true
+
+com.amazonaws.services.s3.enableV4: true
+S3:
+  profile-pic-bucket: natetimeappbucket
+  key-id: dummy
+  secret: dummy
+

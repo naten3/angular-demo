@@ -6,6 +6,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as fromRouter from '@ngrx/router-store';
 
+//TODO remove these
+import { Http, RequestOptions } from '@angular/http';
+import { SessionService } from 'app/core/services';
+
 import * as fromRoot from 'app/core/store';
 import { UserInfo } from 'app/core/models/session';
 import { UserUpdateForm } from 'app/core/models/user-update';
@@ -28,10 +32,11 @@ export class UpdateUserComponent implements OnDestroy{
   formDataSub: Subscription;
   passwordSuccessSub;
 
-  constructor( private store: Store<fromRoot.State>, 
+  constructor( private store: Store<fromRoot.State>,
     private currentFormData$: Observable<UserUpdateForm>,
     private userId: number,
-    private notSocialUser$: Observable<boolean>) {
+    private notSocialUser$: Observable<boolean>,
+    private http: Http) {
       this.success$ = store.select(fromRoot.getUserUpdateSuccess);
       this.submitted$ = store.select(fromRoot.getUserUpdateSubmitted);
       this.pendingUpdate$ = store.select(fromRoot.getUserUpdatePending);
@@ -80,6 +85,25 @@ export class UpdateUserComponent implements OnDestroy{
       return 'There was an error with user update';
     }
   }
+
+  fileChange(event) {
+    let fileList: FileList = event.target.files;
+    if(fileList.length > 0) {
+        let file: File = fileList[0];
+        let formData:FormData = new FormData();
+        formData.append('file', file, file.name);
+        let headers = SessionService.getSessionHeader()
+        /** No need to include Content-Type in Angular 4 */
+        // headers.append('Content-Type', 'multipart/form-data');
+        // headers.append('Accept', 'application/json');
+        let options = new RequestOptions({ headers });
+        this.http.post(`api/users/${this.userId}/image/upload`, formData, options)
+            .catch(error => Observable.throw(error))
+            .subscribe(
+                data => console.log('success'),
+            );
+    }
+}
 
   ngOnDestroy() {
     this.formDataSub.unsubscribe();

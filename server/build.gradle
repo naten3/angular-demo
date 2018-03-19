@@ -45,8 +45,8 @@ idea {
     }
 }
 
-sourceCompatibility = 1.9
-targetCompatibility = 1.9
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 configurations {
 	dev
@@ -81,7 +81,10 @@ dependencies {
 
     // Enable Spring Data Redis and provide an embedded Redis server for local testing
     compile("com.github.kstyrc:embedded-redis:0.6")
-    compile('org.apache.commons:commons-text')
+
+    compile('com.amazonaws:aws-java-sdk:1.11.231')
+    compile('commons-fileupload:commons-fileupload:1.3.3')
+    compile('com.google.guava:guava:23.5-jre')
 
     // domain
     compile("org.springframework.boot:spring-boot-starter-data-jpa")

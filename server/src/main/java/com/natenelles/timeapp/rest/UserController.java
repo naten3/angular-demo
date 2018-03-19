@@ -12,6 +12,7 @@ import com.natenelles.timeapp.model.users.UserUpdateRequest;
 import com.natenelles.timeapp.model.errors.UserSaveError;
 import com.natenelles.timeapp.model.users.SignupInvite;
 import com.natenelles.timeapp.security.CustomSpringUser;
+import com.natenelles.timeapp.service.intf.FileUploadService;
 import com.natenelles.timeapp.service.intf.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +30,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -44,6 +52,8 @@ public class UserController {
   Logger logger = LoggerFactory.getLogger(UserController.class);
   @Autowired
   UserService userService;
+  @Autowired
+  FileUploadService fileUploadService;
 
   @GetMapping("/user/me")
   public UserResponse getUser(@AuthenticationPrincipal CustomSpringUser user) throws ResourceNotFoundException {
@@ -142,9 +152,27 @@ public class UserController {
     }
   }
 
+  //TODO authenticate
   @GetMapping("/users/signup-invite")
   public ResponseEntity<SignupInvite> getUserInvite(@Param("token") String token) {
     return userService.getSignupInvite(token).map(signupInvite -> new ResponseEntity<>(signupInvite, HttpStatus.OK))
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+  }
+
+  //TODO check if owner or admin
+  @PostMapping(value="/users/{id}/image/upload")
+  public @ResponseBody String handleFileUpload(
+          @RequestParam("file") MultipartFile file,
+          @PathVariable("id") long userId,
+          @AuthenticationPrincipal CustomSpringUser principal){
+    if (!file.isEmpty()) {
+      try {
+        return fileUploadService.uploadProfileImage(file, userId).toString();
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    } else {
+      return "Not uploading image for " + userId + " because the file was empty.";
+    }
   }
 }

@@ -8,6 +8,8 @@ import { UpdateUserComponent } from './';
 import { UserUpdateForm } from 'app/core/models/user-update';
 import { UserInfo } from 'app/core/models/session';
 
+import { Http, RequestOptions } from '@angular/http';
+
 @Component({
     templateUrl: './update-user.component.html'
   })
@@ -29,10 +31,11 @@ import { UserInfo } from 'app/core/models/session';
       return route.snapshot.data['userId'];
     }
 
-    constructor( store: Store<fromRoot.State>, route: ActivatedRoute) {
+    constructor( store: Store<fromRoot.State>, route: ActivatedRoute, http: Http) {
       super(store,
         SelfUpdateComponent.getInitialUserForm(store),
         SelfUpdateComponent.getUserId(route),
-        SelfUpdateComponent.getNotSocialUser(store));
+        SelfUpdateComponent.getNotSocialUser(store),
+      http);
     }
   }
