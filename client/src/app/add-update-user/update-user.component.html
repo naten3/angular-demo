@@ -3,7 +3,7 @@
       <h4>{{modalTitle}}</h4>
   </div>
   <div class="body">
-    <form name="passwordForm" *ngIf="notSocialUesr$ | async" (ngSubmit)="pf.form.valid && updatePassword(pf)" #pf="ngForm"
+    <form name="passwordForm" *ngIf="notSocialUser$ | async" (ngSubmit)="pf.form.valid && updatePassword(pf)" #pf="ngForm"
     novalidate ngNativeValidate>
   
       <div *ngFor='let error of passwordErrors$ | async' class='help-block'>

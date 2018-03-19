@@ -30,8 +30,8 @@ export class UpdateUserComponent implements OnDestroy{
 
   constructor( private store: Store<fromRoot.State>, 
     private currentFormData$: Observable<UserUpdateForm>,
-    private userId: number, 
-    private notSocialUesr$: Observable<boolean>) {
+    private userId: number,
+    private notSocialUser$: Observable<boolean>) {
       this.success$ = store.select(fromRoot.getUserUpdateSuccess);
       this.submitted$ = store.select(fromRoot.getUserUpdateSubmitted);
       this.pendingUpdate$ = store.select(fromRoot.getUserUpdatePending);
