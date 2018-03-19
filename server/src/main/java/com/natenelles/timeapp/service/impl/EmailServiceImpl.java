@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -25,6 +26,7 @@ public class EmailServiceImpl implements EmailService{
         this.emailSender = emailSender;
     }
 
+    @Async
     @Override
     public void sendUserVerificationEmail(String userEmail, String token, long userId) {
         String verificationUrl = getUserVerificationUrl(userId, token);
@@ -43,6 +45,7 @@ public class EmailServiceImpl implements EmailService{
         }
     }
 
+    @Async
     @Override
     public void sendUserInviteEmail(String email, String token) {
         String userInviteUrl = getUserInviteUrl(token);

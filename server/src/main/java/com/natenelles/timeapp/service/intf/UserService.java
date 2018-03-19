@@ -1,6 +1,7 @@
 package com.natenelles.timeapp.service.intf;
 
 import com.natenelles.timeapp.exception.ResourceNotFoundException;
+import com.natenelles.timeapp.model.errors.UpdatePasswordError;
 import com.natenelles.timeapp.model.users.UserCreateRequest;
 import com.natenelles.timeapp.model.users.UserResponse;
 import com.natenelles.timeapp.entity.User;
@@ -20,11 +21,13 @@ public interface UserService {
 
   Optional<User> getSecurityUser(String username);
 
-  Page<UserResponse> getAllNonadminUsers(Pageable pageable);
+  Page<UserResponse> getAllUsers(Pageable pageable);
 
   Set<UserSaveError> createUser(UserCreateRequest ucr);
 
   UserResponse updateUser(long userId, UserUpdateRequest uur) throws ResourceNotFoundException;
+
+  Set<UpdatePasswordError> updateUserPassword(long userId, String password);
 
   boolean isUsernameAvailable(String username);
 

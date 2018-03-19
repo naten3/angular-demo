@@ -16,10 +16,12 @@ import * as fromRoot from 'app/core/store';
 
   <nav class="navbar navbar-default">
     <div class="container-fluid">
+    <h2>
+    <img id="homeProfileImage" [src]="profileUrl$ | async">
+    <span>Welcome {{firstName$ | async}}!</span>
+    </h2>
       <div class="navbar-header">
         <a class="navbar-brand" href="#">NgRx-Store-Sample-App</a>
-        <img id="homeProfileImage" [src]="profileUrl$ | async">
-        <span>Welcome {{firstName$ | async}}!</span>
       </div>
       <ul class="nav navbar-nav">
         <li routerLinkActive="active" [routerLink]="['users/me/update']" 

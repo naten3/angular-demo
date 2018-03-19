@@ -24,6 +24,8 @@ export const initialState = {
     todos: fromTodos.initialState,
     tree: fromTree.initialState,
     sessionState: fromSessionState.initialState,
+    addUser: fromUserSave.initialState,
+    updateUser: fromUserUpdate.initialState,
     save: fromSave.initialState
 };
 

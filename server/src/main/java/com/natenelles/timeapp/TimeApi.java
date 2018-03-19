@@ -8,10 +8,12 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import javax.sql.DataSource;
 
 @SpringBootApplication
+@EnableAsync
 public class TimeApi extends SpringBootServletInitializer {
 
   @Autowired

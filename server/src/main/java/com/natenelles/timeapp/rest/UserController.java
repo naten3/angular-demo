@@ -4,6 +4,7 @@ import com.natenelles.timeapp.entity.UserRole;
 import com.natenelles.timeapp.exception.ResourceNotFoundException;
 import com.natenelles.timeapp.exception.UnauthorizedException;
 import com.natenelles.timeapp.model.SuccessResponse;
+import com.natenelles.timeapp.model.errors.UpdatePasswordError;
 import com.natenelles.timeapp.model.users.UpdatePasswordRequest;
 import com.natenelles.timeapp.model.users.UserCreateRequest;
 import com.natenelles.timeapp.model.users.UserResponse;
@@ -53,12 +54,12 @@ public class UserController {
   public void checkLogin(@AuthenticationPrincipal User user){}
 
   @GetMapping("/admin/users")
-  public Page<UserResponse> getAllNonadminUsers(@AuthenticationPrincipal CustomSpringUser user, Pageable pageable) throws UnauthorizedException{
+  public Page<UserResponse> getAllUsers(@AuthenticationPrincipal CustomSpringUser user, Pageable pageable) throws UnauthorizedException{
     Set<String> authorities = user.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toSet());
     if (!authorities.contains(ADMIN) && !authorities.contains(USER_ADMIN)) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("Only admins or user admins can get all users");
     }
-    return userService.getAllNonadminUsers(pageable);
+    return userService.getAllUsers(pageable);
   }
 
   @PostMapping("/users")
@@ -94,13 +95,21 @@ public class UserController {
     return new ResponseEntity(userService.updateUser(id, userUpdateRequest), HttpStatus.OK);
   }
 
-  @PutMapping("/users/{id}")
-  public ResponseEntity updateUserPassword(@AuthenticationPrincipal CustomSpringUser principal, @PathVariable long id,
+  @PutMapping("/users/{id}/password")
+  public SuccessResponse<UpdatePasswordError> updateUserPassword(
+          @AuthenticationPrincipal CustomSpringUser principal, @PathVariable long id,
                                    @RequestBody UpdatePasswordRequest updatePasswordRequest)
           throws UnauthorizedException, ResourceNotFoundException{
     Set<String> authorities = principal.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toSet());
-    //todo prevent password change for social user
-    return new ResponseEntity(HttpStatus.OK);
+    if (principal.getId() != id &&
+            !authorities.contains(ADMIN)
+            && !authorities.contains(USER_ADMIN)) {
+      throw new UnauthorizedException();
+    }
+
+    Set<UpdatePasswordError> errors = userService.updateUserPassword(id, updatePasswordRequest.getPassword());
+
+    return new SuccessResponse<>(errors.isEmpty(), Optional.of(errors));
   }
 
 

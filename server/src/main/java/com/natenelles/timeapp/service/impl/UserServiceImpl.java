@@ -5,6 +5,7 @@ import com.natenelles.timeapp.entity.User;
 import com.natenelles.timeapp.entity.UserInvite;
 import com.natenelles.timeapp.entity.UserRole;
 import com.natenelles.timeapp.exception.ResourceNotFoundException;
+import com.natenelles.timeapp.model.errors.UpdatePasswordError;
 import com.natenelles.timeapp.model.users.UserCreateRequest;
 import com.natenelles.timeapp.model.users.UserResponse;
 import com.natenelles.timeapp.model.users.UserUpdateRequest;
@@ -69,8 +70,8 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public Page<UserResponse> getAllNonadminUsers(final Pageable pageable) {
-    return userRepository.findAllByRole(UserRole.USER, pageable).map(this::convertToUserResponse);
+  public Page<UserResponse> getAllUsers(final Pageable pageable) {
+    return userRepository.findAll(pageable).map(this::convertToUserResponse);
   }
 
   @Override
@@ -118,6 +119,20 @@ public class UserServiceImpl implements UserService {
       }
       return convertToUserResponse(userRepository.save(originalUser));
     }).orElseThrow(ResourceNotFoundException::new);
+  }
+
+  @Override
+  public Set<UpdatePasswordError> updateUserPassword(long userId, String password) {
+    User user = Optional.ofNullable(userRepository.getOne(userId))
+            .orElseThrow(() -> new IllegalArgumentException("No user with that ID"));
+    if (user.getPassword().equals(password)) {
+      return Set.of(UpdatePasswordError.SAME_PASSWORD);
+    } else {
+      //TODO hash
+      user.setPassword(password);
+      userRepository.save(user);
+      return Collections.emptySet();
+    }
   }
 
   /**
@@ -178,9 +193,10 @@ public class UserServiceImpl implements UserService {
 
   private UserResponse convertToUserResponse(User user) {
     Set<String> roles = user.getRoles().stream()
-    .map(role -> role.getRoleName())
-    .collect(Collectors.toSet());
-    return new UserResponse(user.getId(), user.getUsername(),
+            .map(UserRole::getRoleName)
+            .collect(Collectors.toSet());
+    return new UserResponse(user.getId(),
+            user.getUsername(),
             user.getFirstName(),
             user.getLastName(),
             user.getEmail(), user.getProfileImage(),
@@ -210,16 +226,6 @@ public class UserServiceImpl implements UserService {
     roles.add(new UserRole(UserRole.USER));
     user.setRoles(roles);
     return user;
-  }
-
-  private User mergeUser(User user, UserUpdateRequest uur) {
-    User newUser = new User();
-    newUser.setId(user.getId());
-    newUser.setPassword(user.getPassword());
-    newUser.setRoles(user.getRoles());
-    newUser.setFirstName(user.getFirstName());
-    newUser.setLastName(user.getLastName());
-    return newUser;
   }
 
   @Override

@@ -39,3 +39,8 @@ export const getUserUpdatePending = createSelector(getUserUpdate, fromUserUpdate
 export const getUserUpdateSubmitted = createSelector(getUserUpdate, fromUserUpdate.getSubmitted);
 export const getUserUpdateSuccess = createSelector(getUserUpdate, fromUserUpdate.getSuccess);
 export const getUserUpdateErrors = createSelector(getUserUpdate, fromUserUpdate.getErrors);
+
+export const getPasswordUpdatePending = createSelector(getUserUpdate, fromUserUpdate.getPasswordPendingUpdate);
+export const getPasswordUpdateSubmitted = createSelector(getUserUpdate, fromUserUpdate.getPasswordSubmitted);
+export const getPasswordUpdateSuccess = createSelector(getUserUpdate, fromUserUpdate.getPasswordSuccess);
+export const getPasswordUpdateErrors = createSelector(getUserUpdate, fromUserUpdate.getPasswordErrors);

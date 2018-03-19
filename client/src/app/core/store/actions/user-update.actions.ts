@@ -8,6 +8,11 @@ export const USER_UPDATE_SUCCESS = '[User Update] UPDATE SUCCESS';
 export const USER_UPDATE_FAILURE = '[User Update] UPDATE FAILURE';
 export const USER_UPDATE_RESET = '[User Update] UPDATE RESET';
 
+export const UPDATE_PASSWORD_REQUEST = '[User Update] UPDATE PASSWORD';
+export const UPDATE_PASSWORD_SUCCESS = '[User Update] UPDATE PASSWORD SUCCESS';
+export const UPDATE_PASSWORD_FAILURE = '[User Update] UPDATE PASSWORD FAILURE';
+export const UPDATE_PASSWORD_RESET = '[User Update] UPDATE PASSWORD RESET';
+
 import { UserSaveRequest } from 'app/core/models/user-save';
 import { UserUpdateForm, UserUpdateRequest } from 'app/core/models/user-update';
 import { UserInfo } from 'app/core/models/session';
@@ -33,3 +38,16 @@ export const userUpdateFailure = (errors: Array<string>) => {
 };
 
 export const userUpdateReset = () => { return {'type': USER_UPDATE_RESET}; };
+
+export const updatePassword = (userId: number, password: string) => {
+    return {'type': UPDATE_PASSWORD_REQUEST, 'payload': {userId, password}};
+};
+export const updatePasswordSuccess = () => {
+    return {'type': UPDATE_PASSWORD_SUCCESS};
+};
+export const updatePasswordFailure = (errors: Array<string>) => {
+    return {'type': UPDATE_PASSWORD_FAILURE, 'payload': errors};
+};
+export const updatePasswordReset = () => {
+    return {'type': UPDATE_PASSWORD_RESET};
+};
