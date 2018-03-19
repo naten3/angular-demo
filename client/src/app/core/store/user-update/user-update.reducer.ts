@@ -8,7 +8,7 @@ import { initialState } from 'app/core/models/user-update';
 export function reducer(state = initialState, action: Action) {
     switch (action.type) {
         case fromActions.UPDATE_USER_REQUEST:
-          Object.assign(cloneDeep(state),
+          return Object.assign(cloneDeep(state),
           {
             success: false,
             submitted: true,
@@ -20,7 +20,7 @@ export function reducer(state = initialState, action: Action) {
             success: true,
             submitted: true,
             pendingUpdate: false,
-            errors: null
+            errors: []
           });
         case fromActions.USER_UPDATE_FAILURE:
           return Object.assign(cloneDeep(state),

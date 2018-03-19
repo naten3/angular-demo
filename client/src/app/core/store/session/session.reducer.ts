@@ -32,9 +32,7 @@ export function reducer(state = initialState, action: Action) {
             return clone;
         case fromUserUpdate.USER_UPDATE_SUCCESS:
             if (action.payload.id === state.userInfo.id) {
-                const clone = cloneDeep(state);
-                clone.userInfo = action.payload;
-                return clone;
+                return Object.assign(cloneDeep(state), {userInfo: action.payload});
             }
         default:
             return state;
