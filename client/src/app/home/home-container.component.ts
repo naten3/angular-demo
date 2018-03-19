@@ -9,7 +9,7 @@ import 'rxjs/add/observable/timer';
 import { go } from '@ngrx/router-store';
 
 import { State } from 'app/core/models/app.state';
-import { UserInfo } from 'app/core/models/session';
+import { UserInfo, getDisplayProfileImage } from 'app/core/models/session';
 import * as saveActions from 'app/core/store/actions/save.actions';
 import * as sessionActions from 'app/core/store/actions/session.actions';
 import * as fromRoot from 'app/core/store';
@@ -58,10 +58,7 @@ export class HomeContainerComponent implements OnDestroy {
       this.userInfo$ = store.select(fromRoot.getUserInfo);
       this.profileUrl$ = this.userInfo$
       .pipe(filter(u => !!u))
-      .map(u => {
-        const user = u as UserInfo;
-        return user.profileImage || user.socialProfileImage;
-      });
+      .map(getDisplayProfileImage);
 
       this.firstName$ = this.userInfo$
       .pipe(filter(u => !!u))

@@ -9,7 +9,7 @@ import { UserInfo } from 'app/core/models/session';
     selector: 'app-user-list',
     template: `
   <ul>
-    <li *ngFor="let n of users; trackBy:getUserId">
+    <li *ngFor="let n of users; trackBy:getUserId" style="list-style: none">
         <app-user-item [user]="n"></app-user-item>
     </li>
   </ul>
