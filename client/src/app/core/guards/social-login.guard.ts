@@ -1,5 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { replace } from '@ngrx/router-store';
 import { Observable } from 'rxjs/Observable';
 import { filter } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/observable/combineLatest';
@@ -31,10 +32,10 @@ export class SocialLoginGuard implements CanActivate {
       SessionService.saveSessionId(token);
       this.store.dispatch(invalidateSessionInfo());
       this.sessionService.getSessionStatus();
-      this.router.navigate(['/home']);
+      this.store.dispatch(replace('/home'));
     } else {
       console.log('no token on request');
-      this.router.navigate(['/']);
+      this.store.dispatch(replace('/'));
     }
     return Observable.of(false);
   }
