@@ -34,6 +34,12 @@ export function reducer(state = initialState, action: Action) {
             if (action.payload.id === state.userInfo.id) {
                 return Object.assign(cloneDeep(state), {userInfo: action.payload});
             }
+        case fromUserUpdate.PROFILE_IMAGE_UPDATE_SUCCESS:
+        if (action.payload.id === state.userInfo.id) {
+            const clone = cloneDeep(state);
+            clone.userInfo.profileImage = action.payload.url;
+            return clone;
+        }
         default:
             return state;
     };

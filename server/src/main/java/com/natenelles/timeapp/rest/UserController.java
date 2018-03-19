@@ -1,16 +1,16 @@
 package com.natenelles.timeapp.rest;
 
-import com.natenelles.timeapp.entity.UserRole;
 import com.natenelles.timeapp.exception.ResourceNotFoundException;
 import com.natenelles.timeapp.exception.UnauthorizedException;
 import com.natenelles.timeapp.model.SuccessResponse;
 import com.natenelles.timeapp.model.errors.UpdatePasswordError;
+import com.natenelles.timeapp.model.errors.UserSaveError;
+import com.natenelles.timeapp.model.users.ImageUploadResponse;
+import com.natenelles.timeapp.model.users.SignupInvite;
 import com.natenelles.timeapp.model.users.UpdatePasswordRequest;
 import com.natenelles.timeapp.model.users.UserCreateRequest;
 import com.natenelles.timeapp.model.users.UserResponse;
 import com.natenelles.timeapp.model.users.UserUpdateRequest;
-import com.natenelles.timeapp.model.errors.UserSaveError;
-import com.natenelles.timeapp.model.users.SignupInvite;
 import com.natenelles.timeapp.security.CustomSpringUser;
 import com.natenelles.timeapp.service.intf.FileUploadService;
 import com.natenelles.timeapp.service.intf.UserService;
@@ -30,30 +30,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.natenelles.timeapp.entity.UserRole.USER_ADMIN;
 import static com.natenelles.timeapp.entity.UserRole.ADMIN;
+import static com.natenelles.timeapp.entity.UserRole.USER_ADMIN;
+import static com.natenelles.timeapp.util.SecurityUtil.checkUserOrAdmin;
 
 @RestController
 public class UserController {
   Logger logger = LoggerFactory.getLogger(UserController.class);
   @Autowired
   UserService userService;
-  @Autowired
-  FileUploadService fileUploadService;
 
   @GetMapping("/user/me")
   public UserResponse getUser(@AuthenticationPrincipal CustomSpringUser user) throws ResourceNotFoundException {
@@ -83,13 +77,9 @@ public class UserController {
   @PutMapping("/users/{id}")
   public ResponseEntity updateUser(@AuthenticationPrincipal CustomSpringUser principal, @PathVariable long id,
                                  @RequestBody UserUpdateRequest userUpdateRequest)
-  throws UnauthorizedException, ResourceNotFoundException{
+  throws ResourceNotFoundException{
     Set<String> authorities = principal.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toSet());
-    if (principal.getId() != id &&
-            !authorities.contains(ADMIN)
-            && !authorities.contains(USER_ADMIN)) {
-      throw new UnauthorizedException();
-    }
+    checkUserOrAdmin(principal, id);
     if (userUpdateRequest.getAdminRole().isPresent()) {
       String role = userUpdateRequest.getAdminRole().get();
       if (role.equals(ADMIN)) {
@@ -128,9 +118,7 @@ public class UserController {
                          @PathVariable long id)
   throws UnauthorizedException, ResourceNotFoundException{
     UserResponse user = userService.getUser(id).orElseThrow(ResourceNotFoundException::new);
-    if ((principal).getId() != user.getId() && !principal.hasAuthority(UserRole.USER_ADMIN)) {
-      throw new UnauthorizedException();
-    }
+    checkUserOrAdmin(principal, id);
     userService.deleteUser(id);
   }
 
@@ -159,20 +147,16 @@ public class UserController {
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
-  //TODO check if owner or admin
   @PostMapping(value="/users/{id}/image/upload")
-  public @ResponseBody String handleFileUpload(
+  public ImageUploadResponse handleFileUpload(
           @RequestParam("file") MultipartFile file,
           @PathVariable("id") long userId,
           @AuthenticationPrincipal CustomSpringUser principal){
-    if (!file.isEmpty()) {
-      try {
-        return fileUploadService.uploadProfileImage(file, userId).toString();
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
-    } else {
-      return "Not uploading image for " + userId + " because the file was empty.";
+    checkUserOrAdmin(principal, userId);
+    try {
+      return userService.uploadProfileImage(file, userId);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
   }
 }

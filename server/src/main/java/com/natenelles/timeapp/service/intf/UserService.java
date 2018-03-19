@@ -2,6 +2,7 @@ package com.natenelles.timeapp.service.intf;
 
 import com.natenelles.timeapp.exception.ResourceNotFoundException;
 import com.natenelles.timeapp.model.errors.UpdatePasswordError;
+import com.natenelles.timeapp.model.users.ImageUploadResponse;
 import com.natenelles.timeapp.model.users.UserCreateRequest;
 import com.natenelles.timeapp.model.users.UserResponse;
 import com.natenelles.timeapp.entity.User;
@@ -10,6 +11,7 @@ import com.natenelles.timeapp.model.errors.UserSaveError;
 import com.natenelles.timeapp.model.users.SignupInvite;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 import java.util.Set;
@@ -43,4 +45,6 @@ public interface UserService {
   boolean inviteUser(SignupInvite signupInvite);
 
   Optional<SignupInvite> getSignupInvite(String token);
+
+  ImageUploadResponse uploadProfileImage(MultipartFile file, long userId);
 }

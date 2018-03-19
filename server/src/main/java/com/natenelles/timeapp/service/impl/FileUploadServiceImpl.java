@@ -44,7 +44,7 @@ public class FileUploadServiceImpl implements FileUploadService{
 
 
     @Override
-    public URL uploadProfileImage(MultipartFile file, long userId) throws IOException{
+    public URL uploadProfileImage(MultipartFile file) throws IOException{
 
         String key = "profile-image-" + UUID.randomUUID();
 

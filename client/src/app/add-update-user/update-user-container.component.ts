@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, EventEmitter, Output, ViewChild , Input} from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, Output, ViewChild , Input, ElementRef} from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -9,13 +9,15 @@ import * as fromRouter from '@ngrx/router-store';
 //TODO remove these
 import { Http, RequestOptions } from '@angular/http';
 import { SessionService } from 'app/core/services';
+import * as fromUserUpdate from 'app/core/store/actions/user-update.actions';
 
 import * as fromRoot from 'app/core/store';
 import { UserInfo } from 'app/core/models/session';
 import { UserUpdateForm } from 'app/core/models/user-update';
 import { updateUser, updatePassword } from 'app/core/store/actions/user-update.actions';
 
-export class UpdateUserComponent implements OnDestroy{
+
+export abstract class UpdateUserComponent implements OnDestroy{
   modalTitle = 'Update';
   success$: Observable<boolean>;
   submitted$: Observable<boolean>;
@@ -31,6 +33,9 @@ export class UpdateUserComponent implements OnDestroy{
   model: any = {};
   formDataSub: Subscription;
   passwordSuccessSub;
+
+  @ViewChild('profileImageUpload')
+  fileInput: ElementRef;
 
   constructor( private store: Store<fromRoot.State>,
     private currentFormData$: Observable<UserUpdateForm>,
@@ -96,12 +101,13 @@ export class UpdateUserComponent implements OnDestroy{
         /** No need to include Content-Type in Angular 4 */
         // headers.append('Content-Type', 'multipart/form-data');
         // headers.append('Accept', 'application/json');
-        let options = new RequestOptions({ headers });
+        const options = new RequestOptions({ headers });
         this.http.post(`api/users/${this.userId}/image/upload`, formData, options)
             .catch(error => Observable.throw(error))
-            .subscribe(
-                data => console.log('success'),
-            );
+            .subscribe( res => {
+                this.store.dispatch(fromUserUpdate.updateProfileImageSuccess(this.userId, res.json().url ));
+                this.fileInput.nativeElement.value = null;
+            });
     }
 }
 

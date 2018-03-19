@@ -56,7 +56,7 @@
       </div>
     </form>
   </div>
-  <input type="file" name="file" (change)="fileChange($event)" placeholder="Upload Profile Picture" 
+  <input #profileImageUpload type="file" name="file" (change)="fileChange($event) && profileImageUpload.clear()" placeholder="Upload Profile Picture" 
   accept=".svg,.jpg,.jpeg,.gif,.png" class="btn btn-primary">
 </div>
     

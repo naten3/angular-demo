@@ -6,5 +6,5 @@ import java.io.IOException;
 import java.net.URL;
 
 public interface FileUploadService {
-    URL uploadProfileImage(MultipartFile file, long userId) throws IOException;
+    URL uploadProfileImage(MultipartFile file) throws IOException;
 }

@@ -7,6 +7,7 @@ import com.natenelles.timeapp.entity.UserInvite;
 import com.natenelles.timeapp.entity.UserRole;
 import com.natenelles.timeapp.exception.ResourceNotFoundException;
 import com.natenelles.timeapp.model.errors.UpdatePasswordError;
+import com.natenelles.timeapp.model.users.ImageUploadResponse;
 import com.natenelles.timeapp.model.users.UserCreateRequest;
 import com.natenelles.timeapp.model.users.UserResponse;
 import com.natenelles.timeapp.model.users.UserUpdateRequest;
@@ -16,14 +17,17 @@ import com.natenelles.timeapp.repository.MealRepository;
 import com.natenelles.timeapp.repository.UserInviteRepository;
 import com.natenelles.timeapp.repository.UserRepository;
 import com.natenelles.timeapp.service.intf.EmailService;
+import com.natenelles.timeapp.service.intf.FileUploadService;
 import com.natenelles.timeapp.service.intf.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
@@ -43,19 +47,25 @@ public class UserServiceImpl implements UserService {
   private UserRepository userRepository;
   private MealRepository mealRepository;
   private EmailService emailService;
+  private FileUploadService fileUploadService;
   private UserInviteRepository userInviteRepository;
 
   @Value("${default-profile-url}")
   private String defaultProfileUrl;
 
   @Autowired
-  public UserServiceImpl(final UserRepository userRepository, final MealRepository mealRepository, final EmailService emailService,
-                         final UserInviteRepository userInviteRepository) {
+  public UserServiceImpl(UserRepository userRepository,
+                         MealRepository mealRepository,
+                         EmailService emailService,
+                         FileUploadService fileUploadService,
+                         UserInviteRepository userInviteRepository) {
     this.userRepository = userRepository;
     this.mealRepository = mealRepository;
     this.emailService = emailService;
+    this.fileUploadService = fileUploadService;
     this.userInviteRepository = userInviteRepository;
   }
+
 
   @Override
   public Optional<UserResponse> getUser(long id){
@@ -194,6 +204,26 @@ public class UserServiceImpl implements UserService {
     }
   }
 
+  @Override
+  public Optional<SignupInvite> getSignupInvite(String token) {
+    return userInviteRepository.findByVerificationToken(token).map(userInvite ->
+            new SignupInvite(userInvite.getEmail()));
+  }
+
+  @Override
+  public ImageUploadResponse uploadProfileImage(MultipartFile file, long userId) {
+    try {
+      User user = Optional.ofNullable(userRepository.getOne(userId))
+              .orElseThrow(() -> new IllegalArgumentException("No user with that ID"));
+      String url = fileUploadService.uploadProfileImage(file).toString();
+      user.setProfileImage(Optional.of(url));
+      userRepository.save(user);
+      return new ImageUploadResponse(url);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   private UserResponse convertToUserResponse(User user) {
     Set<String> roles = user.getRoles().stream()
             .map(UserRole::getRoleName)
@@ -229,11 +259,5 @@ public class UserServiceImpl implements UserService {
     roles.add(new UserRole(UserRole.USER));
     user.setRoles(roles);
     return user;
-  }
-
-  @Override
-  public Optional<SignupInvite> getSignupInvite(String token) {
-    return userInviteRepository.findByVerificationToken(token).map(userInvite ->
-            new SignupInvite(userInvite.getEmail()));
   }
 }

@@ -28,6 +28,8 @@ datasource:
     driver-class-name: "org.h2.Driver"
     url: "jdbc:h2:mem:timeDb"
 
+server.connection-timeout: 5000
+
 email-verification-url: "http://localhost:8090/#/email-verify"
 user-invite-url: "http://localhost:8090/user-invite"
 #needs to be on social provider whitelists

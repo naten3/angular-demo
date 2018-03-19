@@ -13,6 +13,8 @@ export const UPDATE_PASSWORD_SUCCESS = '[User Update] UPDATE PASSWORD SUCCESS';
 export const UPDATE_PASSWORD_FAILURE = '[User Update] UPDATE PASSWORD FAILURE';
 export const UPDATE_PASSWORD_RESET = '[User Update] UPDATE PASSWORD RESET';
 
+export const PROFILE_IMAGE_UPDATE_SUCCESS = '[User Update] UPDATE PROFILE IMAGE SUCCESS';
+
 import { UserSaveRequest } from 'app/core/models/user-save';
 import { UserUpdateForm, UserUpdateRequest } from 'app/core/models/user-update';
 import { UserInfo } from 'app/core/models/session';
@@ -51,3 +53,10 @@ export const updatePasswordFailure = (errors: Array<string>) => {
 export const updatePasswordReset = () => {
     return {'type': UPDATE_PASSWORD_RESET};
 };
+
+export const updateProfileImageSuccess = (id: number, url: string) => {
+    return {'type': PROFILE_IMAGE_UPDATE_SUCCESS, 'payload': {
+        id,
+        url
+    }};
+}
