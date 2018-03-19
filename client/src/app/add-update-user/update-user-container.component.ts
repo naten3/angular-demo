@@ -92,15 +92,12 @@ export abstract class UpdateUserComponent implements OnDestroy{
   }
 
   fileChange(event) {
-    let fileList: FileList = event.target.files;
-    if(fileList.length > 0) {
-        let file: File = fileList[0];
-        let formData:FormData = new FormData();
+    const fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      const file: File = fileList[0];
+        const formData:FormData = new FormData();
         formData.append('file', file, file.name);
-        let headers = SessionService.getSessionHeader()
-        /** No need to include Content-Type in Angular 4 */
-        // headers.append('Content-Type', 'multipart/form-data');
-        // headers.append('Accept', 'application/json');
+        const headers = SessionService.getSessionHeader()
         const options = new RequestOptions({ headers });
         this.http.post(`api/users/${this.userId}/image/upload`, formData, options)
             .catch(error => Observable.throw(error))

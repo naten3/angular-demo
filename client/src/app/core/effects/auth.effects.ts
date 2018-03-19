@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Actions, Effect } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
-import { LOGIN, LOGIN_STATUS_CHANGE } from 'app/core/store/actions/session.actions'
+import { go } from '@ngrx/router-store';
+
+import { LOGIN, LOGIN_STATUS_CHANGE, LOGOUT } from 'app/core/store/actions/session.actions';
 import { SessionService } from 'app/core/services';
 
 @Injectable()
@@ -29,6 +31,13 @@ export class AuthEffects {
             return { type: LOGIN_STATUS_CHANGE, payload: res.json() };
         })
         // If request fails, dispatch failed action
-        .catch(() => Observable.of({ type: 'LOGIN_FAILED' }))
+        .catch(() => Observable.of({ type: 'LOGIN_FAILED' }));
+      });
+
+      @Effect() logout$ = this.actions$
+      .ofType(LOGOUT)
+      .map(action => {
+        SessionService.clearSessionId();
+        return go('/');
       });
 }

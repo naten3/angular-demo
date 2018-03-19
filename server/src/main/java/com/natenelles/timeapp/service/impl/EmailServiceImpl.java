@@ -1,6 +1,8 @@
 package com.natenelles.timeapp.service.impl;
 
 import com.natenelles.timeapp.service.intf.EmailService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,6 +15,8 @@ import javax.mail.internet.MimeMessage;
 
 @Service
 public class EmailServiceImpl implements EmailService{
+    private static Logger logger = LoggerFactory.getLogger(EmailServiceImpl.class);
+
     @Value("${email-verification-url}")
     private String emailVerificationBaseUrl;
 
@@ -59,6 +63,7 @@ public class EmailServiceImpl implements EmailService{
             helper.setSubject("Time Viewer Registration Invite");
             helper.setText(messageText);
             emailSender.send(message);
+            logger.info("address verification email sent to " + email);
         } catch (MessagingException m) {
             throw new RuntimeException(m);
         }

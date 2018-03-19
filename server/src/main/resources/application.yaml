@@ -40,8 +40,9 @@ default-profile-url: "https://s3.us-east-2.amazonaws.com/natetimeappbucket/defau
 spring.mail:
   host: smtp.gmail.com
   port: 587
-  properties.mail.smtp.auth: true
-  properties.mail.smtp.starttls.enable: true
+  properties.mail.smtp:
+    auth: true
+    enable: true
 
 com.amazonaws.services.s3.enableV4: true
 S3:

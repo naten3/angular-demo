@@ -40,6 +40,8 @@ export function reducer(state = initialState, action: Action) {
             clone.userInfo.profileImage = action.payload.url;
             return clone;
         }
+        case fromActions.LOGOUT:
+        return Object.assign(cloneDeep(initialState), {hasFetchedStatus: true});
         default:
             return state;
     };

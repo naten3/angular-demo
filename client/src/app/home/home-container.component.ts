@@ -1,14 +1,17 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { filter } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/observable/timer';
+import { go } from '@ngrx/router-store';
 
 import { State } from 'app/core/models/app.state';
 import { UserInfo } from 'app/core/models/session';
 import * as saveActions from 'app/core/store/actions/save.actions';
+import * as sessionActions from 'app/core/store/actions/session.actions';
 import * as fromRoot from 'app/core/store';
 @Component({
     selector: 'app-home',
@@ -19,6 +22,7 @@ import * as fromRoot from 'app/core/store';
     <h2>
     <img id="homeProfileImage" [src]="profileUrl$ | async">
     <span>Welcome {{firstName$ | async}}!</span>
+    <button (click)="logout()" class="btn btn-primary">Logout</button>
     </h2>
       <div class="navbar-header">
         <a class="navbar-brand" href="#">NgRx-Store-Sample-App</a>
@@ -26,6 +30,7 @@ import * as fromRoot from 'app/core/store';
       <ul class="nav navbar-nav">
         <li routerLinkActive="active" [routerLink]="['users/me/update']" 
         routerLinkActiveOptions="{exact:true}"><a>Update My Profile</a></li>
+        <li routerLinkActive="active" routerLinkActiveOptions="{exact:true}" [routerLink]="['admin/users']"><a>User List</a></li>
         <li routerLinkActive="active" [routerLink]="['tree']" routerLinkActiveOptions="{exact:true}"><a>Tree</a></li>
         <li routerLinkActive="active" routerLinkActiveOptions="{exact:true}" [routerLink]="['todo']"><a>Todo</a></li>
       </ul>
@@ -51,10 +56,16 @@ export class HomeContainerComponent implements OnDestroy {
         private store: Store<fromRoot.State>
     ) {
       this.userInfo$ = store.select(fromRoot.getUserInfo);
-      this.profileUrl$ = this.userInfo$.map(u => {
-        return u.profileImage || u.socialProfileImage;
+      this.profileUrl$ = this.userInfo$
+      .pipe(filter(u => !!u))
+      .map(u => {
+        const user = u as UserInfo;
+        return user.profileImage || user.socialProfileImage;
       });
-      this.firstName$ = this.userInfo$.map(u => u.firstName);
+
+      this.firstName$ = this.userInfo$
+      .pipe(filter(u => !!u))
+      .map(u => (u as UserInfo).firstName);
     }
 
     ngOnDestroy() {
@@ -62,6 +73,10 @@ export class HomeContainerComponent implements OnDestroy {
             this._key$.unsubscribe();
         }
 
+    }
+
+    logout() {
+      this.store.dispatch(sessionActions.logout());
     }
 
 }

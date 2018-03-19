@@ -3,9 +3,10 @@ import { Routes } from '@angular/router';
 import { TreeContainerComponent } from 'app/tree/tree-container.component';
 import { TodoContainerComponent } from 'app/todos/todo-container.component';
 import { HomeContainerComponent, LauncherContainerComponent, EmailVerifyComponent } from './home';
+import { UserListContainerComponent } from 'app/admin-user-list';
 import { AddUserComponent, SelfUpdateComponent } from './add-update-user';
-import { EmailVerifyResolver, IdResolver } from 'app/core/resolve';
-import { AuthGuard, LoginGuard, SocialLoginGuard} from 'app/core/guards';
+import { EmailVerifyResolver, IdResolver, UserAdminListResolver } from 'app/core/resolve';
+import { AuthGuard, LoginGuard, SocialLoginGuard, UserAdminGuard} from 'app/core/guards';
 
 export const routes: Routes = [
   {
@@ -26,6 +27,12 @@ export const routes: Routes = [
         path: 'users/me/update',
         component: SelfUpdateComponent,
         resolve: { userId: IdResolver }
+      },
+      {
+        path: 'admin/users',
+        component: UserListContainerComponent,
+        canActivate: [UserAdminGuard],
+        resolve: { unused: UserAdminListResolver}
       }]
   },
   {

@@ -18,6 +18,7 @@ import { TodoContainerComponent } from 'app/todos/todo-container.component';
 import { TreeNodeComponent } from 'app/tree/tree-node.component';
 import { TreeNodeListComponent } from 'app/tree/tree-node-list.component';
 import { TreeContainerComponent } from 'app/tree/tree-container.component';
+import { UserListContainerComponent, AdminUserListComponent, UserItemComponent } from 'app/admin-user-list';
 
 import { MyErrorHandler } from './error-handler';
 import { CoreModule } from 'app/core/core.module';
@@ -25,9 +26,9 @@ import { routes } from 'app/app.routes';
 import { SharedModule } from 'app/shared/shared.module';
 import { LauncherContainerComponent, EmailVerifyComponent, HomeContainerComponent } from 'app/home';
 import { AddUserComponent, SelfUpdateComponent } from 'app/add-update-user';
-import { AuthEffects, UserUpdateEffects } from 'app/core/effects';
-import { AuthGuard, LoginGuard, SocialLoginGuard } from 'app/core/guards';
-import { EmailVerifyResolver, IdResolver } from 'app/core/resolve';
+import { AuthEffects, UserUpdateEffects, AdminUserListEffecs } from 'app/core/effects';
+import { AuthGuard, LoginGuard, SocialLoginGuard, UserAdminGuard } from 'app/core/guards';
+import { EmailVerifyResolver, IdResolver, UserAdminListResolver } from 'app/core/resolve';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,10 @@ import { EmailVerifyResolver, IdResolver } from 'app/core/resolve';
     LauncherContainerComponent,
     EmailVerifyComponent,
     AddUserComponent,
-    SelfUpdateComponent
+    SelfUpdateComponent,
+    UserListContainerComponent,
+    AdminUserListComponent,
+    UserItemComponent
   ],
   imports: [
     RouterModule,
@@ -54,9 +58,12 @@ import { EmailVerifyResolver, IdResolver } from 'app/core/resolve';
     SharedModule,
     RouterModule.forRoot(routes, { useHash: true }),
     EffectsModule.run(AuthEffects),
-    EffectsModule.run(UserUpdateEffects)
+    EffectsModule.run(UserUpdateEffects),
+    EffectsModule.run(AdminUserListEffecs)
   ],
-  providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }, AuthGuard, LoginGuard, SocialLoginGuard, 
+  providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }, AuthGuard, LoginGuard, 
+    UserAdminListResolver,
+    SocialLoginGuard, UserAdminGuard,
     EmailVerifyResolver, IdResolver],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

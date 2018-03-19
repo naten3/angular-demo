@@ -8,6 +8,7 @@ import * as fromSession from 'app/core/models/session';
 import * as fromSave from 'app/core/models/common/save.state';
 import * as fromUserSave from 'app/core/models/user-save';
 import * as fromUserUpdate from 'app/core/models/user-update';
+import * as fromAdminUserList from 'app/core/models/admin-user-list';
 
 export const getAppState = (state: State) => state;
 
@@ -44,3 +45,8 @@ export const getPasswordUpdatePending = createSelector(getUserUpdate, fromUserUp
 export const getPasswordUpdateSubmitted = createSelector(getUserUpdate, fromUserUpdate.getPasswordSubmitted);
 export const getPasswordUpdateSuccess = createSelector(getUserUpdate, fromUserUpdate.getPasswordSuccess);
 export const getPasswordUpdateErrors = createSelector(getUserUpdate, fromUserUpdate.getPasswordErrors);
+
+export const getAdminUserList = (state: State) => state.adminUserList;
+export const getAdminUserPageNumber = createSelector(getAdminUserList, fromAdminUserList.getPageNumber);
+export const getAdminUserPage = createSelector(getAdminUserList, fromAdminUserList.getUserPage);
+export const getOtherUserInfo = (id: number) => createSelector(getAdminUserList, fromAdminUserList.getUserInfo(id));

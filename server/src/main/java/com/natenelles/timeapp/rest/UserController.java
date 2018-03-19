@@ -12,7 +12,6 @@ import com.natenelles.timeapp.model.users.UserCreateRequest;
 import com.natenelles.timeapp.model.users.UserResponse;
 import com.natenelles.timeapp.model.users.UserUpdateRequest;
 import com.natenelles.timeapp.security.CustomSpringUser;
-import com.natenelles.timeapp.service.intf.FileUploadService;
 import com.natenelles.timeapp.service.intf.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +30,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -82,14 +80,8 @@ public class UserController {
     checkUserOrAdmin(principal, id);
     if (userUpdateRequest.getAdminRole().isPresent()) {
       String role = userUpdateRequest.getAdminRole().get();
-      if (role.equals(ADMIN)) {
-        if (!authorities.contains(ADMIN)) {
-          throw new UnauthorizedException("only admins can assign admin role");
-        }
-      } else if (role.equals(USER_ADMIN)) {
-        if (!authorities.contains(ADMIN) && !authorities.contains(USER_ADMIN)) {
-          throw new UnauthorizedException("only admins or user admins can assign user admin role");
-        }
+      if (!authorities.contains(ADMIN)) {
+        throw new UnauthorizedException("only admins can change role assignment");
       }
     }
     return new ResponseEntity(userService.updateUser(id, userUpdateRequest), HttpStatus.OK);
