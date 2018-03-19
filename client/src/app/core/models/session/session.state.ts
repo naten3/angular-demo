@@ -1,5 +1,3 @@
-
-
 import { UserInfo } from 'app/core/models/session';
 
 export interface State {
@@ -8,7 +6,7 @@ export interface State {
     hasFetchedStatus: boolean;
 }
 
-export const initialState = {
+export const initialState: State = {
     userInfo: null,
     pendingUpdate: false,
     hasFetchedStatus: false

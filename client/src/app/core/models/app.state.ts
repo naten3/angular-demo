@@ -8,24 +8,27 @@ import * as fromSessionState from 'app/core/models/session';
 import * as fromUserSave from 'app/core/models/user-save';
 import * as fromSave from 'app/core/models/common/save.state';
 import * as fromUserUpdate from 'app/core/models/user-update';
+import * as fromAdminUserList from 'app/core/models/admin-user-list';
 
 
 export interface State {
+    router?: RouterState;
     todos: fromTodos.State;
     tree: fromTree.State;
     save: fromSave.State;
     session: fromSessionState.State;
     addUser: fromUserSave.State;
     updateUser: fromUserUpdate.State;
-    router: RouterState;
+    adminUserList: fromAdminUserList.State;
 }
 
-export const initialState = {
+export const initialState: State = {
     todos: fromTodos.initialState,
     tree: fromTree.initialState,
-    sessionState: fromSessionState.initialState,
+    session: fromSessionState.initialState,
     addUser: fromUserSave.initialState,
     updateUser: fromUserUpdate.initialState,
-    save: fromSave.initialState
+    save: fromSave.initialState,
+    adminUserList: fromAdminUserList.initialState
 };
 
