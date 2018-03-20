@@ -1,3 +1,5 @@
+import { UserInfo } from 'app/core/models/session';
+
 export const LOGIN = '[Auth] login';
 export const LOGIN_STATUS_CHANGE = '[Auth] login status change';
 export const LOGIN_FAILURE = '[Auth] login failure';
@@ -15,3 +17,6 @@ export const invalidateSessionInfo = () => { return { 'type': INVALIDATE_SESSION
 export const login = (username, password) => { return { 'type': LOGIN, 'payload': {username, password} }; };
 export const loginFailure = (errors: Array<string>) => { return { 'type': LOGIN_FAILURE, 'payload': errors}; };
 export const logout = () => { return {'type': LOGOUT }; };
+export const loginStatusChange = (userInfo: UserInfo) => { return { 'type': LOGIN_STATUS_CHANGE,
+'payload': userInfo};
+};

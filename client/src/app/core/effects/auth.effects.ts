@@ -29,7 +29,7 @@ export class AuthEffects {
         // If successful, dispatch success action with result
         .map(res => {
             SessionService.saveSessionId(res.headers.get('x-auth-token'));
-            return { type: fromSessionActions.LOGIN_STATUS_CHANGE, payload: res.json() };
+            return fromSessionActions.loginStatusChange(res.json());
         })
         // If request fails, dispatch failed action
         .catch((err) => Observable.of(fromSessionActions.loginFailure([INVALID_CREDENTIALS])));
