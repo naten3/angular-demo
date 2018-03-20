@@ -9,7 +9,7 @@ import { replace } from '@ngrx/router-store';
 import { includes } from 'lodash';
 
 import { State } from 'app/core/models/session/session.state';
-import { ROLE_ADMIN, ROLE_USER_ADMIN } from 'app/core/models/session/user-info.model';
+import { checkIfUserAdmin } from 'app/core/models/session/user-info.model';
 
 import * as fromRoot from 'app/core/store';
 // Make sure the user is an ADMIN or USER_ADMIN
@@ -33,7 +33,7 @@ export class UserAdminGuard implements CanActivate {
     .map(s => {
       if (!!(s as State).userInfo) {
         const userInfo = (s as State).userInfo;
-        if (includes(userInfo.roles, ROLE_USER_ADMIN) || includes(userInfo.roles, ROLE_ADMIN)) {
+        if (checkIfUserAdmin(userInfo)) {
           return true;
         } else {
           console.log('user does not have appropriate role, navigating home');

@@ -78,8 +78,8 @@ public class UserController {
   throws ResourceNotFoundException{
     Set<String> authorities = principal.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toSet());
     checkUserOrAdmin(principal, id);
-    if (userUpdateRequest.getAdminRole().isPresent()) {
-      String role = userUpdateRequest.getAdminRole().get();
+    if (userUpdateRequest.getRole().isPresent()) {
+      String role = userUpdateRequest.getRole().get();
       if (!authorities.contains(ADMIN)) {
         throw new UnauthorizedException("only admins can change role assignment");
       }

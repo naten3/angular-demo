@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { getDisplayProfileImage, ROLE_ADMIN, ROLE_USER_ADMIN, 
     ROLE_USER } from 'app/core/models/session';
-import { UserInfo } from 'app/core/models/session/user-info.model';
+import { UserInfo } from 'app/core/models/session';
 
 @Component({
     selector: 'app-user-item',

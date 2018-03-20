@@ -121,14 +121,19 @@ public class UserServiceImpl implements UserService {
     .map(originalUser -> {
       originalUser.setFirstName(uur.getFirstName());
       originalUser.setLastName(uur.getLastName());
-      if (uur.getAdminRole().isPresent()) {
+      if (uur.getRole().isPresent()) {
         Set<UserRole> baseRoles = originalUser.getRoles();
-        String role = uur.getAdminRole().get();
+        String role = uur.getRole().get();
         if (role.equals(UserRole.USER_ADMIN)) {
           originalUser.setRoles(swapRole(UserRole.USER_ADMIN, UserRole.ADMIN, baseRoles));
         } else if (role.equals(UserRole.ADMIN)) {
           originalUser.setRoles(swapRole(UserRole.ADMIN, UserRole.USER_ADMIN, baseRoles));
-        } else throw new IllegalArgumentException("Unrecognized role");
+        } if (role.equals(UserRole.USER)) {
+          Set<UserRole> roles = baseRoles.stream().filter(r -> !r.getRoleName().equals(UserRole.ADMIN)
+                  && !r.getRoleName().equals(UserRole.USER_ADMIN))
+                  .collect(Collectors.toSet());
+          originalUser.setRoles(roles);
+        }
       }
       return convertToUserResponse(userRepository.save(originalUser));
     }).orElseThrow(ResourceNotFoundException::new);

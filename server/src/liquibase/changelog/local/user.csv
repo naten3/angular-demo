@@ -4,5 +4,5 @@ USER_ID,USERNAME,PASSWORD,EMAIL,EMAIL_VERIFIED,EMAIL_VERIFICATION_TOKEN,FIRST_NA
 3,useradmin,password3,nate3@fakedomain.com,true,a,Bob,Belcher,https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg
 4,nate2,password,nate4@fakedomain.com,false,a,Philip,Jennings,https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg
 5,nate7,password,nate5@fakedomain.com,false,a,Elizabeth,Jennings,https://s3.us-east-2.amazonaws.com/natetimeappbucket/pexels-photo-415829.jpeg
-6,nate8,password,nate4@fakedomain.com,false,a,nate,nelles,https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg
-7,nate9,password,nate6@fakedomain.com,false,a,nate,nelles,https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg
+6,nate8,password,nate4@fakedomain.com,true,a,Kareena,Kapoor,https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg
+7,nate9,password,nate6@fakedomain.com,true,a,Priyanka,Chopra,https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg
