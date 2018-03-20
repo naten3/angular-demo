@@ -1,6 +1,6 @@
 USER_ID,USERNAME,PASSWORD,EMAIL,EMAIL_VERIFIED,EMAIL_VERIFICATION_TOKEN,FIRST_NAME,LAST_NAME,PROFILE_IMAGE
 1,nate,password,nate@fakedomain.com,true,a,nate,nelles,"https://s3.us-east-2.amazonaws.com/natetimeappbucket/spider.png"
-2,admin,password2,nate2@fakedomain.com,true,a,Edna,Krabaple,https://s3.us-east-2.amazonaws.com/natetimeappbucket/1-1251992993dDQL.jpg
+2,admin,password2,nate2@fakedomain.com,true,a,Edna,Krabappel,https://s3.us-east-2.amazonaws.com/natetimeappbucket/1-1251992993dDQL.jpg
 3,useradmin,password3,nate3@fakedomain.com,true,a,Bob,Belcher,https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg
 4,nate2,password,nate4@fakedomain.com,false,a,Philip,Jennings,https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg
 5,nate7,password,nate5@fakedomain.com,false,a,Elizabeth,Jennings,https://s3.us-east-2.amazonaws.com/natetimeappbucket/pexels-photo-415829.jpeg

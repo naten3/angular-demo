@@ -1,6 +1,5 @@
 package com.natenelles.timeapp.service.impl;
 
-import com.amazonaws.SDKGlobalConfiguration;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;

@@ -2,6 +2,7 @@ import { maxBy } from 'lodash';
 export const ROLE_USER = 'USER';
 export const ROLE_ADMIN = 'ADMIN';
 export const ROLE_USER_ADMIN = 'USER_ADMIN';
+
 export const INVALID_CREDENTIALS = 'INVALID_CREDENTIALS';
 
 export interface UserInfo {
@@ -13,6 +14,7 @@ export interface UserInfo {
     profileImage?: string;
     socialProfileImage?: string;
     socialUser: boolean;
+    emailVerified: boolean;
     roles: Array<string>;
 }
 

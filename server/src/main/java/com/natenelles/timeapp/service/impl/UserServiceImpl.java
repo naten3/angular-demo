@@ -240,6 +240,7 @@ public class UserServiceImpl implements UserService {
             user.getEmail(), user.getProfileImage(),
             user.getSocialProfileImage(),
             isSocialUser(user),
+            user.isEmailVerified(),
             roles);
   }
 
