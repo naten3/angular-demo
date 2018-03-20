@@ -4,7 +4,7 @@ import { TodoContainerComponent } from 'app/todos/todo-container.component';
 import { HomeContainerComponent, LauncherContainerComponent, EmailVerifyComponent } from './home';
 import { UserListContainerComponent } from 'app/admin-user-list';
 import { AddUserComponent, SelfUpdateComponent, AdminUserUpdateComponent } from './add-update-user';
-import { EmailVerifyResolver, IdResolver, UserAdminListResolver } from 'app/core/resolve';
+import { EmailVerifyResolver, IdResolver, UserAdminListResolver, ManagedUserResolver } from 'app/core/resolve';
 import { AuthGuard, LoginGuard, SocialLoginGuard, UserAdminGuard} from 'app/core/guards';
 
 export const routes: Routes = [
@@ -35,8 +35,9 @@ export const routes: Routes = [
       },
       {
         path: 'admin/users/:userId/update',
-        component: AdminUserUpdateComponent
-        // canActivate: [UserAdminGuard]
+        component: AdminUserUpdateComponent,
+        canActivate: [UserAdminGuard],
+        resolve: { unused: ManagedUserResolver}
       }]
   },
   {

@@ -45,6 +45,7 @@ export function reducer(state: State = initialState, action: Action) {
               };
             } else {
                 console.log('Ignoring user page update since it\'s not for active page');
+                return state;
             }
         case fromUserUpdate.USER_UPDATE_SUCCESS:
         // tslint:disable no-use-before-declare
@@ -53,6 +54,8 @@ export function reducer(state: State = initialState, action: Action) {
         // tslint:disable no-use-before-declare
           return replaceProfilePicture(state, action.payload.id, action.payload.url);
         case fromAdminUserListActions.MANAGE_USER:
+          return Object.assign(cloneDeep(state), {currentlyManagedUser: action.payload});
+        case fromAdminUserListActions.REQUEST_MANAGED_USER_SUCCESS:
           return Object.assign(cloneDeep(state), {currentlyManagedUser: action.payload});
         default:
             return state;

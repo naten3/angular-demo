@@ -33,12 +33,16 @@ export function reducer(state = initialState, action: Action) {
         case fromUserUpdate.USER_UPDATE_SUCCESS:
             if (action.payload.id === state.userInfo.id) {
                 return Object.assign(cloneDeep(state), {userInfo: action.payload});
+            } else {
+                return state;
             }
         case fromUserUpdate.PROFILE_IMAGE_UPDATE_SUCCESS:
         if (action.payload.id === state.userInfo.id) {
             const clone = cloneDeep(state);
             clone.userInfo.profileImage = action.payload.url;
             return clone;
+        } else {
+            return state;
         }
         case fromActions.LOGOUT:
         return Object.assign(cloneDeep(initialState), {hasFetchedStatus: true});

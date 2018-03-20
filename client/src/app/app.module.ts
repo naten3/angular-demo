@@ -28,7 +28,7 @@ import { LauncherContainerComponent, EmailVerifyComponent, HomeContainerComponen
 import { AddUserComponent, SelfUpdateComponent, AdminUserUpdateComponent } from 'app/add-update-user';
 import { AuthEffects, UserUpdateEffects, AdminUserListEffecs } from 'app/core/effects';
 import { AuthGuard, LoginGuard, SocialLoginGuard, UserAdminGuard } from 'app/core/guards';
-import { EmailVerifyResolver, IdResolver, UserAdminListResolver } from 'app/core/resolve';
+import { EmailVerifyResolver, IdResolver, UserAdminListResolver, ManagedUserResolver } from 'app/core/resolve';
 
 @NgModule({
   declarations: [
@@ -62,10 +62,10 @@ import { EmailVerifyResolver, IdResolver, UserAdminListResolver } from 'app/core
     EffectsModule.run(UserUpdateEffects),
     EffectsModule.run(AdminUserListEffecs)
   ],
-  providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }, AuthGuard, LoginGuard, 
+  providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }, AuthGuard, LoginGuard,
     UserAdminListResolver,
     SocialLoginGuard, UserAdminGuard,
-    EmailVerifyResolver, IdResolver],
+    EmailVerifyResolver, IdResolver, ManagedUserResolver],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

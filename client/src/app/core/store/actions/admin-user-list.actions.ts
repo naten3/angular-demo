@@ -9,6 +9,9 @@ export const USER_LIST_PAGE_SUCCESS = '[Admin User List] request user page succe
 export const USER_LIST_PAGE_FAILURE = '[Admin User List] request user page failure';
 
 export const MANAGE_USER = '[Admin User List] manage user';
+export const REQUEST_MANAGED_USER = '[Admin User List] request managed user';
+export const REQUEST_MANAGED_USER_SUCCESS = '[Admin User List] request managed success';
+export const REQUEST_MANAGED_USER_FAILURE = '[Admin User List] request managed failure';
 
 export const incrementPage = () => { return { 'type': INCREMENT_PAGE }; };
 export const decrementPage = () => { return { 'type': DECREMENT_PAGE }; };
@@ -23,4 +26,16 @@ export const getUserListPageFailure = (errors: Array<string>) => {
 
 export const manageUser = (userInfo: UserInfo) => {
     return { 'type': MANAGE_USER, 'payload': userInfo};
+};
+
+export const requestManagedUser = (userId: number) => {
+    return { 'type': REQUEST_MANAGED_USER, 'payload': userId};
+};
+
+export const requestManagedUserSucces = (userInfo: UserInfo) => {
+    return { 'type': REQUEST_MANAGED_USER_SUCCESS, 'payload': userInfo};
+};
+
+export const requestManagedUserFailure = (errors: Array<string>) => {
+    return { 'type': REQUEST_MANAGED_USER_FAILURE, 'payload': { errors }};
 };

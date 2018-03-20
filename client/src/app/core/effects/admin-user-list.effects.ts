@@ -35,10 +35,6 @@ export class AdminUserListEffecs {
   .map( actionWithState => {
     return fromAdminUserList.requestUserListPage(actionWithState[1].adminUserList.page); });
 
-  @Effect() manageUser$ = this.actions$
-  .ofType(fromAdminUserList.MANAGE_USER)
-  .map(action => go(`home/admin/users/${action.payload.id}/update`));
-
   @Effect() getPage$ = this.actions$
       .ofType(fromAdminUserList.REQUEST_USER_LIST_PAGE)
       .switchMap(action => {
@@ -53,7 +49,23 @@ export class AdminUserListEffecs {
         .catch(e => Observable.of(fromAdminUserList.getUserListPageFailure((['unknown']))));
       });
 
+  getUserPage = (pageNumber: number) => this.http.get(`/api/admin/users?size=${PAGE_SIZE}&page=${pageNumber}`,
+   { headers: SessionService.getSessionHeader()})
 
-  getUserPage = (pageNumber: number) => this.http.get(`/api//admin/users?size=${PAGE_SIZE}&page=${pageNumber}`,
-   { headers: SessionService.getSessionHeader()});
+  @Effect() manageUser$ = this.actions$
+    .ofType(fromAdminUserList.MANAGE_USER)
+    .map(action => go(`home/admin/users/${action.payload.id}/update`));
+
+  @Effect() requestManagedUser$ = this.actions$
+    .ofType(fromAdminUserList.REQUEST_MANAGED_USER)
+    .switchMap(action => this.http.get(`/api/users/${action.payload}`,
+    { headers: SessionService.getSessionHeader()})
+    .map(res => {
+        if (res.ok) {
+          return fromAdminUserList.requestManagedUserSucces(res.json());
+        } else {
+          return fromAdminUserList.requestManagedUserFailure(res.json().errors);
+        }
+    })
+    .catch(e => Observable.of(fromAdminUserList.requestManagedUserFailure((['unknown'])))));
 }

@@ -66,7 +66,5 @@ export class UserListContainerComponent {
     manageUser(userInfo: UserInfo) {
         this.store.dispatch(adminUserListActions.manageUser(userInfo));
     }
-
-
 }
 

@@ -104,11 +104,18 @@ public class UserController {
     return new SuccessResponse<>(errors.isEmpty(), Optional.of(errors));
   }
 
+  @GetMapping("/users/{id}")
+  public UserResponse getUser(@AuthenticationPrincipal CustomSpringUser principal,
+                         @PathVariable long id)
+          throws UnauthorizedException, ResourceNotFoundException{
+    checkUserOrAdmin(principal, id);
+    return userService.getUser(id).orElseThrow(ResourceNotFoundException::new);
+  }
 
   @DeleteMapping("/users/{id}")
-  public void deleteMeal(@AuthenticationPrincipal CustomSpringUser principal,
+  public void deleteUser(@AuthenticationPrincipal CustomSpringUser principal,
                          @PathVariable long id)
-  throws UnauthorizedException, ResourceNotFoundException{
+          throws UnauthorizedException, ResourceNotFoundException{
     UserResponse user = userService.getUser(id).orElseThrow(ResourceNotFoundException::new);
     checkUserOrAdmin(principal, id);
     userService.deleteUser(id);
