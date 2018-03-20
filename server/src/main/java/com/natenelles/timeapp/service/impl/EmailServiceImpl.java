@@ -34,6 +34,8 @@ public class EmailServiceImpl implements EmailService{
     @Override
     public void sendUserVerificationEmail(String userEmail, String token, long userId) {
         String verificationUrl = getUserVerificationUrl(userId, token);
+        logger.info("User verification url is " + verificationUrl);
+
         String messageText = getEmailVerificationMessageText(verificationUrl);
 
         MimeMessage message = emailSender.createMimeMessage();
@@ -53,8 +55,8 @@ public class EmailServiceImpl implements EmailService{
     @Override
     public void sendUserInviteEmail(String email, String token) {
         String userInviteUrl = getUserInviteUrl(token);
+        logger.info("User invite url is " + userInviteUrl);
         String messageText = getUserInviteMessage(userInviteUrl);
-
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper;
         try {

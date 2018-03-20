@@ -19,6 +19,7 @@ export function reducer(state: State = initialState, action: Action) {
               };
            } else {
                console.log('Ignoring increment, at last page');
+               return state;
            }
         case fromAdminUserListActions.DECREMENT_PAGE:
           if (state.page > 0 ) {
@@ -29,6 +30,7 @@ export function reducer(state: State = initialState, action: Action) {
             };
            } else {
              console.log('Ignoring decrement, at first page');
+             return state;
            }
         case fromAdminUserListActions.CHANGE_PAGE:
             return {

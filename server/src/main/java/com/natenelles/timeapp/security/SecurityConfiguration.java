@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -79,7 +80,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     .successHandler(authenticationSuccessHandler)
     .failureHandler(new SimpleUrlAuthenticationFailureHandler())
     .and()
-    .logout()
+    .logout().logoutSuccessHandler((request, response, authentication) -> response.setStatus(HttpStatus.OK.value()))
     .and()
     .addFilterAfter(new CsrfTokenResponseHeaderBindingFilter(), CsrfFilter.class); //TODO make this a cookie
     //.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
