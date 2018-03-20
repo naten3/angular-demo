@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -19,7 +19,7 @@ import { UserInfo } from 'app/core/models/session';
         <button class="btn btn-primary" [disabled]="first$ | async" (click)="previous()" >&laquo; Previous</button>
         <button class="btn btn-primary" [disabled]="last$ | async" (click)="next()">Next &raquo;</button></legend>
             <div >
-                <app-user-list  [users]="users$ | async">
+                <app-user-list  (userClick)="manageUser($event)" [users]="users$ | async">
                 </app-user-list>
             </div>
     </fieldset>
@@ -37,6 +37,8 @@ export class UserListContainerComponent {
     totalPages$: Observable<number>;
     first$: Observable<boolean>;
     last$: Observable<boolean>;
+
+    userClick: EventEmitter<UserInfo> = new EventEmitter();
 
     constructor(
         private store: Store<fromRoot.State>
@@ -59,6 +61,10 @@ export class UserListContainerComponent {
 
     previous() {
         this.store.dispatch(adminUserListActions.decrementPage());
+    }
+
+    manageUser(userInfo: UserInfo) {
+        this.store.dispatch(adminUserListActions.manageUser(userInfo));
     }
 
 

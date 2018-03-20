@@ -25,7 +25,7 @@ import { CoreModule } from 'app/core/core.module';
 import { routes } from 'app/app.routes';
 import { SharedModule } from 'app/shared/shared.module';
 import { LauncherContainerComponent, EmailVerifyComponent, HomeContainerComponent } from 'app/home';
-import { AddUserComponent, SelfUpdateComponent } from 'app/add-update-user';
+import { AddUserComponent, SelfUpdateComponent, AdminUserUpdateComponent } from 'app/add-update-user';
 import { AuthEffects, UserUpdateEffects, AdminUserListEffecs } from 'app/core/effects';
 import { AuthGuard, LoginGuard, SocialLoginGuard, UserAdminGuard } from 'app/core/guards';
 import { EmailVerifyResolver, IdResolver, UserAdminListResolver } from 'app/core/resolve';
@@ -45,6 +45,7 @@ import { EmailVerifyResolver, IdResolver, UserAdminListResolver } from 'app/core
     EmailVerifyComponent,
     AddUserComponent,
     SelfUpdateComponent,
+    AdminUserUpdateComponent,
     UserListContainerComponent,
     AdminUserListComponent,
     UserItemComponent

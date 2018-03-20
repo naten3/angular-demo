@@ -1,10 +1,9 @@
 import { Routes } from '@angular/router';
-
 import { TreeContainerComponent } from 'app/tree/tree-container.component';
 import { TodoContainerComponent } from 'app/todos/todo-container.component';
 import { HomeContainerComponent, LauncherContainerComponent, EmailVerifyComponent } from './home';
 import { UserListContainerComponent } from 'app/admin-user-list';
-import { AddUserComponent, SelfUpdateComponent } from './add-update-user';
+import { AddUserComponent, SelfUpdateComponent, AdminUserUpdateComponent } from './add-update-user';
 import { EmailVerifyResolver, IdResolver, UserAdminListResolver } from 'app/core/resolve';
 import { AuthGuard, LoginGuard, SocialLoginGuard, UserAdminGuard} from 'app/core/guards';
 
@@ -33,6 +32,11 @@ export const routes: Routes = [
         component: UserListContainerComponent,
         canActivate: [UserAdminGuard],
         resolve: { unused: UserAdminListResolver}
+      },
+      {
+        path: 'admin/users/:userId/update',
+        component: AdminUserUpdateComponent
+        // canActivate: [UserAdminGuard]
       }]
   },
   {

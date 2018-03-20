@@ -8,6 +8,8 @@ export const REQUEST_USER_LIST_PAGE = '[Admin User List] request user page';
 export const USER_LIST_PAGE_SUCCESS = '[Admin User List] request user page success';
 export const USER_LIST_PAGE_FAILURE = '[Admin User List] request user page failure';
 
+export const MANAGE_USER = '[Admin User List] manage user';
+
 export const incrementPage = () => { return { 'type': INCREMENT_PAGE }; };
 export const decrementPage = () => { return { 'type': DECREMENT_PAGE }; };
 export const changePage = (page: number) => { return { 'type': CHANGE_PAGE, 'payload': page}; };
@@ -17,4 +19,8 @@ export const getUserListPageSuccess = (page: number, userPage: Page<UserInfo>) =
 };
 export const getUserListPageFailure = (errors: Array<string>) => {
     return { 'type': USER_LIST_PAGE_FAILURE, 'payload': { errors }};
+};
+
+export const manageUser = (userInfo: UserInfo) => {
+    return { 'type': MANAGE_USER, 'payload': userInfo};
 };

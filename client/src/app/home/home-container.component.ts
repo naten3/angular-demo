@@ -28,9 +28,7 @@ import * as fromRoot from 'app/core/store';
       <ul class="nav navbar-nav">
         <li routerLinkActive="active" [routerLink]="['users/me/update']" 
         routerLinkActiveOptions="{exact:true}"><a>Update My Profile</a></li>
-        <li routerLinkActive="active" routerLinkActiveOptions="{exact:true}" [routerLink]="['admin/users']"><a>User List</a></li>
-        <li routerLinkActive="active" [routerLink]="['tree']" routerLinkActiveOptions="{exact:true}"><a>Tree</a></li>
-        <li routerLinkActive="active" routerLinkActiveOptions="{exact:true}" [routerLink]="['todo']"><a>Todo</a></li>
+        <li routerLinkActive="active" routerLinkActiveOptions="{exact:true}" [routerLink]="['admin/users']"><a>Manage Users</a></li>
       </ul>
     </div>
   </nav>

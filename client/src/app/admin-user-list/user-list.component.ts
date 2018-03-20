@@ -1,4 +1,5 @@
-import { Component, Input, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
+import { Component, Input, Output,
+   ChangeDetectionStrategy, AfterViewInit, EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { chunk } from 'lodash';
@@ -13,7 +14,7 @@ import { UserInfo } from 'app/core/models/session';
   <div class="container">
     <div class="row mb-3" *ngFor="let row of getChunkedUsers()">
       <div *ngFor="let n of row; trackBy:getUserId" class="col-md-3 col-centered">
-        <app-user-item [user]="n"></app-user-item>
+        <div (click)=userClick.emit(n) ><app-user-item [user]="n"></app-user-item></div>
       </div>
     </div>
   </div>
@@ -24,6 +25,7 @@ import { UserInfo } from 'app/core/models/session';
 
 export class AdminUserListComponent {
     @Input() users: Array<UserInfo>;
+    @Output() userClick: EventEmitter<UserInfo> = new EventEmitter();
 
     constructor() {
     }

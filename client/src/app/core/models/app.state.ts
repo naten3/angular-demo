@@ -1,6 +1,6 @@
 
 import { createSelector } from 'reselect';
-import { RouterState } from '@ngrx/router-store';
+import { RouterState,  initialState as initialRouterState } from '@ngrx/router-store';
 
 import * as fromTree from 'app/core/models/tree';
 import * as fromTodos from 'app/core/models/todo';

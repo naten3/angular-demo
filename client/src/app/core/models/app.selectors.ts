@@ -50,3 +50,4 @@ export const getAdminUserList = (state: State) => state.adminUserList;
 export const getAdminUserPageNumber = createSelector(getAdminUserList, fromAdminUserList.getPageNumber);
 export const getAdminUserPage = createSelector(getAdminUserList, fromAdminUserList.getUserPage);
 export const getOtherUserInfo = (id: number) => createSelector(getAdminUserList, fromAdminUserList.getUserInfo(id));
+export const getCurrentlyManagedUser = createSelector(getAdminUserList, fromAdminUserList.getManagedUser);

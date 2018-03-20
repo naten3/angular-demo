@@ -8,7 +8,9 @@ import { TreeEvents } from 'app/tree/tree-events';
 import { SourceType } from 'app/core/models/tree';
 import { Subscription } from 'rxjs/Subscription';
 
-import { UserInfo, getDisplayProfileImage, ROLE_ADMIN, ROLE_USER_ADMIN, ROLE_USER } from 'app/core/models/session';
+import { getDisplayProfileImage, ROLE_ADMIN, ROLE_USER_ADMIN, 
+    ROLE_USER } from 'app/core/models/session';
+import { UserInfo } from 'app/core/models/session/user-info.model';
 
 @Component({
     selector: 'app-user-item',

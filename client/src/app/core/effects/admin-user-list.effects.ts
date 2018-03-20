@@ -3,6 +3,8 @@ import { Http, Headers } from '@angular/http';
 import { Actions, Effect } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
+import { go } from '@ngrx/router-store';
+import { mergeMap } from 'rxjs/operators';
 
 import { CREATE_USER_REQUEST,
    UPDATE_USER_REQUEST,
@@ -29,14 +31,18 @@ export class AdminUserListEffecs {
 
   @Effect() changePage$ = this.actions$
   .ofType(fromAdminUserList.INCREMENT_PAGE, fromAdminUserList.DECREMENT_PAGE)
-  .switchMap(action =>
-    this.currentPage$.map(p => fromAdminUserList.requestUserListPage(p))
-  );
+  .withLatestFrom(this.store)
+  .map( actionWithState => {
+    return fromAdminUserList.requestUserListPage(actionWithState[1].adminUserList.page); });
+
+  @Effect() manageUser$ = this.actions$
+  .ofType(fromAdminUserList.MANAGE_USER)
+  .map(action => go(`home/admin/users/${action.payload.id}/update`));
 
   @Effect() getPage$ = this.actions$
       .ofType(fromAdminUserList.REQUEST_USER_LIST_PAGE)
       .switchMap(action => {
-        return this.http.get(`/api//admin/users?size=${PAGE_SIZE}&page=${action.payload}`, { headers: SessionService.getSessionHeader()})
+        return this.getUserPage(action.payload)
         .map(res => {
             if (res.ok) {
               return fromAdminUserList.getUserListPageSuccess(action.payload, res.json());
@@ -46,4 +52,8 @@ export class AdminUserListEffecs {
         })
         .catch(e => Observable.of(fromAdminUserList.getUserListPageFailure((['unknown']))));
       });
+
+
+  getUserPage = (pageNumber: number) => this.http.get(`/api//admin/users?size=${PAGE_SIZE}&page=${pageNumber}`,
+   { headers: SessionService.getSessionHeader()});
 }
