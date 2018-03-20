@@ -2,6 +2,7 @@ import { maxBy } from 'lodash';
 export const ROLE_USER = 'USER';
 export const ROLE_ADMIN = 'ADMIN';
 export const ROLE_USER_ADMIN = 'USER_ADMIN';
+export const INVALID_CREDENTIALS = 'INVALID_CREDENTIALS';
 
 export interface UserInfo {
     id: number;

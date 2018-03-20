@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import * as fromRouter from '@ngrx/router-store';
 
 import { SessionService } from 'app/core/services';
-import { UserInfo } from 'app/core/models/session';
+import { UserInfo, INVALID_CREDENTIALS } from 'app/core/models/session';
 import * as fromRoot from 'app/core/store';
 import { login } from 'app/core/store/actions/session.actions';
 
@@ -22,6 +22,7 @@ export class LauncherContainerComponent {
 
     userInfo$: Observable<UserInfo>;
     enableButton$: Observable<boolean>;
+    errors$: Observable<Array<string>>;
 
     constructor(private router: Router, private sessionService: SessionService,
         private store: Store<fromRoot.State>) {
@@ -32,6 +33,10 @@ export class LauncherContainerComponent {
                 this.store.dispatch(fromRouter.go('home'));
              }
         });
+
+        this.errors$ = this.store.select(fromRoot.getUserLoginErrors).map(
+            x => x.map(this.mapErrorCodeToMessage)
+           );
     }
 
     login(myForm: NgForm) {
@@ -41,4 +46,13 @@ export class LauncherContainerComponent {
     register() {
         this.store.dispatch(fromRouter.go('user-create'));
     }
+
+    private mapErrorCodeToMessage(errorCode: string): string {
+        switch (errorCode) {
+          case INVALID_CREDENTIALS:
+          return 'Invalid Login Credentials!';
+          default:
+          return 'There was an error with login';
+        }
+      }
 }

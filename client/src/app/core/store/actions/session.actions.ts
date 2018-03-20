@@ -13,4 +13,5 @@ export const sessionStatusError = () => { return { 'type': REQUEST_STATUS_ERROR,
 export const invalidateSessionInfo = () => { return { 'type': INVALIDATE_SESSION_INFO}; };
 
 export const login = (username, password) => { return { 'type': LOGIN, 'payload': {username, password} }; };
+export const loginFailure = (errors: Array<string>) => { return { 'type': LOGIN_FAILURE, 'payload': errors}; };
 export const logout = () => { return {'type': LOGOUT }; };

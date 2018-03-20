@@ -4,8 +4,9 @@ import { Actions, Effect } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
 import { go } from '@ngrx/router-store';
 
-import { LOGIN, LOGIN_STATUS_CHANGE, LOGOUT } from 'app/core/store/actions/session.actions';
+import * as fromSessionActions from 'app/core/store/actions/session.actions';
 import { SessionService } from 'app/core/services';
+import { INVALID_CREDENTIALS } from 'app/core/models/session';
 
 @Injectable()
 export class AuthEffects {
@@ -16,7 +17,7 @@ export class AuthEffects {
 
   @Effect() login$ = this.actions$
       // Listen for the 'LOGIN' action
-      .ofType(LOGIN)
+      .ofType(fromSessionActions.LOGIN)
       .switchMap(action => {
         const body = new URLSearchParams();
         body.set('username', action.payload.username);
@@ -28,14 +29,14 @@ export class AuthEffects {
         // If successful, dispatch success action with result
         .map(res => {
             SessionService.saveSessionId(res.headers.get('x-auth-token'));
-            return { type: LOGIN_STATUS_CHANGE, payload: res.json() };
+            return { type: fromSessionActions.LOGIN_STATUS_CHANGE, payload: res.json() };
         })
         // If request fails, dispatch failed action
-        .catch(() => Observable.of({ type: 'LOGIN_FAILED' }));
+        .catch((err) => Observable.of(fromSessionActions.loginFailure([INVALID_CREDENTIALS])));
       });
 
       @Effect() logout$ = this.actions$
-      .ofType(LOGOUT)
+      .ofType(fromSessionActions.LOGOUT)
       .map(action => {
         this.http.get('/api/logout', { headers: SessionService.getSessionHeader()}).subscribe();
         SessionService.clearSessionId();

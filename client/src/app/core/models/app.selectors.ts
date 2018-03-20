@@ -26,6 +26,7 @@ export const getSession = createSelector(getSessionState, fromSession.identity);
 export const getUserInfo = createSelector(getSessionState, fromSession.getUserInfo);
 export const getPendingSessionUpdate = createSelector(getSessionState, fromSession.getPendingUpdate);
 export const getHasFetchedSessionStatus = createSelector(getSessionState, fromSession.getHasFetchedStatus);
+export const getUserLoginErrors = createSelector(getSessionState, fromSession.getLoginErrors);
 export const isAdmin = createSelector(getSessionState, fromSession.isAdmin);
 export const isUserAdmin = createSelector(getSessionState, fromSession.isUserAdmin);
 

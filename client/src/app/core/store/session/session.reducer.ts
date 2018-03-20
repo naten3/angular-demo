@@ -12,19 +12,22 @@ export function reducer(state = initialState, action: Action) {
             return {
               userInfo: state.userInfo,
               pendingUpdate: true,
-              hasFetchedStatus: state.hasFetchedStatus
+              hasFetchedStatus: state.hasFetchedStatus,
+              loginErrors: []
             };
         case fromActions.LOGIN_FAILURE:
             return {
-                userInfo: null,
+              userInfo: null,
               pendingUpdate: false,
-              hasFetchedStatus: true
+              hasFetchedStatus: true,
+              loginErrors: action.payload
             };
         case fromActions.LOGIN_STATUS_CHANGE:
             return {
                 userInfo: action.payload,
                  pendingUpdate: false,
-                 hasFetchedStatus: true
+                 hasFetchedStatus: true,
+                 loginErrors: []
             };
         case fromActions.INVALIDATE_SESSION_INFO:
             const clone = cloneDeep(state);
