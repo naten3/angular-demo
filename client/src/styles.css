@@ -8,9 +8,15 @@
 }
 
 #homeProfileImage {
+    margin: 0 2em;
     height: 50px;
     width: 50px;
     object-fit: cover;
+}
+
+#updateUserProfileImage {
+    height: 50px;
+    width: 50px;
 }
 
 .col-centered{

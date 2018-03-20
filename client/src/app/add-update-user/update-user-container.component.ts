@@ -6,7 +6,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as fromRouter from '@ngrx/router-store';
 
-//TODO remove these
 import { Http, RequestOptions } from '@angular/http';
 import { SessionService } from 'app/core/services';
 import * as fromUserUpdate from 'app/core/store/actions/user-update.actions';
@@ -34,13 +33,15 @@ export abstract class UpdateUserComponent implements OnDestroy{
   formDataSub: Subscription;
   passwordSuccessSub;
 
+  profileImage$: Observable<string>;
+  notSocialUser$: Observable<boolean>;
+
   @ViewChild('profileImageUpload')
   fileInput: ElementRef;
 
   constructor( private store: Store<fromRoot.State>,
-    private currentFormData$: Observable<UserUpdateForm>,
+    private userInfo$: Observable<UserInfo>,
     private userId: number,
-    private notSocialUser$: Observable<boolean>,
     private http: Http) {
       this.success$ = store.select(fromRoot.getUserUpdateSuccess);
       this.submitted$ = store.select(fromRoot.getUserUpdateSubmitted);
@@ -53,6 +54,15 @@ export abstract class UpdateUserComponent implements OnDestroy{
       this.passwordPendingUpdate$ = store.select(fromRoot.getPasswordUpdatePending);
       this.passwordErrors$ = store.select(fromRoot.getPasswordUpdateErrors)
       .map(codes => codes.map(this.mapErrorCodeToMessage));
+
+      this.profileImage$ = userInfo$.map( ui => ui.profileImage);
+
+      this.notSocialUser$ = userInfo$.map(ui => !ui.socialUser);
+
+      const currentFormData$ =  userInfo$.map( ui => { return {
+        firstName: ui.firstName,
+        lastName: ui.lastName};
+      });
 
       this.formDataSub = currentFormData$.subscribe(fd => {
         this.model.firstName = fd.firstName;
@@ -95,7 +105,7 @@ export abstract class UpdateUserComponent implements OnDestroy{
     const fileList: FileList = event.target.files;
     if (fileList.length > 0) {
       const file: File = fileList[0];
-        const formData:FormData = new FormData();
+        const formData: FormData = new FormData();
         formData.append('file', file, file.name);
         const headers = SessionService.getSessionHeader()
         const options = new RequestOptions({ headers });

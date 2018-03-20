@@ -15,27 +15,14 @@ import { Http, RequestOptions } from '@angular/http';
   })
   export class AdminUserUpdateComponent extends UpdateUserComponent {
 
-    static getInitialUserForm(store: Store<fromRoot.State>): Observable<UserUpdateForm> {
-       return store.select(fromRoot.getCurrentlyManagedUser).map(userInfo => {
-         return {
-           firstName: userInfo.firstName,
-           lastName: userInfo.lastName};
-         });
-    }
-
-    static getNotSocialUser(store: Store<fromRoot.State>): Observable<boolean> {
-      return store.select(fromRoot.getCurrentlyManagedUser).map(userInfo => !userInfo.socialUser);
-    }
-
     static getUserId(route: ActivatedRoute): number {
-      return route.snapshot.params['userId'];
+      return Number(route.snapshot.params['userId']);
     }
 
     constructor( store: Store<fromRoot.State>, route: ActivatedRoute, http: Http) {
       super(store,
-        AdminUserUpdateComponent.getInitialUserForm(store),
+        store.select(fromRoot.getCurrentlyManagedUser),
         AdminUserUpdateComponent.getUserId(route),
-        AdminUserUpdateComponent.getNotSocialUser(store),
       http);
     }
   }

@@ -69,7 +69,7 @@ const applyOperationToMatchingUser: (State, number, UserReplace) => State =
 (state, id, userReplaceFunc) => {
   const matchesManagedUser = !!state.currentlyManagedUser &&
   state.currentlyManagedUser.id === id;
-  const userOnPage = !!state.userPage && state.userPage.content.find( x => x.id === id);
+  const userOnPage = !!state.userPage && !!state.userPage.content.find( x => x.id === id);
   if (matchesManagedUser || userOnPage) {
     let newManagedUser;
     if (matchesManagedUser) {

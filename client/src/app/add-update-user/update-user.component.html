@@ -5,6 +5,9 @@
   <div class="body">
     <form name="passwordForm" *ngIf="notSocialUser$ | async" (ngSubmit)="pf.form.valid && updatePassword(pf)" #pf="ngForm"
     novalidate ngNativeValidate>
+      <div class = "row">
+        <img id="updateUserProfileImage" [src]="profileImage$ | async">
+      </div>
   
       <div *ngFor='let error of passwordErrors$ | async' class='help-block'>
         {{error}}
