@@ -11,7 +11,7 @@ export interface UserInfo {
     profileImage?: string;
     socialProfileImage?: string;
     socialUser: boolean;
-    roles: Set<string>;
+    roles: Array<string>;
 }
 
 export const getDisplayProfileImage: (ui: UserInfo) => string = (ui: UserInfo) => 

@@ -1,10 +1,13 @@
-import { Component, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { filter } from 'rxjs/operators';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 
-import * as treeActions from 'app/core/store/actions/tree.actions';
 import * as fromRoot from 'app/core/store';
+import * as adminUserListActions from 'app/core/store/actions/admin-user-list.actions';
+import { Page } from 'app/core/models/common';
 import { UserInfo } from 'app/core/models/session';
 
 @Component({
@@ -12,7 +15,9 @@ import { UserInfo } from 'app/core/models/session';
     template: `
     
     <fieldset tabindex="-1">
-        <legend >All Users</legend>
+        <legend >Page {{displayPageNumber$ | async}} of {{totalPages$ | async}}  
+        <button class="btn btn-primary" [disabled]="first$ | async" (click)="previous()" >&laquo; Previous</button>
+        <button class="btn btn-primary" [disabled]="last$ | async" (click)="next()">Next &raquo;</button></legend>
             <div >
                 <app-user-list  [users]="users$ | async">
                 </app-user-list>
@@ -21,19 +26,41 @@ import { UserInfo } from 'app/core/models/session';
   `,
     changeDetection: ChangeDetectionStrategy.OnPush
     , styles: [`
- :focus { outline: none }
-        `]
+       :focus { outline: none }
+    `]
 })
 export class UserListContainerComponent {
 
     pageNumber$: Observable<number>;
+    displayPageNumber$: Observable<number>;
     users$: Observable<Array<UserInfo>>;
+    totalPages$: Observable<number>;
+    first$: Observable<boolean>;
+    last$: Observable<boolean>;
 
     constructor(
         private store: Store<fromRoot.State>
     ) {
         this.pageNumber$ = store.select(fromRoot.getAdminUserPageNumber);
-        this.users$ = store.select(fromRoot.getAdminUserPage).map(page => page.content);
+        this.displayPageNumber$ = this.pageNumber$.map(x => x + 1);
+        const nonNullPage$: Observable<Page<UserInfo>> =
+          store.select(fromRoot.getAdminUserPage)
+          .pipe(filter(x => !!x));
+        this.users$ = nonNullPage$.map(p => p.content);
+        this.totalPages$ = nonNullPage$.map(p => p.totalPages);
+        this.first$ = this.pageNumber$.map(p => p === 0);
+        this.last$ = combineLatest(this.pageNumber$, this.totalPages$)
+        .map(ar => ar[0] === ar[1] - 1);
     }
+
+    next() {
+        this.store.dispatch(adminUserListActions.incrementPage());
+    }
+
+    previous() {
+        this.store.dispatch(adminUserListActions.decrementPage());
+    }
+
+
 }
 

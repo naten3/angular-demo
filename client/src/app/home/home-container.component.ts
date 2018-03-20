@@ -17,16 +17,14 @@ import * as fromRoot from 'app/core/store';
     selector: 'app-home',
     template: `
 
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-    <h2>
+
+  <div class="row page-header">
     <img id="homeProfileImage" [src]="profileUrl$ | async">
-    <span>Welcome {{firstName$ | async}}!</span>
+    <h2 id="welcomeMessage">Welcome {{firstName$ | async}}!</h2>
     <button (click)="logout()" class="btn btn-primary">Logout</button>
-    </h2>
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#">NgRx-Store-Sample-App</a>
-      </div>
+  </div>
+  <nav class="navbar navbar-default">
+    <div class="container">
       <ul class="nav navbar-nav">
         <li routerLinkActive="active" [routerLink]="['users/me/update']" 
         routerLinkActiveOptions="{exact:true}"><a>Update My Profile</a></li>
@@ -37,7 +35,10 @@ import * as fromRoot from 'app/core/store';
     </div>
   </nav>
 <router-outlet></router-outlet>
-`
+`, styles: [`
+  #homeProfileImage { margin: 0 2em;}
+  #welcomeMessage { margin: 0 2em;}
+`]
 })
 
 export class HomeContainerComponent implements OnDestroy {

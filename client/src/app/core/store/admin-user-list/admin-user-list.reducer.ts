@@ -7,6 +7,24 @@ import { initialState } from 'app/core/models/admin-user-list';
 
 export function reducer(state = initialState, action: Action) {
     switch (action.type) {
+        case fromAdminUserListActions.INCREMENT_PAGE:
+           if (!state.userPage || !state.userPage.last ) {
+              return {
+                page: state.page + 1,
+                userPage: state.userPage
+              };
+           } else {
+               console.log('Ignoring increment, at last page');
+           }
+        case fromAdminUserListActions.DECREMENT_PAGE:
+          if (state.page > 0 ) {
+            return {
+              page: state.page - 1,
+              userPage: state.userPage
+            };
+           } else {
+             console.log('Ignoring decrement, at first page');
+           }
         case fromAdminUserListActions.CHANGE_PAGE:
             return {
               page: action.payload,

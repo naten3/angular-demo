@@ -2,10 +2,14 @@ import { UserInfo } from 'app/core/models/session';
 import { Page } from 'app/core/models/common';
 
 export const CHANGE_PAGE = '[Admin User List] change page';
+export const INCREMENT_PAGE = '[Admin User List] increment page';
+export const DECREMENT_PAGE = '[Admin User List] decrement page';
 export const REQUEST_USER_LIST_PAGE = '[Admin User List] request user page';
 export const USER_LIST_PAGE_SUCCESS = '[Admin User List] request user page success';
 export const USER_LIST_PAGE_FAILURE = '[Admin User List] request user page failure';
 
+export const incrementPage = () => { return { 'type': INCREMENT_PAGE }; };
+export const decrementPage = () => { return { 'type': DECREMENT_PAGE }; };
 export const changePage = (page: number) => { return { 'type': CHANGE_PAGE, 'payload': page}; };
 export const requestUserListPage = (page: number) => { return { 'type': REQUEST_USER_LIST_PAGE, 'payload': page }; };
 export const getUserListPageSuccess = (page: number, userPage: Page<UserInfo>) => {

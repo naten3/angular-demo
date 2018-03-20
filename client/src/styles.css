@@ -3,7 +3,17 @@
     margin: 5px 0;
 }
 
+.page-header {
+    margin: 3em 0;
+}
+
 #homeProfileImage {
     height: 50px;
     width: 50px;
+    object-fit: cover;
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
 }
