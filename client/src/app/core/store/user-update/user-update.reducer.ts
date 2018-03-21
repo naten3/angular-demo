@@ -1,12 +1,15 @@
 import { createSelector } from 'reselect';
 import { Action, combineReducers } from '@ngrx/store';
 import { cloneDeep } from 'lodash';
+import { LOGOUT } from 'app/core/store/actions/session.actions';
 
 import * as fromActions from 'app/core/store/actions/user-update.actions';
 import { initialState } from 'app/core/models/user-update';
 
 export function reducer(state = initialState, action: Action) {
     switch (action.type) {
+        case LOGOUT:
+          return initialState;
         case fromActions.UPDATE_USER_REQUEST:
           return Object.assign(cloneDeep(state),
           {

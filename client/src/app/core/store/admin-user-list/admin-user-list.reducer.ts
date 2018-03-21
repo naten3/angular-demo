@@ -7,61 +7,64 @@ import * as fromUserUpdate from 'app/core/store/actions/user-update.actions';
 import { State, initialState } from 'app/core/models/admin-user-list';
 import { UserInfo } from 'app/core/models/session';
 import { Page } from 'app/core/models/common';
+import { LOGOUT } from 'app/core/store/actions/session.actions';
 
 export function reducer(state: State = initialState, action: Action) {
-    switch (action.type) {
-        case fromAdminUserListActions.INCREMENT_PAGE:
-           if (!state.userPage || !state.userPage.last ) {
-              return {
-                page: state.page + 1,
-                userPage: state.userPage,
-                currentlyManagedUser: state.currentlyManagedUser
-              };
-           } else {
-               console.log('Ignoring increment, at last page');
-               return state;
-           }
-        case fromAdminUserListActions.DECREMENT_PAGE:
-          if (state.page > 0 ) {
-            return {
-              page: state.page - 1,
-              userPage: state.userPage,
-              currentlyManagedUser: state.currentlyManagedUser
-            };
-           } else {
-             console.log('Ignoring decrement, at first page');
-             return state;
-           }
-        case fromAdminUserListActions.CHANGE_PAGE:
-            return {
-              page: action.payload,
-              userPage: state.userPage,
-              currentlyManagedUser: state.currentlyManagedUser
-            };
-        case fromAdminUserListActions.USER_LIST_PAGE_SUCCESS:
-            if ( action.payload.page === state.page) {
-              return {
-                page: state.page,
-                userPage: action.payload.userPage,
-                currentlyManagedUser: state.currentlyManagedUser
-              };
-            } else {
-                console.log('Ignoring user page update since it\'s not for active page');
-                return state;
-            }
-        case fromUserUpdate.USER_UPDATE_SUCCESS:
-        // tslint:disable no-use-before-declare
-          return replaceUser(state, action.payload.id, action.payload);
-        case fromUserUpdate.PROFILE_IMAGE_UPDATE_SUCCESS:
-        // tslint:disable no-use-before-declare
-          return replaceProfilePicture(state, action.payload.id, action.payload.url);
-        case fromAdminUserListActions.MANAGE_USER:
-          return Object.assign(cloneDeep(state), {currentlyManagedUser: action.payload});
-        case fromAdminUserListActions.REQUEST_MANAGED_USER_SUCCESS:
-          return Object.assign(cloneDeep(state), {currentlyManagedUser: action.payload});
-        default:
-            return state;
-    };
+  switch (action.type) {
+    case LOGOUT:
+      return initialState;
+    case fromAdminUserListActions.INCREMENT_PAGE:
+      if (!state.userPage || !state.userPage.last ) {
+        return {
+          page: state.page + 1,
+          userPage: state.userPage,
+          currentlyManagedUser: state.currentlyManagedUser
+        };
+      } else {
+        console.log('Ignoring increment, at last page');
+        return state;
+      }
+    case fromAdminUserListActions.DECREMENT_PAGE:
+      if (state.page > 0 ) {
+        return {
+          page: state.page - 1,
+          userPage: state.userPage,
+          currentlyManagedUser: state.currentlyManagedUser
+        };
+       } else {
+         console.log('Ignoring decrement, at first page');
+         return state;
+       }
+    case fromAdminUserListActions.CHANGE_PAGE:
+        return {
+          page: action.payload,
+          userPage: state.userPage,
+          currentlyManagedUser: state.currentlyManagedUser
+        };
+    case fromAdminUserListActions.USER_LIST_PAGE_SUCCESS:
+        if ( action.payload.page === state.page) {
+          return {
+            page: state.page,
+            userPage: action.payload.userPage,
+            currentlyManagedUser: state.currentlyManagedUser
+          };
+        } else {
+          console.log('Ignoring user page update since it\'s not for active page');
+          return state;
+        }
+    case fromUserUpdate.USER_UPDATE_SUCCESS:
+    // tslint:disable no-use-before-declare
+      return replaceUser(state, action.payload.id, action.payload);
+    case fromUserUpdate.PROFILE_IMAGE_UPDATE_SUCCESS:
+    // tslint:disable no-use-before-declare
+      return replaceProfilePicture(state, action.payload.id, action.payload.url);
+    case fromAdminUserListActions.MANAGE_USER:
+      return Object.assign(cloneDeep(state), {currentlyManagedUser: action.payload});
+    case fromAdminUserListActions.REQUEST_MANAGED_USER_SUCCESS:
+      return Object.assign(cloneDeep(state), {currentlyManagedUser: action.payload});
+    default:
+        return state;
+  };
 };
 
 type UserReplace = ( ui: UserInfo) => UserInfo;

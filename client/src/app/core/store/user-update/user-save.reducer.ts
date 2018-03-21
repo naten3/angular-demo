@@ -4,9 +4,12 @@ import { cloneDeep } from 'lodash';
 
 import * as fromActions from 'app/core/store/actions/user-update.actions';
 import { initialState } from 'app/core/models/user-save';
+import { LOGOUT } from 'app/core/store/actions/session.actions';
 
 export function reducer(state = initialState, action: Action) {
     switch (action.type) {
+        case LOGOUT:
+          return initialState;
         case fromActions.CREATE_USER_REQUEST:
           return {
             success: false,
