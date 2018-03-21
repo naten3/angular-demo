@@ -9,7 +9,7 @@ export function reducer(state = initialState, action: Action) {
     switch (action.type) {
         case fromActions.CREATE_USER_REQUEST:
           return {
-            success: state.success,
+            success: false,
             submitted: true,
             pendingUpdate: true,
             errors: state.errors
@@ -19,7 +19,7 @@ export function reducer(state = initialState, action: Action) {
             success: true,
             submitted: true,
             pendingUpdate: false,
-            errors: null
+            errors: []
           };
         case fromActions.USER_CREATE_FAILURE:
           return {

@@ -42,7 +42,7 @@ import { UserInfo, getDisplayProfileImage, ROLE_ADMIN, ROLE_USER_ADMIN,
       <li class="list-group-item">
         <dl>
           <dt>Email Verified</dt>
-          <dd>{{user.emailVerified}}</dd>
+          <dd>{{emailVerifiedString()}}</dd>
         </dl>
       </li>
     </ul>
@@ -81,6 +81,10 @@ export class UserItemComponent {
                 return '';
             }
         }).filter(r => !!r).join(',');
+    }
+
+    emailVerifiedString(): string {
+        return this.user.emailVerified ? 'Yes' : 'No';
     }
 }
 

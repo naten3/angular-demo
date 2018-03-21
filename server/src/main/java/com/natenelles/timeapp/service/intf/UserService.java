@@ -2,6 +2,7 @@ package com.natenelles.timeapp.service.intf;
 
 import com.natenelles.timeapp.exception.ResourceNotFoundException;
 import com.natenelles.timeapp.model.errors.UpdatePasswordError;
+import com.natenelles.timeapp.model.errors.UserInviteError;
 import com.natenelles.timeapp.model.users.ImageUploadResponse;
 import com.natenelles.timeapp.model.users.UserCreateRequest;
 import com.natenelles.timeapp.model.users.UserResponse;
@@ -39,10 +40,7 @@ public interface UserService {
 
   boolean verifyEmail(long userId, String token);
 
-  /**
-   * @return true if the invite was successful or false if the email is taken;
-   */
-  boolean inviteUser(SignupInvite signupInvite);
+  Set<UserInviteError> inviteUser(SignupInvite signupInvite);
 
   Optional<SignupInvite> getSignupInvite(String token);
 

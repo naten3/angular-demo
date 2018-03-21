@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface UserInviteRepository extends JpaRepository<UserInvite, String> {
-  Optional<User> findByEmail(String email);
-  Optional<User> findByVerificationToken(String token);
+  Optional<UserInvite> findByEmail(String email);
+  Optional<UserInvite> findByVerificationToken(String token);
 }

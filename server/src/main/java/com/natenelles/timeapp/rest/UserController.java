@@ -4,6 +4,7 @@ import com.natenelles.timeapp.exception.ResourceNotFoundException;
 import com.natenelles.timeapp.exception.UnauthorizedException;
 import com.natenelles.timeapp.model.SuccessResponse;
 import com.natenelles.timeapp.model.errors.UpdatePasswordError;
+import com.natenelles.timeapp.model.errors.UserInviteError;
 import com.natenelles.timeapp.model.errors.UserSaveError;
 import com.natenelles.timeapp.model.users.ImageUploadResponse;
 import com.natenelles.timeapp.model.users.SignupInvite;
@@ -131,12 +132,9 @@ public class UserController {
   }
 
   @PostMapping("/users/signup-invite")
-  public SuccessResponse inviteUser(SignupInvite signupInvite) {
-    if (userService.inviteUser(signupInvite)) {
-      return new SuccessResponse(true, Optional.empty());
-    } else {
-      return new SuccessResponse(false, Optional.empty());
-    }
+  public SuccessResponse inviteUser(@RequestBody SignupInvite signupInvite) {
+    Set<UserInviteError> inviteErrors= userService.inviteUser(signupInvite);
+    return new SuccessResponse(inviteErrors.isEmpty(), Optional.of(inviteErrors));
   }
 
   //TODO authenticate

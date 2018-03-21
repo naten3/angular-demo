@@ -7,6 +7,7 @@ import javax.persistence.Id;
 public class UserInvite {
     @Id
     String email;
+
     String verificationToken;
 
     public String getEmail() {

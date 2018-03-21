@@ -43,6 +43,7 @@ spring.mail:
   properties.mail.smtp:
     auth: true
     enable: true
+    starttls.enable: true
 
 com.amazonaws.services.s3.enableV4: true
 S3:

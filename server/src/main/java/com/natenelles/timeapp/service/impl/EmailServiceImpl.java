@@ -65,7 +65,7 @@ public class EmailServiceImpl implements EmailService{
             helper.setSubject("Time Viewer Registration Invite");
             helper.setText(messageText);
             emailSender.send(message);
-            logger.info("address verification email sent to " + email);
+            logger.info("Invite email sent to " + email);
         } catch (MessagingException m) {
             throw new RuntimeException(m);
         }

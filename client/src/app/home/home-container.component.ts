@@ -30,6 +30,8 @@ import * as fromRoot from 'app/core/store';
         routerLinkActiveOptions="{exact:true}" class="nav-item"><a>Update My Profile</a></li>
         <li routerLinkActive="active" routerLinkActiveOptions="{exact:true}" 
         [routerLink]="['admin/users']" class="nav-item"><a>Manage Users</a></li>
+        <li routerLinkActive="active" routerLinkActiveOptions="{exact:true}" 
+        [routerLink]="['admin/users/invite-user']" class="nav-item"><a>Invite New User</a></li>
       </ul>
     </div>
   </nav>

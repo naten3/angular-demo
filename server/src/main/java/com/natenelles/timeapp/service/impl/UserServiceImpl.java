@@ -7,6 +7,7 @@ import com.natenelles.timeapp.entity.UserInvite;
 import com.natenelles.timeapp.entity.UserRole;
 import com.natenelles.timeapp.exception.ResourceNotFoundException;
 import com.natenelles.timeapp.model.errors.UpdatePasswordError;
+import com.natenelles.timeapp.model.errors.UserInviteError;
 import com.natenelles.timeapp.model.users.ImageUploadResponse;
 import com.natenelles.timeapp.model.users.UserCreateRequest;
 import com.natenelles.timeapp.model.users.UserResponse;
@@ -194,10 +195,10 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public boolean inviteUser(SignupInvite signupInvite) {
+  public Set<UserInviteError> inviteUser(SignupInvite signupInvite) {
     if (userRepository.findByEmail(signupInvite.getEmail()).isPresent() ||
             userInviteRepository.findByEmail(signupInvite.getEmail()).isPresent()) {
-      return false;
+      return ImmutableSet.of(UserInviteError.EMAIL_IN_USE);
     } else {
       String verificationToken = UUID.randomUUID().toString();
       UserInvite userInvite = new UserInvite();
@@ -205,7 +206,7 @@ public class UserServiceImpl implements UserService {
       userInvite.setVerificationToken(verificationToken);
       userInviteRepository.save(userInvite);
       emailService.sendUserInviteEmail(signupInvite.getEmail(), verificationToken);
-      return true;
+      return Collections.emptySet();
     }
   }
 

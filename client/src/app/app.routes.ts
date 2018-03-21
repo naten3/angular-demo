@@ -4,6 +4,7 @@ import { TodoContainerComponent } from 'app/todos/todo-container.component';
 import { HomeContainerComponent, LauncherContainerComponent, EmailVerifyComponent } from './home';
 import { UserListContainerComponent } from 'app/admin-user-list';
 import { AddUserComponent, SelfUpdateComponent, AdminUserUpdateComponent } from './add-update-user';
+import { InviteUserComponent } from 'app/user-invite';
 import { EmailVerifyResolver, IdResolver, UserAdminListResolver, ManagedUserResolver } from 'app/core/resolve';
 import { AuthGuard, LoginGuard, SocialLoginGuard, UserAdminGuard} from 'app/core/guards';
 
@@ -38,6 +39,10 @@ export const routes: Routes = [
         component: AdminUserUpdateComponent,
         canActivate: [UserAdminGuard],
         resolve: { unused: ManagedUserResolver}
+      },{
+        path: 'admin/users/invite-user',
+        component: InviteUserComponent
+        // canActivate: [UserAdminGuard]
       }]
   },
   {

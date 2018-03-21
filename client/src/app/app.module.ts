@@ -19,6 +19,7 @@ import { TreeNodeComponent } from 'app/tree/tree-node.component';
 import { TreeNodeListComponent } from 'app/tree/tree-node-list.component';
 import { TreeContainerComponent } from 'app/tree/tree-container.component';
 import { UserListContainerComponent, AdminUserListComponent, UserItemComponent } from 'app/admin-user-list';
+import { InviteUserComponent } from 'app/user-invite';
 
 import { MyErrorHandler } from './error-handler';
 import { CoreModule } from 'app/core/core.module';
@@ -26,7 +27,7 @@ import { routes } from 'app/app.routes';
 import { SharedModule } from 'app/shared/shared.module';
 import { LauncherContainerComponent, EmailVerifyComponent, HomeContainerComponent } from 'app/home';
 import { AddUserComponent, SelfUpdateComponent, AdminUserUpdateComponent } from 'app/add-update-user';
-import { AuthEffects, UserUpdateEffects, AdminUserListEffecs } from 'app/core/effects';
+import { AuthEffects, UserUpdateEffects, AdminUserListEffecs, UserInviteEffects } from 'app/core/effects';
 import { AuthGuard, LoginGuard, SocialLoginGuard, UserAdminGuard } from 'app/core/guards';
 import { EmailVerifyResolver, IdResolver, UserAdminListResolver, ManagedUserResolver } from 'app/core/resolve';
 
@@ -48,7 +49,8 @@ import { EmailVerifyResolver, IdResolver, UserAdminListResolver, ManagedUserReso
     AdminUserUpdateComponent,
     UserListContainerComponent,
     AdminUserListComponent,
-    UserItemComponent
+    UserItemComponent,
+    InviteUserComponent
   ],
   imports: [
     RouterModule,
@@ -60,7 +62,8 @@ import { EmailVerifyResolver, IdResolver, UserAdminListResolver, ManagedUserReso
     RouterModule.forRoot(routes, { useHash: true }),
     EffectsModule.run(AuthEffects),
     EffectsModule.run(UserUpdateEffects),
-    EffectsModule.run(AdminUserListEffecs)
+    EffectsModule.run(AdminUserListEffecs),
+    EffectsModule.run(UserInviteEffects)
   ],
   providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }, AuthGuard, LoginGuard,
     UserAdminListResolver,

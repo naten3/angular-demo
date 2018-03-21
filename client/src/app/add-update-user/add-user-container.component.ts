@@ -14,7 +14,6 @@ import { createUser, userCreateReset } from 'app/core/store/actions/user-update.
   templateUrl: './add-user.component.html'
 })
 export class AddUserComponent {
-  modalTitle = 'Register';
   success$: Observable<boolean>;
   submitted$: Observable<boolean>;
   pendingUpdate$: Observable<boolean>;

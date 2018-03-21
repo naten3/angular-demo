@@ -1,0 +1,36 @@
+<div class="content">
+  <div class="header">
+      <h4>Invite a User</h4>
+  </div>
+  <div class="body">
+  <form name="form" *ngIf="!(success$ | async)" 
+  (ngSubmit)="f.form.valid && save(f)" #f="ngForm" novalidate ngNativeValidate>
+
+    <div *ngFor='let error of errors$ | async' class='help-block'>
+      {{error}}
+    </div>
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !email.valid }">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" [(ngModel)]="model.email" name="email" 
+        #email="ngModel" required maxLength="300"/>
+        <div *ngIf="f.submitted && !email.valid" class="help-block">
+          Email is required
+        </div>
+    </div>
+    <div class="form-group">
+      <div class="control-group info">
+          <div class="controls">
+            <button [disabled]="pendingUpdate$ | async" class="btn btn-primary">Invite</button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div  *ngIf="success$ | async">
+      Success! An invite email will be sent to the address provided
+      <div class="controls">
+          <button (click)="reset()" class="btn btn-primary">Invite Another</button>
+        </div>
+    </div>
+  </div>
+</div>
+    

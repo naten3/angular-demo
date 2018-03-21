@@ -11,6 +11,7 @@ import * as sessionReducer from 'app/core/store/session/session.reducer';
 import * as userSaveReducer from 'app/core/store/user-update/user-save.reducer';
 import * as userUpdateReducer from 'app/core/store/user-update/user-update.reducer';
 import * as adminUserListReducer from 'app/core/store/admin-user-list/admin-user-list.reducer';
+import * as userInviteReducer from 'app/core/store/user-invite/user-invite.reducer';
 
 import { restoreStateReducer } from 'app/core/store/restore/restore.reducer';
 
@@ -22,7 +23,8 @@ const reducers = {
     session: sessionReducer.reducer,
     addUser: userSaveReducer.reducer,
     updateUser: userUpdateReducer.reducer,
-    adminUserList: adminUserListReducer.reducer
+    adminUserList: adminUserListReducer.reducer,
+    userInvite: userInviteReducer.reducer
 };
 
 export const developmentReducer = compose(
