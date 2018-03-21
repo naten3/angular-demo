@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { Action, combineReducers } from '@ngrx/store';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, clone } from 'lodash';
 
 import * as fromAdminUserListActions from 'app/core/store/actions/admin-user-list.actions';
 import * as fromUserUpdate from 'app/core/store/actions/user-update.actions';
@@ -18,7 +18,8 @@ export function reducer(state: State = initialState, action: Action) {
         return {
           page: state.page + 1,
           userPage: state.userPage,
-          currentlyManagedUser: state.currentlyManagedUser
+          currentlyManagedUser: state.currentlyManagedUser,
+          deletedUsers: state.deletedUsers
         };
       } else {
         console.log('Ignoring increment, at last page');
@@ -29,7 +30,8 @@ export function reducer(state: State = initialState, action: Action) {
         return {
           page: state.page - 1,
           userPage: state.userPage,
-          currentlyManagedUser: state.currentlyManagedUser
+          currentlyManagedUser: state.currentlyManagedUser,
+          deletedUsers: state.deletedUsers
         };
        } else {
          console.log('Ignoring decrement, at first page');
@@ -39,14 +41,16 @@ export function reducer(state: State = initialState, action: Action) {
         return {
           page: action.payload,
           userPage: state.userPage,
-          currentlyManagedUser: state.currentlyManagedUser
+          currentlyManagedUser: state.currentlyManagedUser,
+          deletedUsers: state.deletedUsers,
         };
     case fromAdminUserListActions.USER_LIST_PAGE_SUCCESS:
         if ( action.payload.page === state.page) {
           return {
             page: state.page,
             userPage: action.payload.userPage,
-            currentlyManagedUser: state.currentlyManagedUser
+            currentlyManagedUser: state.currentlyManagedUser,
+            deletedUsers: state.deletedUsers
           };
         } else {
           console.log('Ignoring user page update since it\'s not for active page');
@@ -59,9 +63,19 @@ export function reducer(state: State = initialState, action: Action) {
     // tslint:disable no-use-before-declare
       return replaceProfilePicture(state, action.payload.id, action.payload.url);
     case fromAdminUserListActions.MANAGE_USER:
-      return Object.assign(cloneDeep(state), {currentlyManagedUser: action.payload});
+      return Object.assign(clone(state), {currentlyManagedUser: action.payload});
     case fromAdminUserListActions.REQUEST_MANAGED_USER_SUCCESS:
-      return Object.assign(cloneDeep(state), {currentlyManagedUser: action.payload});
+      return Object.assign(clone(state), {currentlyManagedUser: action.payload,
+      fetchManagedUserFailure: false});
+    case fromAdminUserListActions.REQUEST_MANAGED_USER_FAILURE:
+      return Object.assign(clone(state), { fetchManagedUserFailure: true});
+    case fromAdminUserListActions.MANAGED_USER_RESET:
+      return Object.assign(clone(state), {currentlyManagedUser: null,
+      fetchManagedUserFailure: false});
+    case fromUserUpdate.DELETE_USER_SUCCESS:
+    const newDeletedUsers = new Set(state.deletedUsers);
+    newDeletedUsers.add(action.payload)
+    return Object.assign(clone(state), {deletedUsers: newDeletedUsers});
     default:
         return state;
   };
@@ -83,14 +97,14 @@ const applyOperationToMatchingUser: (State, number, UserReplace) => State =
 
     let newUserPage;
     if (userOnPage) {
-      const pageClone: Page<UserInfo> = cloneDeep(state.userPage);
+      const pageClone: Page<UserInfo> = clone(state.userPage);
       pageClone.content = pageClone.content.map(user => user.id === id ?
         userReplaceFunc(cloneDeep(user)) : user );
     } else {
       newUserPage = state.userPage;
     }
 
-    const result = cloneDeep(state);
+    const result = clone(state);
     result.currentlyManagedUser = newManagedUser;
     result.userPage = newUserPage;
     return result;

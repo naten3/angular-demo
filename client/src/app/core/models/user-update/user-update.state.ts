@@ -8,9 +8,14 @@ export interface State {
     passwordSubmitted: boolean;
     passwordPendingUpdate: boolean;
     passwordErrors?: Array<string>;
+
+    deleteSuccess: boolean;
+    deleteSubmitted: boolean;
+    deletePendingUpdate: boolean;
+    deleteErrors?: Array<string>;
 }
 
-export const initialState = {
+export const initialState: State = {
     success: false,
     submitted: false,
     pendingUpdate: false,
@@ -19,6 +24,11 @@ export const initialState = {
     passwordSuccess: false,
     passwordSubmitted: false,
     passwordPendingUpdate: false,
-    passwordErrors: []
+    passwordErrors: [],
+
+    deleteSuccess: false,
+    deleteSubmitted: false,
+    deletePendingUpdate: false,
+    deleteErrors: []
 };
 

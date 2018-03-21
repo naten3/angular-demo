@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
+import * as fromRouter from '@ngrx/router-store';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Http, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -22,7 +23,12 @@ export class ManagedUserResolver implements Resolve<number> {
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<number> {
         const routeUserId = Number(route.params['userId']);
-        return this.store.select(fromRoot.getCurrentlyManagedUser)
+        return this.store.select(fromRoot.getAdminUserList).map( x => {
+          if (x.fetchManagedUserFailure) {
+            Observable.throw('error getting user');
+          }
+          return x.currentlyManagedUser;
+        })
         .pipe(tap(cmu => {
             const managedUser = cmu as UserInfo;
             if (!managedUser ||
@@ -32,6 +38,11 @@ export class ManagedUserResolver implements Resolve<number> {
             }
         }))
         .pipe(filter(x => !!x && routeUserId === (x as UserInfo).id))
-        .pipe(take(1));
+        .pipe(take(1))
+        .catch(err => {
+          this.store.dispatch(fromAdminUserListActions.managedUserReset());
+          this.store.dispatch(fromRouter.go('not-found'));
+          return Observable.of(null);
+        });
     }
 }

@@ -20,7 +20,7 @@ import { TreeNodeListComponent } from 'app/tree/tree-node-list.component';
 import { TreeContainerComponent } from 'app/tree/tree-container.component';
 import { UserListContainerComponent, AdminUserListComponent, UserItemComponent } from 'app/admin-user-list';
 import { InviteUserComponent } from 'app/user-invite';
-import { InvalidInviteComponent } from 'app/error-page';
+import { InvalidInviteComponent, NotFoundComponent } from 'app/error-page';
 
 import { MyErrorHandler } from './error-handler';
 import { CoreModule } from 'app/core/core.module';
@@ -53,7 +53,8 @@ import { EmailVerifyResolver, IdResolver, UserAdminListResolver, ManagedUserReso
     AdminUserListComponent,
     UserItemComponent,
     InviteUserComponent,
-    InvalidInviteComponent
+    InvalidInviteComponent,
+    NotFoundComponent
   ],
   imports: [
     RouterModule,

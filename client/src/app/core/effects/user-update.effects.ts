@@ -2,14 +2,20 @@ import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Actions, Effect } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
+import { concat } from 'rxjs/observable/concat';
+import { Store } from '@ngrx/store';
+import { back, go } from '@ngrx/router-store';
+
 import { SessionService } from 'app/core/services';
 import * as fromUserUpdate from 'app/core/store/actions/user-update.actions';
 import * as fromSession from 'app/core/store/actions/session.actions';
 import { UserInfo } from 'app/core/models/session';
+import * as fromRoot from 'app/core/store';
 
 @Injectable()
 export class UserUpdateEffects {
   constructor(
+    private store: Store<fromRoot.State>,
     private http: Http,
     private actions$: Actions
   ) { }
@@ -78,4 +84,24 @@ export class UserUpdateEffects {
     })
     .catch(e => Observable.of(fromUserUpdate.updatePasswordFailure(['unknown'])));
   });
+
+  @Effect() deleteUser$ = this.actions$
+  .ofType(fromUserUpdate.DELETE_USER_REQUEST)
+  .switchMap(action => {
+    const userId = action.payload;
+    return this.http.delete(`/api/users/${userId}`,
+    { headers: SessionService.getSessionHeader()} )
+    .map(res => {
+        if (res.ok) {
+          return fromUserUpdate.deleteUserSuccess(userId);
+        } else {
+          return fromUserUpdate.userUpdateFailure(res.json().errors);
+        }
+    })
+    .catch(e => Observable.of(fromUserUpdate.userUpdateFailure(['unknown'])));
+  });
+
+  @Effect() leaveDeletedUser$ = this.actions$
+  .ofType(fromUserUpdate.DELETE_USER_SUCCESS)
+  .map( action => fromUserUpdate.userUpdateReset());
 }

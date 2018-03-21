@@ -1,4 +1,4 @@
-
+import * as fromRouter from '@ngrx/router-store';
 
 import { createSelector } from 'reselect';
 import { State } from 'app/core/models/app.state';
@@ -13,6 +13,13 @@ import * as fromUserInvite from 'app/core/models/user-invite';
 
 export const getAppState = (state: State) => state;
 
+export const getRouterState = (state: State) => state.router;
+export const getRouterPath = createSelector(getRouterState, (state: fromRouter.RouterState) => {
+  if (state) {
+    return state.path;
+  }
+});
+
 export const getSaveState = (state: State) => state.save;
 export const getSaveStateLoading = createSelector(getSaveState, fromSave.getLoading);
 
@@ -23,6 +30,7 @@ export const getTreeState = (state: State) => state.tree;
 export const getAllNodes = createSelector(getTreeState, fromTree.getNodes);
 
 export const getSessionState = (state: State) => state.session;
+export const getAuthenticated = (state: State) => !!state.session.userInfo;
 export const getSession = createSelector(getSessionState, fromSession.identity);
 export const getUserInfo = createSelector(getSessionState, fromSession.getUserInfo);
 export const getPendingSessionUpdate = createSelector(getSessionState, fromSession.getPendingUpdate);
@@ -53,6 +61,8 @@ export const getAdminUserPageNumber = createSelector(getAdminUserList, fromAdmin
 export const getAdminUserPage = createSelector(getAdminUserList, fromAdminUserList.getUserPage);
 export const getOtherUserInfo = (id: number) => createSelector(getAdminUserList, fromAdminUserList.getUserInfo(id));
 export const getCurrentlyManagedUser = createSelector(getAdminUserList, fromAdminUserList.getManagedUser);
+export const getManagedUserError = createSelector(getAdminUserList, fromAdminUserList.getManagedUserError);
+export const getAdminDeletedUsers = createSelector(getAdminUserList, fromAdminUserList.getDeletedUsers);
 
 export const getUserInvite = (state: State) => state.userInvite;
 export const getUserInvitePending = createSelector(getUserInvite, fromUserInvite.getPendingUpdate);

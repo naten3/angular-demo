@@ -24,5 +24,10 @@ import { Http, RequestOptions } from '@angular/http';
         store.select(fromRoot.getCurrentlyManagedUser),
         AdminUserUpdateComponent.getUserId(route),
       http);
+      this.canDeleteUser$ = store.select(fromRoot.getUserInfo)
+      .map( ui => ui.id !==  AdminUserUpdateComponent.getUserId(route));
+
+      this.isDeletedUser$ = store.select(fromRoot.getAdminDeletedUsers).map(deletedUsers =>
+        deletedUsers.has(AdminUserUpdateComponent.getUserId(route)));
     }
   }

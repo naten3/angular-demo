@@ -25,6 +25,7 @@ export interface State {
 }
 
 export const initialState: State = {
+    router: initialRouterState,
     todos: fromTodos.initialState,
     tree: fromTree.initialState,
     session: fromSessionState.initialState,

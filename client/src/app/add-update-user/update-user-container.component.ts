@@ -20,9 +20,10 @@ import { updateUser, updatePassword } from 'app/core/store/actions/user-update.a
 
 export abstract class UpdateUserComponent implements OnDestroy {
 
-  isLoggedInAsAdmin$: Observable<boolean>;
+  canDeleteUser$ = Observable.of(false);
+  isDeletedUser$ = Observable.of(false);
 
-  modalTitle = 'Update';
+  isLoggedInAsAdmin$: Observable<boolean>;
   success$: Observable<boolean>;
   submitted$: Observable<boolean>;
   pendingUpdate$: Observable<boolean>;
@@ -123,6 +124,14 @@ export abstract class UpdateUserComponent implements OnDestroy {
       default:
       return 'There was an error with user update';
     }
+  }
+
+  private deleteUser() {
+    this.store.dispatch(fromUserUpdate.deleteUserRequest(this.userId));
+  }
+
+  manageUsers() {
+    this.store.dispatch(fromRouter.go('/home/admin/users'));
   }
 
   fileChange(event) {

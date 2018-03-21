@@ -5,7 +5,7 @@ import { HomeContainerComponent, LauncherContainerComponent, EmailVerifyComponen
 import { UserListContainerComponent } from 'app/admin-user-list';
 import { AddUserComponent, SelfUpdateComponent, AdminUserUpdateComponent } from './add-update-user';
 import { InviteUserComponent } from 'app/user-invite';
-import { InvalidInviteComponent } from 'app/error-page';
+import { InvalidInviteComponent, NotFoundComponent } from 'app/error-page';
 
 import { EmailVerifyResolver, IdResolver, UserAdminListResolver, 
   ManagedUserResolver, UserInviteResolver } from 'app/core/resolve';
@@ -71,6 +71,11 @@ export const routes: Routes = [
     path: 'user-create/invalid-token',
     pathMatch: 'full',
     component: InvalidInviteComponent
+  },
+  {
+    path: 'not-found',
+    pathMatch: 'full',
+    component: NotFoundComponent
   },
   {
     path: '', pathMatch: 'full', component: LauncherContainerComponent, canActivate: [LoginGuard]

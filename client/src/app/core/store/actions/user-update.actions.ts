@@ -15,6 +15,10 @@ export const UPDATE_PASSWORD_SUCCESS = '[User Update] UPDATE PASSWORD SUCCESS';
 export const UPDATE_PASSWORD_FAILURE = '[User Update] UPDATE PASSWORD FAILURE';
 export const UPDATE_PASSWORD_RESET = '[User Update] UPDATE PASSWORD RESET';
 
+export const DELETE_USER_REQUEST = '[User Update] DELETE USER';
+export const DELETE_USER_SUCCESS = '[User Update] DELETE USER SUCCESS';
+export const DELETE_USER_FAILURE = '[User Update] DELETE USER FAILURE';
+
 export const PROFILE_IMAGE_UPDATE_SUCCESS = '[User Update] UPDATE PROFILE IMAGE SUCCESS';
 
 import { UserSaveRequest } from 'app/core/models/user-save';
@@ -58,6 +62,16 @@ export const updatePasswordFailure = (errors: Array<string>) => {
 };
 export const updatePasswordReset = () => {
     return {'type': UPDATE_PASSWORD_RESET};
+};
+
+export const deleteUserRequest = (userId: number) => {
+    return {'type': DELETE_USER_REQUEST, 'payload': userId};
+};
+export const deleteUserSuccess = (userId: number) => {
+    return {'type': DELETE_USER_SUCCESS, payload: userId};
+};
+export const deleteUserFailure = (errors: Array<string>) => {
+    return {'type': DELETE_USER_FAILURE, 'payload': errors};
 };
 
 export const updateProfileImageSuccess = (id: number, url: string) => {

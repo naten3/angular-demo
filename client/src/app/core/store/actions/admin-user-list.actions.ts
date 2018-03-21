@@ -12,7 +12,7 @@ export const MANAGE_USER = '[Admin User List] manage user';
 export const REQUEST_MANAGED_USER = '[Admin User List] request managed user';
 export const REQUEST_MANAGED_USER_SUCCESS = '[Admin User List] request managed success';
 export const REQUEST_MANAGED_USER_FAILURE = '[Admin User List] request managed failure';
-
+export const MANAGED_USER_RESET = '[Admin User List] managed user reset';
 export const incrementPage = () => { return { 'type': INCREMENT_PAGE }; };
 export const decrementPage = () => { return { 'type': DECREMENT_PAGE }; };
 export const changePage = (page: number) => { return { 'type': CHANGE_PAGE, 'payload': page}; };
@@ -36,6 +36,8 @@ export const requestManagedUserSucces = (userInfo: UserInfo) => {
     return { 'type': REQUEST_MANAGED_USER_SUCCESS, 'payload': userInfo};
 };
 
-export const requestManagedUserFailure = (errors: Array<string>) => {
-    return { 'type': REQUEST_MANAGED_USER_FAILURE, 'payload': { errors }};
+export const requestManagedUserFailure = (id: number) => {
+    return { 'type': REQUEST_MANAGED_USER_FAILURE, 'payload': { id }};
 };
+
+export const managedUserReset = () => { return {'type': MANAGED_USER_RESET }; };

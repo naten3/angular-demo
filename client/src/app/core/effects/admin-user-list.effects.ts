@@ -6,9 +6,7 @@ import { Store } from '@ngrx/store';
 import { go } from '@ngrx/router-store';
 import { mergeMap } from 'rxjs/operators';
 
-import { CREATE_USER_REQUEST,
-   UPDATE_USER_REQUEST,
-  UPDATE_PASSWORD_REQUEST } from 'app/core/store/actions/user-update.actions';
+import * as fromUserUpdate from 'app/core/store/actions/user-update.actions';
 import { SessionService } from 'app/core/services';
 import * as fromAdminUserList from 'app/core/store/actions/admin-user-list.actions';
 import { UserInfo } from 'app/core/models/session';
@@ -64,8 +62,8 @@ export class AdminUserListEffecs {
         if (res.ok) {
           return fromAdminUserList.requestManagedUserSucces(res.json());
         } else {
-          return fromAdminUserList.requestManagedUserFailure(res.json().errors);
+          return fromAdminUserList.requestManagedUserFailure(action.payload);
         }
     })
-    .catch(e => Observable.of(fromAdminUserList.requestManagedUserFailure((['unknown'])))));
+    .catch(e => Observable.of(fromAdminUserList.requestManagedUserFailure(action.payload))));
 }

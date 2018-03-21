@@ -66,6 +66,30 @@ export function reducer(state = initialState, action: Action) {
             passwordSubmitted: true,
             passwordPendingUpdate: false,
             passwordErrors: action.payload
+          });        
+          case fromActions.DELETE_USER_REQUEST:
+          return Object.assign(cloneDeep(state),
+          {
+            deleteSuccess: false,
+            deleteSubmitted: true,
+            deletePendingUpdate: true,
+            deleteErrors: []
+          });
+        case fromActions.DELETE_USER_SUCCESS:
+          return Object.assign(cloneDeep(state),
+          {
+            deleteSuccess: true,
+            deleteSubmitted: true,
+            deletePendingUpdate: false,
+            deleteErrors: []
+          });
+        case fromActions.DELETE_USER_FAILURE:
+          return Object.assign(cloneDeep(state),
+          {
+            deleteSuccess: false,
+            deleteSubmitted: true,
+            deletePendingUpdate: false,
+            deleteErrors: action.payload
           });
         default:
           return state;

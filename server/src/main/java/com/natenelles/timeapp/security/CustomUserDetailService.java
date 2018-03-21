@@ -18,13 +18,10 @@ import java.util.stream.Collectors;
 class CustomUserDetailService implements UserDetailsService {
 
   private UserService userService;
-  private PasswordEncoder passwordEncoder;
 
   @Autowired
-  public CustomUserDetailService(final UserService userService,
-                                 PasswordEncoder passwordEncoder) {
+  public CustomUserDetailService(final UserService userService) {
     this.userService = userService;
-    this.passwordEncoder = passwordEncoder;
   }
 
   public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {

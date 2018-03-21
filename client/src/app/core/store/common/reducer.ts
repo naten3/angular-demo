@@ -24,7 +24,8 @@ const reducers = {
     addUser: userSaveReducer.reducer,
     updateUser: userUpdateReducer.reducer,
     adminUserList: adminUserListReducer.reducer,
-    userInvite: userInviteReducer.reducer
+    userInvite: userInviteReducer.reducer,
+    router: fromRouter.routerReducer
 };
 
 export const developmentReducer = compose(

@@ -1,13 +1,27 @@
 <div class="content">
   <div class="header">
-      <h4>{{modalTitle}}</h4>
+      <h4>Update Profile</h4>
   </div>
-  <div class="body">
+  <div class="body overlay-wrapper">
+     <div *ngIf="isDeletedUser$ | async"  class="overlay">
+       <div class="bg-info">
+          This User has been deleted!
+          <button class="btn btn-primary d-block" (click)="manageUsers()">Back To Users</button>
+        </div>
+     </div>
+     <div *ngIf="canDeleteUser$ | async">
+        <div class="controls">
+            <button class="btn btn-danger" (click)="deleteUser()">Delete this User</button>
+        </div>
+     </div>
+      <div class = "row">
+          <img id="updateUserProfileImage" [src]="profileImage$ | async" class="m-5">
+          <input #profileImageUpload type="file" name="file" (change)="fileChange($event) && profileImageUpload.clear()" placeholder="Upload Profile Picture" 
+          accept=".svg,.jpg,.jpeg,.gif,.png" class="btn btn-primary m-5">
+      </div>
+
     <form name="passwordForm" *ngIf="notSocialUser$ | async" (ngSubmit)="pf.form.valid && updatePassword(pf)" #pf="ngForm"
     novalidate ngNativeValidate>
-      <div class = "row">
-        <img id="updateUserProfileImage" [src]="profileImage$ | async">
-      </div>
   
       <div *ngFor='let error of passwordErrors$ | async' class='help-block'>
         {{error}}
@@ -66,7 +80,5 @@
       </div>
     </form>
   </div>
-  <input #profileImageUpload type="file" name="file" (change)="fileChange($event) && profileImageUpload.clear()" placeholder="Upload Profile Picture" 
-  accept=".svg,.jpg,.jpeg,.gif,.png" class="btn btn-primary">
 </div>
     

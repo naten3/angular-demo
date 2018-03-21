@@ -10,7 +10,7 @@ import { reducer } from 'app/core/store';
 import { SaveEffects } from 'app/core/store/save/save.effects';
 import { TreeEffects } from 'app/core/store/tree/tree.effects';
 import { RestoreEffects } from 'app/core/store/restore/restore.effects';
-import { RouterStoreModule } from '@ngrx/router-store';
+import { routerReducer, RouterStoreModule } from '@ngrx/router-store';
 
 
 @NgModule({

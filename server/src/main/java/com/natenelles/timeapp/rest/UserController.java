@@ -15,6 +15,7 @@ import com.natenelles.timeapp.model.users.UserResponse;
 import com.natenelles.timeapp.model.users.UserUpdateRequest;
 import com.natenelles.timeapp.security.CustomSpringUser;
 import com.natenelles.timeapp.service.intf.UserService;
+import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.session.SessionRepository;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,6 +58,9 @@ public class UserController {
   UserService userService;
   @Autowired
   PasswordEncoder passwordEncoder;
+
+  @Autowired
+  SessionRepository sessionRepository;
 
   @GetMapping("/user/me")
   public UserResponse getUser(@AuthenticationPrincipal CustomSpringUser user) throws ResourceNotFoundException {
