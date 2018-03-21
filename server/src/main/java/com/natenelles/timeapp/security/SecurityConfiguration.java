@@ -12,19 +12,22 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.csrf.CsrfFilter;
-import org.springframework.security.web.csrf.CsrfTokenRepository;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.session.web.http.HeaderHttpSessionStrategy;
 import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.mem.InMemoryUsersConnectionRepository;
 import org.springframework.social.connect.web.ProviderSignInController;
+
+import javax.annotation.PostConstruct;
 
 @Configuration
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
@@ -54,13 +57,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Autowired
   private FacebookConnectionSignup facebookConnectionSignup;
 
+  //@Bean
+  //public DaoAuthenticationProvider authProvider(PasswordEncoder passwordEncoder) {
+  //  DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+  //  authProvider.setUserDetailsService(userDetailService);
+  //  authProvider.setPasswordEncoder(passwordEncoder);
+  //  return authProvider;
+  //}
+
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth)
   throws Exception {
     auth.userDetailsService(userDetailService)
-    //.passwordEncoder(new BCryptPasswordEncoder(5));TODO
-    .passwordEncoder(NoOpPasswordEncoder.getInstance());
+    .passwordEncoder(new BCryptPasswordEncoder(4));
   }
 
   @Override
@@ -103,6 +113,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     signInController.setPostSignInUrl(socialRedirectUrl);
 
     return signInController;
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
   }
 
 }

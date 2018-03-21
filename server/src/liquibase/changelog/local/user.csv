@@ -1,8 +1,12 @@
 USER_ID,USERNAME,PASSWORD,EMAIL,EMAIL_VERIFIED,EMAIL_VERIFICATION_TOKEN,FIRST_NAME,LAST_NAME,PROFILE_IMAGE
-1,nate,password,nate@fakedomain.com,true,a,nate,nelles,"https://s3.us-east-2.amazonaws.com/natetimeappbucket/spider.png"
-2,admin,password2,nate2@fakedomain.com,true,a,Edna,Krabappel,https://s3.us-east-2.amazonaws.com/natetimeappbucket/1-1251992993dDQL.jpg
-3,useradmin,password3,nate3@fakedomain.com,true,a,Bob,Belcher,https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg
-4,nate2,password,nate4@fakedomain.com,false,a,Philip,Jennings,https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg
-5,nate7,password,nate5@fakedomain.com,false,a,Elizabeth,Jennings,https://s3.us-east-2.amazonaws.com/natetimeappbucket/pexels-photo-415829.jpeg
-6,nate8,password,nate4@fakedomain.com,true,a,Kareena,Kapoor,https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg
-7,nate9,password,nate6@fakedomain.com,true,a,Priyanka,Chopra,https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg
+#password is password
+1,nate,"$2a$04$X/YxHdHfgCps2RgjV5.Yo.GLNV8dTzNgdUQHPVUgXM6rjDg7HrMaq",nate@fakedomain.com,true,a,nate,nelles,"https://s3.us-east-2.amazonaws.com/natetimeappbucket/spider.png"
+#password is password2
+2,admin,"$2a$04$VJgsHL9T0xhqqVAi1P4tR.wpPPfT7mpEyFcmCZM75P3fsf8PzkVYq",nate2@fakedomain.com,true,a,Edna,Krabappel,https://s3.us-east-2.amazonaws.com/natetimeappbucket/1-1251992993dDQL.jpg
+#password is password3
+3,useradmin,"$2a$04$F7qvK/nz6Y.5MA3IpIs5lu9TtyitS/rVaKRmS8KFlAGtqiJO25zmy",nate3@fakedomain.com,true,a,Bob,Belcher,https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg
+#password is password for rest
+4,nate2,"$2a$04$X/YxHdHfgCps2RgjV5.Yo.GLNV8dTzNgdUQHPVUgXM6rjDg7HrMaq",nate4@fakedomain.com,false,a,Philip,Jennings,https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg
+5,nate7,"$2a$04$X/YxHdHfgCps2RgjV5.Yo.GLNV8dTzNgdUQHPVUgXM6rjDg7HrMaq",nate5@fakedomain.com,false,a,Elizabeth,Jennings,https://s3.us-east-2.amazonaws.com/natetimeappbucket/pexels-photo-415829.jpeg
+6,nate8,"$2a$04$X/YxHdHfgCps2RgjV5.Yo.GLNV8dTzNgdUQHPVUgXM6rjDg7HrMaq",nate4@fakedomain.com,true,a,Kareena,Kapoor,https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg
+7,nate9,"$2a$04$X/YxHdHfgCps2RgjV5.Yo.GLNV8dTzNgdUQHPVUgXM6rjDg7HrMaq",nate6@fakedomain.com,true,a,Priyanka,Chopra,https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg

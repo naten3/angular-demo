@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -17,10 +18,13 @@ import java.util.stream.Collectors;
 class CustomUserDetailService implements UserDetailsService {
 
   private UserService userService;
+  private PasswordEncoder passwordEncoder;
 
   @Autowired
-  public CustomUserDetailService(final UserService userService) {
+  public CustomUserDetailService(final UserService userService,
+                                 PasswordEncoder passwordEncoder) {
     this.userService = userService;
+    this.passwordEncoder = passwordEncoder;
   }
 
   public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {

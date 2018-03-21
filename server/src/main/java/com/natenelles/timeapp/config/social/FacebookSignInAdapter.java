@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.natenelles.timeapp.config.social.FacebookConnectionSignup.DUMMY;
 import static com.natenelles.timeapp.config.social.SocialUtils.getFacebookUser;
 
 @Component
@@ -45,7 +46,8 @@ public class FacebookSignInAdapter implements SignInAdapter {
                         user.getPassword(), true, true,
                         true, true, authorities, user.getId());
 
-        UsernamePasswordAuthenticationToken principal = new UsernamePasswordAuthenticationToken(customSpringUser, user.getPassword());
+        //This is a hack to authenticate
+        UsernamePasswordAuthenticationToken principal = new UsernamePasswordAuthenticationToken(customSpringUser, DUMMY);
 
         SecurityContextHolder.getContext().setAuthentication(principal);
 

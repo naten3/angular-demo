@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -50,6 +51,7 @@ public class UserServiceImpl implements UserService {
   private EmailService emailService;
   private FileUploadService fileUploadService;
   private UserInviteRepository userInviteRepository;
+  private PasswordEncoder passwordEncoder;
 
   @Value("${default-profile-url}")
   private String defaultProfileUrl;
@@ -59,12 +61,14 @@ public class UserServiceImpl implements UserService {
                          MealRepository mealRepository,
                          EmailService emailService,
                          FileUploadService fileUploadService,
-                         UserInviteRepository userInviteRepository) {
+                         UserInviteRepository userInviteRepository,
+                         PasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
     this.mealRepository = mealRepository;
     this.emailService = emailService;
     this.fileUploadService = fileUploadService;
     this.userInviteRepository = userInviteRepository;
+    this.passwordEncoder = passwordEncoder;
   }
 
 
@@ -295,7 +299,7 @@ public class UserServiceImpl implements UserService {
   private User convertToNewUser(UserCreateRequest ucr, UserInvite userInvite) {
     User user = new User();
     user.setUsername(ucr.getUsername());
-    user.setPassword(ucr.getPassword());
+    user.setPassword(passwordEncoder.encode(ucr.getPassword()));
     user.setEmail(userInvite.getEmail());
     user.setFirstName(ucr.getFirstName());
     user.setLastName(ucr.getLastName());

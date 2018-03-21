@@ -27,6 +27,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,6 +51,8 @@ public class UserController {
   Logger logger = LoggerFactory.getLogger(UserController.class);
   @Autowired
   UserService userService;
+  @Autowired
+  PasswordEncoder passwordEncoder;
 
   @GetMapping("/user/me")
   public UserResponse getUser(@AuthenticationPrincipal CustomSpringUser user) throws ResourceNotFoundException {
@@ -90,9 +93,10 @@ public class UserController {
         return new ResponseEntity(new ErrorResponse(result.getErrors().get()), HttpStatus.BAD_REQUEST);
       } else {
         UserResponse userResponse = result.getUser().get();
-        CustomSpringUser user = CustomSpringUser.fromUserResponse(userResponse, userCreateRequest.getPassword());
+        String encodedPassword = passwordEncoder.encode(userCreateRequest.getPassword());
+        CustomSpringUser user = CustomSpringUser.fromUserResponse(userResponse, encodedPassword);
         SecurityContextHolder.getContext()
-                .setAuthentication(new UsernamePasswordAuthenticationToken(user, userCreateRequest.getPassword()));
+                .setAuthentication(new UsernamePasswordAuthenticationToken(user, encodedPassword));
         return new ResponseEntity(userResponse, HttpStatus.OK);
       }
     }
