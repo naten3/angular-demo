@@ -14,13 +14,15 @@ public class UserCreateRequest {
   private String password;
   @NotNull
   @Size(max = 300)
-  private String email;
+  private Optional<String> email = Optional.empty();
   @NotNull
   @Size(max = 100)
   private String firstName;
   @NotNull
   @Size(max = 100)
   private String lastName;
+  @Size(max = 100)
+  private Optional<String> inviteToken = Optional.empty();
 
   public String getUsername() {
     return username;
@@ -38,11 +40,11 @@ public class UserCreateRequest {
     this.password = password;
   }
 
-  public String getEmail() {
+  public Optional<String> getEmail() {
     return email;
   }
 
-  public void setEmail(final String email) {
+  public void setEmail(Optional<String> email) {
     this.email = email;
   }
 
@@ -60,5 +62,13 @@ public class UserCreateRequest {
 
   public void setLastName(String lastName) {
     this.lastName = lastName;
+  }
+
+  public Optional<String> getInviteToken() {
+    return inviteToken;
+  }
+
+  public void setInviteToken(Optional<String> inviteToken) {
+    this.inviteToken = inviteToken;
   }
 }

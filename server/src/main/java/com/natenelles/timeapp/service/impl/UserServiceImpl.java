@@ -94,11 +94,17 @@ public class UserServiceImpl implements UserService {
       return ImmutableSet.of(UserSaveError.ILLEGAL_USERNAME);
     }
 
-    Optional<UserSaveError> usernameInUseError = userRepository.doesUserExist(ucr.getUsername()) ? Optional.of(UserSaveError.USERNAME_IN_USE)
+    if (!ucr.getEmail().isPresent()) {
+      return ImmutableSet.of(UserSaveError.NO_EMAIL);
+    }
+    String email = ucr.getEmail().get();
+
+    Optional<UserSaveError> usernameInUseError = userRepository.doesUserExist(ucr.getUsername()) ?
+            Optional.of(UserSaveError.USERNAME_IN_USE)
             : Optional.empty();
 
-    Optional<UserSaveError> emailInUseError = userRepository.findByEmail(ucr.getEmail()).isPresent() ||
-            userInviteRepository.findByEmail(ucr.getEmail()).isPresent() ? Optional.of(UserSaveError.EMAIL_IN_USE) : Optional.empty();
+    Optional<UserSaveError> emailInUseError = userRepository.findByEmail(email).isPresent() ||
+            userInviteRepository.findByEmail(email).isPresent() ? Optional.of(UserSaveError.EMAIL_IN_USE) : Optional.empty();
 
     Set<UserSaveError> errors =
             Stream.of(optStream(usernameInUseError), optStream(emailInUseError))
@@ -107,13 +113,31 @@ public class UserServiceImpl implements UserService {
 
     if (errors.isEmpty()) {
       String emailVerificationToken = UUID.randomUUID().toString();
-      User user = convertToNewUser(ucr,emailVerificationToken);
+      User user = convertToNewUser(ucr,emailVerificationToken, email);
       User savedUser = userRepository.save(user);
       emailService.sendUserVerificationEmail(user.getEmail(), emailVerificationToken, savedUser.getId());
       return Collections.emptySet();
     } else {
       return errors;
     }
+  }
+
+  @Override
+  public CreateFromInviteResult createUserFromInvite(UserCreateRequest ucr, String inviteToken) {
+    Optional<UserInvite> userInvite = userInviteRepository.findByVerificationToken(inviteToken);
+    if(!userInvite.isPresent()) {
+      return new CreateFromInviteResult(ImmutableSet.of(UserSaveError.NO_INVITE));
+    }
+
+    if( userRepository.doesUserExist(ucr.getUsername())) {
+      return new CreateFromInviteResult(ImmutableSet.of(UserSaveError.USERNAME_IN_USE));
+    }
+
+    User user = convertToNewUser(ucr, userInvite.get());
+    userRepository.save(user);
+    userInviteRepository.delete(userInvite.get());
+
+    return new CreateFromInviteResult(convertToUserResponse(user));
   }
 
   @Override
@@ -252,14 +276,30 @@ public class UserServiceImpl implements UserService {
   /**
    * Converts a new user to a User, adds USER role
    */
-  private User convertToNewUser(UserCreateRequest ucr, String emailVerificationToken) {
+  private User convertToNewUser(UserCreateRequest ucr, String emailVerificationToken, String email) {
     User user = new User();
     user.setUsername(ucr.getUsername());
     user.setPassword(ucr.getPassword()); //TODO Bcrypt
-    user.setEmail(ucr.getEmail());
+    user.setEmail(email);
     user.setFirstName(ucr.getFirstName());
     user.setLastName(ucr.getLastName());
     user.setEmailVerificationToken(emailVerificationToken);
+    user.setProfileImage(Optional.of(defaultProfileUrl));
+
+    Set<UserRole> roles = new HashSet<>();
+    roles.add(new UserRole(UserRole.USER));
+    user.setRoles(roles);
+    return user;
+  }
+
+  private User convertToNewUser(UserCreateRequest ucr, UserInvite userInvite) {
+    User user = new User();
+    user.setUsername(ucr.getUsername());
+    user.setPassword(ucr.getPassword());
+    user.setEmail(userInvite.getEmail());
+    user.setFirstName(ucr.getFirstName());
+    user.setLastName(ucr.getLastName());
+    user.setEmailVerified(true);
     user.setProfileImage(Optional.of(defaultProfileUrl));
 
     Set<UserRole> roles = new HashSet<>();

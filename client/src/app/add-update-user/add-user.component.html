@@ -26,9 +26,12 @@
         Password is required and must be between 8 and 100 characters
       </div>
     </div>
-    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !email.valid }">
+    <div class="form-group" 
+            [ngClass]="{ 'has-error': f.submitted && !email.valid }">
         <label for="email">Email</label>
-        <input type="email" class="form-control" [(ngModel)]="model.email" name="email" 
+        <input  [readonly]="inviteValid$ | async"
+        type="email" class="form-control" 
+        [(ngModel)]="model.email" name="email" 
         #email="ngModel" required maxLength="300" autocomplete="email"/>
         <div *ngIf="f.submitted && !email.valid" class="help-block">
           Email is required
@@ -58,10 +61,16 @@
         </div>
       </div>
     </form>
-    <div  *ngIf="success$ | async">
+    <div  *ngIf="nonAuthenticatedSuccess$ | async">
       Success! A confirmation email will be sent to the address provided
       <div class="controls">
           <button (click)="goToLogin()" class="btn btn-primary">Return to Login</button>
+        </div>
+    </div>
+    <div  *ngIf="authenticatedSuccess$ | async">
+        Success! You are logged in
+        <div class="controls">
+            <button (click)="goToHome()" class="btn btn-primary">Proceed to Site</button>
         </div>
     </div>
   </div>

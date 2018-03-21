@@ -5,7 +5,10 @@ import { HomeContainerComponent, LauncherContainerComponent, EmailVerifyComponen
 import { UserListContainerComponent } from 'app/admin-user-list';
 import { AddUserComponent, SelfUpdateComponent, AdminUserUpdateComponent } from './add-update-user';
 import { InviteUserComponent } from 'app/user-invite';
-import { EmailVerifyResolver, IdResolver, UserAdminListResolver, ManagedUserResolver } from 'app/core/resolve';
+import { InvalidInviteComponent } from 'app/error-page';
+
+import { EmailVerifyResolver, IdResolver, UserAdminListResolver, 
+  ManagedUserResolver, UserInviteResolver } from 'app/core/resolve';
 import { AuthGuard, LoginGuard, SocialLoginGuard, UserAdminGuard} from 'app/core/guards';
 
 export const routes: Routes = [
@@ -39,10 +42,11 @@ export const routes: Routes = [
         component: AdminUserUpdateComponent,
         canActivate: [UserAdminGuard],
         resolve: { unused: ManagedUserResolver}
-      },{
+      },
+      {
         path: 'admin/users/invite-user',
-        component: InviteUserComponent
-        // canActivate: [UserAdminGuard]
+        component: InviteUserComponent,
+        canActivate: [UserAdminGuard]
       }]
   },
   {
@@ -55,11 +59,18 @@ export const routes: Routes = [
     pathMatch: 'full',
     component: EmailVerifyComponent,
     resolve: { success: EmailVerifyResolver }
-  },  {
+  },
+  {
     path: 'user-create',
     pathMatch: 'full',
     component: AddUserComponent,
-    canActivate: [LoginGuard]
+    canActivate: [LoginGuard],
+    resolve: { email: UserInviteResolver }
+  },
+  {
+    path: 'user-create/invalid-token',
+    pathMatch: 'full',
+    component: InvalidInviteComponent
   },
   {
     path: '', pathMatch: 'full', component: LauncherContainerComponent, canActivate: [LoginGuard]

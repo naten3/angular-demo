@@ -28,6 +28,8 @@ public interface UserService {
 
   Set<UserSaveError> createUser(UserCreateRequest ucr);
 
+  CreateFromInviteResult createUserFromInvite(UserCreateRequest ucr, String inviteToken);
+
   UserResponse updateUser(long userId, UserUpdateRequest uur) throws ResourceNotFoundException;
 
   Set<UpdatePasswordError> updateUserPassword(long userId, String password);
@@ -45,4 +47,25 @@ public interface UserService {
   Optional<SignupInvite> getSignupInvite(String token);
 
   ImageUploadResponse uploadProfileImage(MultipartFile file, long userId);
+
+  class CreateFromInviteResult {
+    Optional<Set<UserSaveError>> errors = Optional.empty();
+    Optional<UserResponse> user = Optional.empty();
+
+    public CreateFromInviteResult(Set<UserSaveError> errors) {
+      this.errors = Optional.of(errors);
+    }
+
+    public CreateFromInviteResult(UserResponse user) {
+      this.user = Optional.of(user);
+    }
+
+    public Optional<Set<UserSaveError>> getErrors() {
+      return errors;
+    }
+
+    public Optional<UserResponse> getUser() {
+      return user;
+    }
+  }
 }

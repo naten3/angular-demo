@@ -85,6 +85,6 @@ public class EmailServiceImpl implements EmailService{
     }
 
     private String getUserInviteUrl(String token) {
-        return String.format("%s?token=%s", userInviteUrl, token);
+        return String.format("%s?invite-token=%s", userInviteUrl, token);
     }
 }

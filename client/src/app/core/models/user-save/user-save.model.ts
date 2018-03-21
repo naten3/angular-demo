@@ -4,6 +4,7 @@ export class UserSaveRequest {
   public password: string;
   public firstName: string;
   public lastName: string;
+  public inviteToken?: string;
 
   fromValues(values: UserSaveRequest) {
     return Object.assign(this, values);

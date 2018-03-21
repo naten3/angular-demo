@@ -1,10 +1,13 @@
 package com.natenelles.timeapp.security;
 
+import com.natenelles.timeapp.model.users.UserResponse;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Custom User to hold the id, since all rest endpoints use id instead of username, we don't want to have to
@@ -32,5 +35,13 @@ public class CustomSpringUser extends User {
 
   public long getId() {
     return id;
+  }
+
+  public static CustomSpringUser fromUserResponse(UserResponse userResponse, String password) {
+    Collection<? extends GrantedAuthority> authorities = userResponse.getRoles().stream()
+            .map(SimpleGrantedAuthority::new)
+            .collect(Collectors.toSet());
+    return new CustomSpringUser(userResponse.getUsername(), password, true, true,
+            true, true, authorities, userResponse.getId());
   }
 }

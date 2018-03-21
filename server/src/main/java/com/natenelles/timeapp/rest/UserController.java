@@ -2,6 +2,7 @@ package com.natenelles.timeapp.rest;
 
 import com.natenelles.timeapp.exception.ResourceNotFoundException;
 import com.natenelles.timeapp.exception.UnauthorizedException;
+import com.natenelles.timeapp.model.ErrorResponse;
 import com.natenelles.timeapp.model.SuccessResponse;
 import com.natenelles.timeapp.model.errors.UpdatePasswordError;
 import com.natenelles.timeapp.model.errors.UserInviteError;
@@ -22,7 +23,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,12 +68,34 @@ public class UserController {
     return userService.getAllUsers(pageable);
   }
 
+  /**
+   * returns a 201 for non-invited users
+   * returns a 200 with user resposne for invited users
+   * returns a set of errors for error
+   */
   @PostMapping("/users")
-  public SuccessResponse<UserSaveError> createUser(
+  public ResponseEntity createUser(
                                  @RequestBody UserCreateRequest userCreateRequest) {
-    Set<UserSaveError> errors = userService.createUser(userCreateRequest);
-
-    return new SuccessResponse<>(errors.isEmpty(), Optional.of(errors).filter(es -> !es.isEmpty()));
+    if (!userCreateRequest.getInviteToken().isPresent()) {
+      Set<UserSaveError> errors = userService.createUser(userCreateRequest);
+      if (errors.isEmpty()) {
+        return new ResponseEntity(HttpStatus.CREATED);
+      } else {
+        return new ResponseEntity(new ErrorResponse(errors), HttpStatus.BAD_REQUEST);
+      }
+    } else {
+      UserService.CreateFromInviteResult result = userService.createUserFromInvite(userCreateRequest,
+              userCreateRequest.getInviteToken().get());
+      if (result.getErrors().isPresent()) {
+        return new ResponseEntity(new ErrorResponse(result.getErrors().get()), HttpStatus.BAD_REQUEST);
+      } else {
+        UserResponse userResponse = result.getUser().get();
+        CustomSpringUser user = CustomSpringUser.fromUserResponse(userResponse, userCreateRequest.getPassword());
+        SecurityContextHolder.getContext()
+                .setAuthentication(new UsernamePasswordAuthenticationToken(user, userCreateRequest.getPassword()));
+        return new ResponseEntity(userResponse, HttpStatus.OK);
+      }
+    }
   }
 
   @PutMapping("/users/{id}")
@@ -137,9 +162,8 @@ public class UserController {
     return new SuccessResponse(inviteErrors.isEmpty(), Optional.of(inviteErrors));
   }
 
-  //TODO authenticate
   @GetMapping("/users/signup-invite")
-  public ResponseEntity<SignupInvite> getUserInvite(@Param("token") String token) {
+  public ResponseEntity<SignupInvite> getUserInvite(@RequestParam(value = "invite-token") String token) {
     return userService.getSignupInvite(token).map(signupInvite -> new ResponseEntity<>(signupInvite, HttpStatus.OK))
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }

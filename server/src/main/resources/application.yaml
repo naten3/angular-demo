@@ -31,7 +31,7 @@ datasource:
 server.connection-timeout: 5000
 
 email-verification-url: "http://localhost:8090/#/email-verify"
-user-invite-url: "http://localhost:8090/user-invite"
+user-invite-url: "http://localhost:8090/#/user-create"
 #needs to be on social provider whitelists
 social-login-host: "http://localhost:8090/api"
 social-redirect-url: "http://localhost:8090/#/social/login"

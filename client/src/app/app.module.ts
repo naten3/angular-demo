@@ -20,6 +20,7 @@ import { TreeNodeListComponent } from 'app/tree/tree-node-list.component';
 import { TreeContainerComponent } from 'app/tree/tree-container.component';
 import { UserListContainerComponent, AdminUserListComponent, UserItemComponent } from 'app/admin-user-list';
 import { InviteUserComponent } from 'app/user-invite';
+import { InvalidInviteComponent } from 'app/error-page';
 
 import { MyErrorHandler } from './error-handler';
 import { CoreModule } from 'app/core/core.module';
@@ -29,7 +30,8 @@ import { LauncherContainerComponent, EmailVerifyComponent, HomeContainerComponen
 import { AddUserComponent, SelfUpdateComponent, AdminUserUpdateComponent } from 'app/add-update-user';
 import { AuthEffects, UserUpdateEffects, AdminUserListEffecs, UserInviteEffects } from 'app/core/effects';
 import { AuthGuard, LoginGuard, SocialLoginGuard, UserAdminGuard } from 'app/core/guards';
-import { EmailVerifyResolver, IdResolver, UserAdminListResolver, ManagedUserResolver } from 'app/core/resolve';
+import { EmailVerifyResolver, IdResolver, UserAdminListResolver, ManagedUserResolver,
+  UserInviteResolver } from 'app/core/resolve';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,8 @@ import { EmailVerifyResolver, IdResolver, UserAdminListResolver, ManagedUserReso
     UserListContainerComponent,
     AdminUserListComponent,
     UserItemComponent,
-    InviteUserComponent
+    InviteUserComponent,
+    InvalidInviteComponent
   ],
   imports: [
     RouterModule,
@@ -68,7 +71,7 @@ import { EmailVerifyResolver, IdResolver, UserAdminListResolver, ManagedUserReso
   providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }, AuthGuard, LoginGuard,
     UserAdminListResolver,
     SocialLoginGuard, UserAdminGuard,
-    EmailVerifyResolver, IdResolver, ManagedUserResolver],
+    EmailVerifyResolver, IdResolver, ManagedUserResolver, UserInviteResolver],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -1,6 +1,8 @@
 export const CREATE_USER_REQUEST = '[User Update] CREATE';
 export const USER_CREATE_SUCCESS = '[User Update] CREATE SUCCESS';
 export const USER_CREATE_FAILURE = '[User Update] CREATE FAILURE';
+export const USER_INVITE_CREATE_REQUEST = '[User Update] USER INVITE CREATE';
+
 export const USER_CREATE_RESET = '[User Update] CREATE RESET';
 
 export const UPDATE_USER_REQUEST = '[User Update] UPDATE';
@@ -25,6 +27,10 @@ export const createUser = (userSaveRequest: UserSaveRequest) => {
 export const userCreateSuccess = () => { return {'type': USER_CREATE_SUCCESS}; };
 export const userCreateFailure = (errors: Array<string>) => {
     return {'type': USER_CREATE_FAILURE, 'payload': errors};
+};
+
+export const userInviteCreate = (userSaveRequest: UserSaveRequest) => {
+    return { 'type': USER_INVITE_CREATE_REQUEST, 'payload': userSaveRequest };
 };
 
 export const userCreateReset = () => { return {'type': USER_CREATE_RESET}; };
