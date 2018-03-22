@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, EventEmitter, Output, ViewChild , Input} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { filter } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 
 import * as fromRoot from 'app/core/store';
@@ -21,11 +22,11 @@ import { Http, RequestOptions } from '@angular/http';
 
     constructor( store: Store<fromRoot.State>, route: ActivatedRoute, http: Http) {
       super(store,
-        store.select(fromRoot.getCurrentlyManagedUser),
+        store.select(fromRoot.getCurrentlyManagedUser).pipe(filter(x => !!x)),
         AdminUserUpdateComponent.getUserId(route),
       http);
       this.canDeleteUser$ = store.select(fromRoot.getUserInfo)
-      .map( ui => ui.id !==  AdminUserUpdateComponent.getUserId(route));
+      .map( ui => !!ui && ui.id !==  AdminUserUpdateComponent.getUserId(route));
 
       this.isDeletedUser$ = store.select(fromRoot.getAdminDeletedUsers).map(deletedUsers =>
         deletedUsers.has(AdminUserUpdateComponent.getUserId(route)));

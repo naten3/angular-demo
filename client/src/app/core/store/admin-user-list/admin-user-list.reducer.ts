@@ -73,9 +73,16 @@ export function reducer(state: State = initialState, action: Action) {
       return Object.assign(clone(state), {currentlyManagedUser: null,
       fetchManagedUserFailure: false});
     case fromUserUpdate.DELETE_USER_SUCCESS:
-    const newDeletedUsers = new Set(state.deletedUsers);
-    newDeletedUsers.add(action.payload)
-    return Object.assign(clone(state), {deletedUsers: newDeletedUsers});
+      const newDeletedUsers = new Set(state.deletedUsers);
+      newDeletedUsers.add(action.payload);
+      const assignObj: any = {};
+      assignObj.deletedUsers = newDeletedUsers; 
+      const managedUser = state.currentlyManagedUser;
+      if (!!managedUser && managedUser.id === action.payload) {
+        assignObj.currentlyManagedUser = null;
+        assignObj.fetchManagedUserFailure = false;
+      }
+    return Object.assign(clone(state), assignObj);
     default:
         return state;
   };

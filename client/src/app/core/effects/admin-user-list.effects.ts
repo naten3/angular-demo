@@ -10,6 +10,7 @@ import * as fromUserUpdate from 'app/core/store/actions/user-update.actions';
 import { SessionService } from 'app/core/services';
 import * as fromAdminUserList from 'app/core/store/actions/admin-user-list.actions';
 import { UserInfo } from 'app/core/models/session';
+import { Page } from 'app/core/models/common';
 import * as fromRoot from 'app/core/store';
 
 export const PAGE_SIZE = 6;
@@ -66,4 +67,29 @@ export class AdminUserListEffecs {
         }
     })
     .catch(e => Observable.of(fromAdminUserList.requestManagedUserFailure(action.payload))));
+
+  @Effect() refreshPage$ = this.actions$
+  .ofType(fromUserUpdate.DELETE_USER_SUCCESS)
+  .withLatestFrom(this.store)
+  .switchMap(actionWithStore => {
+    const page: Page<UserInfo> = actionWithStore[1].adminUserList.userPage;
+    const userId = actionWithStore[0].payload;
+    if (!!page && !!page.content.find(x => x.id === userId)) {
+      // user is on current page
+      if (page.numberOfElements === 1) {
+        if (page.number === 0) {
+          // we removed the last user
+          return Observable.of();
+        } else {
+          // we emptied the page go back one
+          return Observable.of(fromAdminUserList.decrementPage());
+        }
+       } else {
+          // just refresh the page
+          return Observable.of(fromAdminUserList.requestUserListPage(actionWithStore[1].adminUserList.page));
+        }
+      } else {
+        return Observable.of();
+      }
+    });
 }
