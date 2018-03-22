@@ -127,7 +127,9 @@ export abstract class UpdateUserComponent implements OnDestroy {
   }
 
   private deleteUser() {
-    this.store.dispatch(fromUserUpdate.deleteUserRequest(this.userId));
+    if ( confirm('Are you sure you want to delete this user?')) {
+      this.store.dispatch(fromUserUpdate.deleteUserRequest(this.userId));
+    }
   }
 
   manageUsers() {

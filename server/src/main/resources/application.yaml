@@ -30,6 +30,8 @@ datasource:
 
 server.connection-timeout: 5000
 
+embedded-redis: true
+
 email-verification-url: "http://localhost:8090/#/email-verify"
 user-invite-url: "http://localhost:8090/#/user-create"
 #needs to be on social provider whitelists

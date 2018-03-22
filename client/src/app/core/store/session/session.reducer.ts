@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { Action, combineReducers } from '@ngrx/store';
-import { cloneDeep } from 'lodash';
+import { clone } from 'lodash';
 
 import * as fromActions from 'app/core/store/actions/session.actions';
 import { initialState } from 'app/core/models/session';
@@ -30,25 +30,24 @@ export function reducer(state = initialState, action: Action) {
                  loginErrors: []
             };
         case fromActions.INVALIDATE_SESSION_INFO:
-            const clone = cloneDeep(state);
-            clone.hasFetchedStatus = false;
-            return clone;
+            return Object.assign(clone(state), {hasFetchedStatus: false});
         case fromUserUpdate.USER_UPDATE_SUCCESS:
             if (action.payload.id === state.userInfo.id) {
-                return Object.assign(cloneDeep(state), {userInfo: action.payload});
+                return Object.assign(clone(state), {userInfo: action.payload});
             } else {
                 return state;
             }
         case fromUserUpdate.PROFILE_IMAGE_UPDATE_SUCCESS:
         if (action.payload.id === state.userInfo.id) {
-            const clone = cloneDeep(state);
-            clone.userInfo.profileImage = action.payload.url;
-            return clone;
+          return Object.assign(clone(state), {profileImage: action.payload.url});
         } else {
-            return state;
+          return state;
         }
-        case fromActions.LOGOUT:
-        return Object.assign(cloneDeep(initialState), {hasFetchedStatus: true});
+        case fromActions.REMOVE_USER:
+        return Object.assign(clone(initialState), {
+          hasFetchedStatus: true,
+          userInfo: null
+        });
         default:
             return state;
     };

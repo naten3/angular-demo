@@ -37,9 +37,9 @@ export class AuthEffects {
 
       @Effect() logout$ = this.actions$
       .ofType(fromSessionActions.LOGOUT)
-      .map(action => {
+      .switchMap(action => {
         this.http.get('/api/logout', { headers: SessionService.getSessionHeader()}).subscribe();
         SessionService.clearSessionId();
-        return go('/');
+        return Observable.of(fromSessionActions.removeUser(), go('/'));
       });
 }

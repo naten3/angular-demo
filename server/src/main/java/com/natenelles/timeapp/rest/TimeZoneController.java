@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 
 @RestController
-public class MealController {
+public class TimeZoneController {
 
   @Autowired
   private MealService mealService;
