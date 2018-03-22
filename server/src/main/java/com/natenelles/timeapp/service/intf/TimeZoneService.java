@@ -4,14 +4,13 @@ import com.natenelles.timeapp.model.TimeZone;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface TimeZoneService {
-  Page<TimeZone> findByUserId(long userId, Pageable pageable);
+  List<TimeZone> findByUserId(long userId);
 
   TimeZone createTimeZone(long userId, TimeZone timeZone);
-
-  Page<TimeZone> findTimeZonesWithName(final long userId, final String name, final Pageable pageable);
 
   TimeZone updateTimeZone(TimeZone timeZone);
 

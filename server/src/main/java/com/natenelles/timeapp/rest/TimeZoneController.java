@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 import static com.natenelles.timeapp.util.SecurityUtil.checkUserOrAdmin;
 
 @RestController
@@ -26,18 +28,10 @@ public class TimeZoneController {
   private TimeZoneService timeZoneService;
 
   @GetMapping("/users/{userId}/time-zones")
-  public @ResponseBody Page<TimeZone> getUserTimeZones(@AuthenticationPrincipal CustomSpringUser principal, @PathVariable long userId, Pageable pageable){
+  public @ResponseBody
+  List<TimeZone> getUserTimeZones(@AuthenticationPrincipal CustomSpringUser principal, @PathVariable long userId){
     checkUserOrAdmin(principal, userId);
-    return timeZoneService.findByUserId(userId, pageable);
-  }
-
-  @GetMapping(value = "/users/{userId}/time-zones", params={"name"})
-  public @ResponseBody Page<TimeZone> getTimeZonesMatchingNames(@AuthenticationPrincipal CustomSpringUser principal,
-                                                                    @PathVariable long userId,
-                                                                    @RequestParam String name,
-                                                                    Pageable pageable) {
-    checkUserOrAdmin(principal, userId);
-    return timeZoneService.findTimeZonesWithName(userId, name, pageable);
+    return timeZoneService.findByUserId(userId);
   }
 
   @PutMapping("/time-zones/{id}")

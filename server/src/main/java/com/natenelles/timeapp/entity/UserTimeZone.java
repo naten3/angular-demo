@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Table(name = "UESR_TIME_ZONE")
+@Table(name = "USER_TIME_ZONE")
 @Entity
 public class UserTimeZone {
 

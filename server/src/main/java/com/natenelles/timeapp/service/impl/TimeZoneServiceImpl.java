@@ -7,12 +7,12 @@ import com.natenelles.timeapp.repository.TimeZoneRepository;
 import com.natenelles.timeapp.service.intf.TimeZoneService;
 import com.natenelles.timeapp.service.intf.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -30,8 +30,10 @@ public class TimeZoneServiceImpl implements TimeZoneService {
 
 
   @Override
-  public Page<TimeZone> findByUserId(long userId, Pageable pageable) {
-    return timeZoneRepository.findByUserId(userId, pageable).map(this::convertToModel);
+  public List<TimeZone> findByUserId(long userId) {
+    return timeZoneRepository.findByUserId(userId).stream()
+            .map(this::convertToModel)
+            .collect(Collectors.toList());
   }
 
   @Override
@@ -41,11 +43,6 @@ public class TimeZoneServiceImpl implements TimeZoneService {
     }
     UserTimeZone userTimeZone = timeZoneRepository.save(convertToEntity(timeZone, userId));
     return convertToModel(userTimeZone);
-  }
-
-  @Override
-  public Page<TimeZone> findTimeZonesWithName(long userId, String name, Pageable pageable) {
-    return null;
   }
 
   @Override
@@ -75,6 +72,7 @@ public class TimeZoneServiceImpl implements TimeZoneService {
     timeZone.setOffsetHours(tze.getOffsetHours());
     timeZone.setOffsetMinutes(tze.getOffsetMinutes());
     timeZone.setPositiveOffset(tze.isPositiveOffset());
+    timeZone.setTimeZoneName(tze.getTimeZoneName());
 
     return timeZone;
   }
@@ -86,6 +84,7 @@ public class TimeZoneServiceImpl implements TimeZoneService {
     tze.setOffsetHours(tz.getOffsetHours());
     tze.setOffsetMinutes(tz.getOffsetMinutes());
     tze.setPositiveOffset(tz.isPositiveOffset());
+    tze.setTimeZoneName(tz.getTimeZoneName());
     tze.setUserId(userId);
 
     return tze;

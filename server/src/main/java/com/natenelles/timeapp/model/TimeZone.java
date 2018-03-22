@@ -29,7 +29,7 @@ public class TimeZone {
 
     @NotEmpty
     @Max(300)
-    private String timezoneName;
+    private String timeZoneName;
 
     public Optional<Long> getId() {
         return id;
@@ -71,12 +71,12 @@ public class TimeZone {
         this.cityName = cityName;
     }
 
-    public String getTimezoneName() {
-        return timezoneName;
+    public String getTimeZoneName() {
+        return timeZoneName;
     }
 
-    public void setTimezoneName(String timezoneName) {
-        this.timezoneName = timezoneName;
+    public void setTimeZoneName(String timeZoneName) {
+        this.timeZoneName = timeZoneName;
     }
 }
 
