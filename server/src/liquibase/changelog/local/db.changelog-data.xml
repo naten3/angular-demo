@@ -36,10 +36,10 @@
     <changeSet author="nate.nelles" id="enable-identity-insert-meal" context="testdata" dbms="mssql" runAlways="true">
         <sql>SET IDENTITY_INSERT MEAL ON</sql>
     </changeSet>
-    <changeSet author="nate.nelles" id="user_meal_data" context="testdata">
-        <loadData tableName="MEAL" file="meal.csv" relativeToChangelogFile="true" />
+    <changeSet author="nate.nelles" id="user_time_zone_data" context="testdata">
+        <loadData tableName="USER_TIME_ZONE" file="user_time_zone.csv" relativeToChangelogFile="true" />
     </changeSet>
-    <changeSet author="nate.nelles" id="disable-identity-insert-meal" context="testdata" dbms="mssql" runAlways="true">
+    <changeSet author="nate.nelles" id="disable-identity-insert-user-time-zone" context="testdata" dbms="mssql" runAlways="true">
         <sql>SET IDENTITY_INSERT MEAL OFF</sql>
     </changeSet>
 

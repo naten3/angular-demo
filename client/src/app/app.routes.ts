@@ -44,7 +44,7 @@ export const routes: Routes = [
         resolve: { unused: ManagedUserResolver}
       },
       {
-        path: 'admin/users/invite-user',
+        path: 'admin/invite-user',
         component: InviteUserComponent,
         canActivate: [UserAdminGuard]
       }]

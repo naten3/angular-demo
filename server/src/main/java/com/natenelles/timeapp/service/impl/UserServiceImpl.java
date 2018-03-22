@@ -14,7 +14,7 @@ import com.natenelles.timeapp.model.users.UserResponse;
 import com.natenelles.timeapp.model.users.UserUpdateRequest;
 import com.natenelles.timeapp.model.errors.UserSaveError;
 import com.natenelles.timeapp.model.users.SignupInvite;
-import com.natenelles.timeapp.repository.MealRepository;
+import com.natenelles.timeapp.repository.TimeZoneRepository;
 import com.natenelles.timeapp.repository.UserInviteRepository;
 import com.natenelles.timeapp.repository.UserRepository;
 import com.natenelles.timeapp.service.intf.EmailService;
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
   private static final String invalidFacebookRegex = String.format( "^%s.*",FacebookConnectionSignup.FACEBOOK_NAME_PREFIX);
 
   private UserRepository userRepository;
-  private MealRepository mealRepository;
+  private TimeZoneRepository timeZoneRepository;
   private EmailService emailService;
   private FileUploadService fileUploadService;
   private UserInviteRepository userInviteRepository;
@@ -58,13 +58,13 @@ public class UserServiceImpl implements UserService {
 
   @Autowired
   public UserServiceImpl(UserRepository userRepository,
-                         MealRepository mealRepository,
+                         TimeZoneRepository timeZoneRepository,
                          EmailService emailService,
                          FileUploadService fileUploadService,
                          UserInviteRepository userInviteRepository,
                          PasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
-    this.mealRepository = mealRepository;
+    this.timeZoneRepository = timeZoneRepository;
     this.emailService = emailService;
     this.fileUploadService = fileUploadService;
     this.userInviteRepository = userInviteRepository;
@@ -191,7 +191,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override public void deleteUser(final long id) {
-    mealRepository.deleteByUserId(id);
+    timeZoneRepository.deleteByUserId(id);
     userRepository.delete(id);
   }
 

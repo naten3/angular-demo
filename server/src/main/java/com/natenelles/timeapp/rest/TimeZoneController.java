@@ -1,17 +1,11 @@
 package com.natenelles.timeapp.rest;
 
-import com.natenelles.timeapp.entity.Meal;
-import com.natenelles.timeapp.entity.UserRole;
-import com.natenelles.timeapp.exception.ResourceNotFoundException;
-import com.natenelles.timeapp.exception.UnauthorizedException;
-import com.natenelles.timeapp.model.MealRequest;
-import com.natenelles.timeapp.model.MealResponse;
+import com.natenelles.timeapp.model.TimeZone;
 import com.natenelles.timeapp.security.CustomSpringUser;
-import com.natenelles.timeapp.service.intf.MealService;
+import com.natenelles.timeapp.service.intf.TimeZoneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,71 +17,47 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
+import static com.natenelles.timeapp.util.SecurityUtil.checkUserOrAdmin;
 
 @RestController
 public class TimeZoneController {
 
   @Autowired
-  private MealService mealService;
+  private TimeZoneService timeZoneService;
 
-  @GetMapping("/users/{userId}/meals")
-  public @ResponseBody Page<MealResponse> getMeals(@AuthenticationPrincipal CustomSpringUser principal, @PathVariable long userId, Pageable pageable)
-  throws UnauthorizedException {
-    if ((principal).getId() != userId && !principal.hasAuthority(UserRole.USER_ADMIN)) {
-      throw new UnauthorizedException();
-    }
-    return mealService.findByUserId(userId, pageable);
+  @GetMapping("/users/{userId}/time-zones")
+  public @ResponseBody Page<TimeZone> getUserTimeZones(@AuthenticationPrincipal CustomSpringUser principal, @PathVariable long userId, Pageable pageable){
+    checkUserOrAdmin(principal, userId);
+    return timeZoneService.findByUserId(userId, pageable);
   }
 
-  @GetMapping(value = "/users/{userId}/meals", params={"startTime","endTime"})
-  public @ResponseBody Page<MealResponse> getMealsBetweenDates(@AuthenticationPrincipal CustomSpringUser principal,
-                                                               @PathVariable long userId,
-                                                               @RequestParam(value = "startTime", required = true)
-                                                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                                 LocalDateTime startTime,
-                                                               @RequestParam(value = "endTime", required = true)
-                                                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                                 LocalDateTime endTime,
-                                                               Pageable pageable)
-  throws UnauthorizedException {
-    if ((principal).getId() != userId && !principal.hasAuthority(UserRole.USER_ADMIN)) {
-      throw new UnauthorizedException();
-    }
-    return mealService.findMealsInTimeRange(userId, startTime, endTime, pageable);
+  @GetMapping(value = "/users/{userId}/time-zones", params={"name"})
+  public @ResponseBody Page<TimeZone> getTimeZonesMatchingNames(@AuthenticationPrincipal CustomSpringUser principal,
+                                                                    @PathVariable long userId,
+                                                                    @RequestParam String name,
+                                                                    Pageable pageable) {
+    checkUserOrAdmin(principal, userId);
+    return timeZoneService.findTimeZonesWithName(userId, name, pageable);
   }
 
-
-  @PutMapping("/meals/{id}")
-  public @ResponseBody MealResponse updateMeal(@AuthenticationPrincipal CustomSpringUser principal,
-                                               @PathVariable long id, @RequestBody MealRequest mealRequest)
-  throws UnauthorizedException, ResourceNotFoundException {
-    Meal meal = mealService.getMeal(id).orElseThrow(ResourceNotFoundException::new);
-    if ((principal).getId() != meal.getUserId() && !principal.hasAuthority(UserRole.USER_ADMIN)) {
-      throw new UnauthorizedException();
-    }
-    return mealService.updateMeal(mealRequest, meal);
+  @PutMapping("/time-zones/{id}")
+  public @ResponseBody TimeZone updateTimeZone(@AuthenticationPrincipal CustomSpringUser principal,
+                                                   @PathVariable long id, @RequestBody TimeZone timeZone){
+    checkUserOrAdmin(principal, timeZoneService.getTimeZoneOwner(id));
+    return timeZoneService.updateTimeZone(timeZone);
   }
 
-  @PostMapping("/users/{userId}/meals")
-  public @ResponseBody MealResponse createMeal(@AuthenticationPrincipal CustomSpringUser principal,
-                                               @PathVariable long userId, @RequestBody MealRequest mealRequest)
-  throws UnauthorizedException {
-    if ((principal).getId() != userId && !principal.hasAuthority(UserRole.USER_ADMIN)) {
-      throw new UnauthorizedException();
-    }
-    return mealService.createMeal(userId, mealRequest);
+  @PostMapping("/users/{userId}/time-zones")
+  public @ResponseBody TimeZone createMeal(@AuthenticationPrincipal CustomSpringUser principal,
+                                               @PathVariable long userId, @RequestBody TimeZone timeZone) {
+    checkUserOrAdmin(principal, userId);
+    return timeZoneService.createTimeZone(userId, timeZone);
   }
 
-  @DeleteMapping("/meals/{id}")
+  @DeleteMapping("/time-zones/{id}")
   public void deleteMeal(@AuthenticationPrincipal CustomSpringUser principal,
-                    @PathVariable long id)
-  throws UnauthorizedException, ResourceNotFoundException{
-    Meal meal = mealService.getMeal(id).orElseThrow(ResourceNotFoundException::new);
-    if ((principal).getId() != meal.getUserId() && !principal.hasAuthority(UserRole.USER_ADMIN)) {
-      throw new UnauthorizedException();
-    }
-    mealService.deleteMeal(id);
+                    @PathVariable long id){
+    checkUserOrAdmin(principal, timeZoneService.getTimeZoneOwner(id));
+    timeZoneService.deleteTimeZone(id);
   }
-
 }

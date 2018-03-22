@@ -50,20 +50,26 @@
         </createTable>
         <addUniqueConstraint columnNames="USER_ID, ROLE_NAME" tableName="USER_ROLE" />
 
-        <createTable tableName="MEAL">
-            <column autoIncrement="true" name="MEAL_ID" type="int">
-                <constraints primaryKey="true" primaryKeyName="PK_MEAL" />
+        <createTable tableName="USER_TIME_ZONE">
+            <column autoIncrement="true" name="USER_TIME_ZONE_ID" type="int">
+                <constraints primaryKey="true" primaryKeyName="PK_USER_TIME_ZONE" />
             </column>
             <column name="USER_ID" type="int">
-                <constraints nullable="false" references="USER(USER_ID)" foreignKeyName="FK_MEAL_USER"/>
+                <constraints nullable="false" references="USER(USER_ID)" foreignKeyName="FK_TIME_ZONE_USER"/>
             </column>
-            <column name="MEAL_TIME" type="datetime">
+            <column name="CITY_NAME" type="nvarchar(300)">
                 <constraints nullable="false" />
             </column>
-            <column name="CALORIE_VALUE" type="int">
+            <column name="TIME_ZONE_NAME" type="nvarchar(300)">
                 <constraints nullable="false" />
             </column>
-            <column name="DESCRIPTION" type="nvarchar2(500)">
+            <column name="POSITIVE_OFFSET" type="boolean">
+                <constraints nullable="false" />
+            </column>
+            <column name="OFFSET_HOURS" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="OFFSET_MINUTES" type="int">
                 <constraints nullable="false" />
             </column>
         </createTable>

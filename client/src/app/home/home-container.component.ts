@@ -23,18 +23,15 @@ import * as fromRoot from 'app/core/store';
     <h2 id="welcomeMessage">Welcome {{firstName$ | async}}!</h2>
     <button (click)="logout()" class="btn btn-primary">Logout</button>
   </div>
-  <nav class="navbar navbar-default">
-    <div class="container">
-      <ul class="nav navbar-nav">
+      <ul class="nav nav-pills nav-justified">
         <li routerLinkActive="active" [routerLink]="['users/me/update']" 
-        routerLinkActiveOptions="{exact:true}" class="nav-item"><a>Update My Profile</a></li>
+        routerLinkActiveOptions="{exact:true}" class="nav-link"><a>Update My Profile</a></li>
         <li routerLinkActive="active" routerLinkActiveOptions="{exact:true}" 
-        [routerLink]="['admin/users']" class="nav-item"><a>Manage Users</a></li>
+        [routerLink]="['admin/users']" class="nav-link"><a>Manage Users</a></li>
         <li routerLinkActive="active" routerLinkActiveOptions="{exact:true}" 
-        [routerLink]="['admin/users/invite-user']" class="nav-item"><a>Invite New User</a></li>
+        [routerLink]="['admin/invite-user']" class="nav-link"><a>Invite New User</a></li>
       </ul>
-    </div>
-  </nav>
+
 <router-outlet></router-outlet>
 `, styles: [`
   #homeProfileImage { margin: 0 2em;}

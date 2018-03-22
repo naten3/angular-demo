@@ -15,23 +15,18 @@ import com.natenelles.timeapp.model.users.UserResponse;
 import com.natenelles.timeapp.model.users.UserUpdateRequest;
 import com.natenelles.timeapp.security.CustomSpringUser;
 import com.natenelles.timeapp.service.intf.UserService;
-import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.session.SessionRepository;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,7 +44,7 @@ import java.util.stream.Collectors;
 
 import static com.natenelles.timeapp.entity.UserRole.ADMIN;
 import static com.natenelles.timeapp.entity.UserRole.USER_ADMIN;
-import static com.natenelles.timeapp.util.SecurityUtil.checkUserOrAdmin;
+import static com.natenelles.timeapp.util.SecurityUtil.checkUserOrUserAdmin;
 
 @RestController
 public class UserController {
@@ -115,7 +110,7 @@ public class UserController {
                                  @RequestBody UserUpdateRequest userUpdateRequest)
   throws ResourceNotFoundException{
     Set<String> authorities = principal.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toSet());
-    checkUserOrAdmin(principal, id);
+    checkUserOrUserAdmin(principal, id);
     if (userUpdateRequest.getRole().isPresent()) {
       String role = userUpdateRequest.getRole().get();
       if (!authorities.contains(ADMIN)) {
@@ -146,7 +141,7 @@ public class UserController {
   public UserResponse getUser(@AuthenticationPrincipal CustomSpringUser principal,
                          @PathVariable long id)
           throws UnauthorizedException, ResourceNotFoundException{
-    checkUserOrAdmin(principal, id);
+    checkUserOrUserAdmin(principal, id);
     return userService.getUser(id).orElseThrow(ResourceNotFoundException::new);
   }
 
@@ -155,7 +150,7 @@ public class UserController {
                          @PathVariable long id)
           throws UnauthorizedException, ResourceNotFoundException{
     UserResponse user = userService.getUser(id).orElseThrow(ResourceNotFoundException::new);
-    checkUserOrAdmin(principal, id);
+    checkUserOrUserAdmin(principal, id);
     userService.deleteUser(id);
   }
 
@@ -185,7 +180,7 @@ public class UserController {
           @RequestParam("file") MultipartFile file,
           @PathVariable("id") long userId,
           @AuthenticationPrincipal CustomSpringUser principal){
-    checkUserOrAdmin(principal, userId);
+    checkUserOrUserAdmin(principal, userId);
     try {
       return userService.uploadProfileImage(file, userId);
     } catch (Exception e) {
