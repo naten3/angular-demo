@@ -10,6 +10,7 @@ import * as fromSave from 'app/core/models/common/save.state';
 import * as fromUserUpdate from 'app/core/models/user-update';
 import * as fromAdminUserList from 'app/core/models/admin-user-list';
 import * as fromUserInvite from 'app/core/models/user-invite';
+import * as fromTimeZone from 'app/core/models/time-zone';
 
 
 export interface State {
@@ -22,6 +23,7 @@ export interface State {
     updateUser: fromUserUpdate.State;
     adminUserList: fromAdminUserList.State;
     userInvite: fromUserInvite.State;
+    timeZone: fromTimeZone.State;
 }
 
 export const initialState: State = {
@@ -33,6 +35,7 @@ export const initialState: State = {
     updateUser: fromUserUpdate.initialState,
     save: fromSave.initialState,
     adminUserList: fromAdminUserList.initialState,
-    userInvite: fromUserInvite.initialState
+    userInvite: fromUserInvite.initialState,
+    timeZone: fromTimeZone.initialState
 };
 

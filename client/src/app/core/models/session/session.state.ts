@@ -1,4 +1,4 @@
-import { UserInfo } from 'app/core/models/session';
+import { UserInfo } from './';
 
 export interface State {
     userInfo?: UserInfo;

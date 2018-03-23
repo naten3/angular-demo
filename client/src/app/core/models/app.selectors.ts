@@ -10,6 +10,7 @@ import * as fromUserSave from 'app/core/models/user-save';
 import * as fromUserUpdate from 'app/core/models/user-update';
 import * as fromAdminUserList from 'app/core/models/admin-user-list';
 import * as fromUserInvite from 'app/core/models/user-invite';
+import * as fromTimeZone from 'app/core/models/time-zone';
 
 export const getAppState = (state: State) => state;
 
@@ -69,3 +70,9 @@ export const getUserInvitePending = createSelector(getUserInvite, fromUserInvite
 export const getUserInviteSubmitted = createSelector(getUserInvite, fromUserInvite.getSubmitted);
 export const getUserInviteSuccess = createSelector(getUserInvite, fromUserInvite.getSuccess);
 export const getUserInviteErrors = createSelector(getUserInvite, fromUserInvite.getErrors);
+
+export const getTimeZoneState: (state: State) => fromTimeZone.State = (state: State) => state.timeZone;
+export const getTimeZones = createSelector(getTimeZoneState, fromTimeZone.getTimeZones);
+export const getTimeZoneUser = createSelector(getTimeZoneState, fromTimeZone.getUser);
+export const getTimeZoneHasErrors: (state: State) => boolean =
+  createSelector(getTimeZoneState, fromTimeZone.getFetchErrors);

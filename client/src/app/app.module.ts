@@ -19,6 +19,7 @@ import { TreeNodeComponent } from 'app/tree/tree-node.component';
 import { TreeNodeListComponent } from 'app/tree/tree-node-list.component';
 import { TreeContainerComponent } from 'app/tree/tree-container.component';
 import { UserListContainerComponent, AdminUserListComponent, UserItemComponent } from 'app/admin-user-list';
+import { TimeZoneComponent } from 'app/time-zones';
 import { InviteUserComponent } from 'app/user-invite';
 import { InvalidInviteComponent, NotFoundComponent } from 'app/error-page';
 
@@ -28,10 +29,10 @@ import { routes } from 'app/app.routes';
 import { SharedModule } from 'app/shared/shared.module';
 import { LauncherContainerComponent, EmailVerifyComponent, HomeContainerComponent } from 'app/home';
 import { AddUserComponent, SelfUpdateComponent, AdminUserUpdateComponent } from 'app/add-update-user';
-import { AuthEffects, UserUpdateEffects, AdminUserListEffecs, UserInviteEffects } from 'app/core/effects';
+import { AuthEffects, UserUpdateEffects, AdminUserListEffecs, UserInviteEffects, TimeZoneEffects } from 'app/core/effects';
 import { AuthGuard, LoginGuard, SocialLoginGuard, UserAdminGuard } from 'app/core/guards';
 import { EmailVerifyResolver, IdResolver, UserAdminListResolver, ManagedUserResolver,
-  UserInviteResolver } from 'app/core/resolve';
+  UserInviteResolver, TimeZoneResolver } from 'app/core/resolve';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { EmailVerifyResolver, IdResolver, UserAdminListResolver, ManagedUserReso
     AdminUserListComponent,
     UserItemComponent,
     InviteUserComponent,
+    TimeZoneComponent,
     InvalidInviteComponent,
     NotFoundComponent
   ],
@@ -67,12 +69,13 @@ import { EmailVerifyResolver, IdResolver, UserAdminListResolver, ManagedUserReso
     EffectsModule.run(AuthEffects),
     EffectsModule.run(UserUpdateEffects),
     EffectsModule.run(AdminUserListEffecs),
-    EffectsModule.run(UserInviteEffects)
+    EffectsModule.run(UserInviteEffects),
+    EffectsModule.run(TimeZoneEffects)
   ],
   providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }, AuthGuard, LoginGuard,
     UserAdminListResolver,
     SocialLoginGuard, UserAdminGuard,
-    EmailVerifyResolver, IdResolver, ManagedUserResolver, UserInviteResolver],
+    EmailVerifyResolver, IdResolver, ManagedUserResolver, UserInviteResolver, TimeZoneResolver],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

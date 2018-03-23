@@ -5,10 +5,11 @@ import { HomeContainerComponent, LauncherContainerComponent, EmailVerifyComponen
 import { UserListContainerComponent } from 'app/admin-user-list';
 import { AddUserComponent, SelfUpdateComponent, AdminUserUpdateComponent } from './add-update-user';
 import { InviteUserComponent } from 'app/user-invite';
+import { TimeZoneComponent } from 'app/time-zones';
 import { InvalidInviteComponent, NotFoundComponent } from 'app/error-page';
 
-import { EmailVerifyResolver, IdResolver, UserAdminListResolver, 
-  ManagedUserResolver, UserInviteResolver } from 'app/core/resolve';
+import { EmailVerifyResolver, IdResolver, UserAdminListResolver,
+  ManagedUserResolver, UserInviteResolver, TimeZoneResolver } from 'app/core/resolve';
 import { AuthGuard, LoginGuard, SocialLoginGuard, UserAdminGuard} from 'app/core/guards';
 
 export const routes: Routes = [
@@ -30,6 +31,11 @@ export const routes: Routes = [
         path: 'users/me/update',
         component: SelfUpdateComponent,
         resolve: { userId: IdResolver }
+      },
+      {
+        path: 'users/:userId/time-zones',
+        component: TimeZoneComponent,
+        resolve: { unused: TimeZoneResolver }
       },
       {
         path: 'admin/users',

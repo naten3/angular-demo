@@ -12,11 +12,12 @@ import * as userSaveReducer from 'app/core/store/user-update/user-save.reducer';
 import * as userUpdateReducer from 'app/core/store/user-update/user-update.reducer';
 import * as adminUserListReducer from 'app/core/store/admin-user-list/admin-user-list.reducer';
 import * as userInviteReducer from 'app/core/store/user-invite/user-invite.reducer';
+import * as timeZoneReducer from 'app/core/store/time-zone/time-zone.reducer';
 
 import { restoreStateReducer } from 'app/core/store/restore/restore.reducer';
 
-
 const reducers = {
+    router: fromRouter.routerReducer,
     todos: todoReducer.reducer,
     tree: treeReducer.reducer,
     save: saveReducer.reducer,
@@ -25,7 +26,7 @@ const reducers = {
     updateUser: userUpdateReducer.reducer,
     adminUserList: adminUserListReducer.reducer,
     userInvite: userInviteReducer.reducer,
-    router: fromRouter.routerReducer
+    timeZone: timeZoneReducer.reducer
 };
 
 export const developmentReducer = compose(

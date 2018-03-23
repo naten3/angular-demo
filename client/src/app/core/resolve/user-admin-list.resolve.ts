@@ -30,6 +30,7 @@ export class UserAdminListResolver implements Resolve<number> {
                     fromAdminUserListActions.requestUserListPage(adminUserListState.page));
             }
         }))
+        .pipe(take(5))
         .pipe(filter(x => !!(x as fromAdminUserList.State).userPage))
         .pipe(take(1));
     }
