@@ -30,7 +30,8 @@ import { SharedModule } from 'app/shared/shared.module';
 import { LauncherContainerComponent, EmailVerifyComponent, HomeContainerComponent } from 'app/home';
 import { AddUserComponent, SelfUpdateComponent, AdminUserUpdateComponent } from 'app/add-update-user';
 import { AuthEffects, UserUpdateEffects, AdminUserListEffecs, UserInviteEffects, TimeZoneEffects } from 'app/core/effects';
-import { AuthGuard, LoginGuard, SocialLoginGuard, UserAdminGuard } from 'app/core/guards';
+import { AuthGuard, LoginGuard, SocialLoginGuard, UserAdminGuard,
+   AdminOrOwnerGuard } from 'app/core/guards';
 import { EmailVerifyResolver, IdResolver, UserAdminListResolver, ManagedUserResolver,
   UserInviteResolver, TimeZoneResolver } from 'app/core/resolve';
 
@@ -73,6 +74,7 @@ import { EmailVerifyResolver, IdResolver, UserAdminListResolver, ManagedUserReso
     EffectsModule.run(TimeZoneEffects)
   ],
   providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }, AuthGuard, LoginGuard,
+    AdminOrOwnerGuard,
     UserAdminListResolver,
     SocialLoginGuard, UserAdminGuard,
     EmailVerifyResolver, IdResolver, ManagedUserResolver, UserInviteResolver, TimeZoneResolver],

@@ -10,7 +10,8 @@ import { InvalidInviteComponent, NotFoundComponent } from 'app/error-page';
 
 import { EmailVerifyResolver, IdResolver, UserAdminListResolver,
   ManagedUserResolver, UserInviteResolver, TimeZoneResolver } from 'app/core/resolve';
-import { AuthGuard, LoginGuard, SocialLoginGuard, UserAdminGuard} from 'app/core/guards';
+import { AuthGuard, LoginGuard, SocialLoginGuard, UserAdminGuard,
+   AdminOrOwnerGuard} from 'app/core/guards';
 
 export const routes: Routes = [
   {
@@ -35,6 +36,7 @@ export const routes: Routes = [
       {
         path: 'users/:userId/time-zones',
         component: TimeZoneComponent,
+        canActivate: [AdminOrOwnerGuard],
         resolve: { unused: TimeZoneResolver }
       },
       {
