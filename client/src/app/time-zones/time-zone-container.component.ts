@@ -11,6 +11,7 @@ import * as fromRoot from 'app/core/store';
 
 import { UserInfo } from 'app/core/models/session';
 import { TimeZone } from 'app/core/models/time-zone';
+import { filterNotNull } from 'app/core/utils/rx-utils';
 
 
 
@@ -27,8 +28,12 @@ export class TimeZoneComponent {
     private store: Store<fromRoot.State>,
     private router: Router,
     private route: ActivatedRoute) {
-      this.ownerInfo$ = store.select(fromRoot.getTimeZoneUser);
-      this.userTimeZones$ = store.select(fromRoot.getTimeZones);
+      this.ownerInfo$ = filterNotNull(store.select(fromRoot.getTimeZoneUser));
+      this.userTimeZones$ = filterNotNull(store.select(fromRoot.getTimeZones))
+      .map(x => {
+        console.log('time zones ' + x.map(y => y.id).join(','));
+        return x;
+      });
     }
 
   goToLogin() {
@@ -38,4 +43,9 @@ export class TimeZoneComponent {
   goToHom() {
     this.store.dispatch(go('/home'));
   }
+
+  getTimezoneId(timeZone: TimeZone) {
+    return timeZone.id;
+  }
+
 }

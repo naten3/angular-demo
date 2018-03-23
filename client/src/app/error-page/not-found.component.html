@@ -2,6 +2,6 @@
      <div>
         There was an error getting this page!
         <button *ngIf="!(authenticated$ | async)" (click)="goToLogin()" class="btn btn-primary m-4">Go To Login</button>
-        <button *ngIf="authenticated$ | async" (click)="goToLogin()" class="btn btn-primary m-4">Go Home</button>
+        <button *ngIf="authenticated$ | async" (click)="goToHome()" class="btn btn-primary m-4">Go Home</button>
     </div>
 </div>

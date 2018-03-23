@@ -29,7 +29,7 @@ export class NotFoundComponent {
     this.store.dispatch(go('/'));
   }
 
-  goToHom() {
+  goToHome() {
     this.store.dispatch(go('/home'));
   }
 }

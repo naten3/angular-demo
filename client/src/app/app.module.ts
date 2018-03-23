@@ -19,7 +19,7 @@ import { TreeNodeComponent } from 'app/tree/tree-node.component';
 import { TreeNodeListComponent } from 'app/tree/tree-node-list.component';
 import { TreeContainerComponent } from 'app/tree/tree-container.component';
 import { UserListContainerComponent, AdminUserListComponent, UserItemComponent } from 'app/admin-user-list';
-import { TimeZoneComponent } from 'app/time-zones';
+import { TimeZoneComponent, TimeZoneItemComponent } from 'app/time-zones';
 import { InviteUserComponent } from 'app/user-invite';
 import { InvalidInviteComponent, NotFoundComponent } from 'app/error-page';
 
@@ -56,6 +56,7 @@ import { EmailVerifyResolver, IdResolver, UserAdminListResolver, ManagedUserReso
     UserItemComponent,
     InviteUserComponent,
     TimeZoneComponent,
+    TimeZoneItemComponent,
     InvalidInviteComponent,
     NotFoundComponent
   ],

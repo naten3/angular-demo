@@ -3,5 +3,14 @@
         You made it to the time zone component
         <button *ngIf="!(authenticated$ | async)" (click)="goToLogin()" class="btn btn-primary m-4">Go To Login</button>
         <button *ngIf="authenticated$ | async" (click)="goToLogin()" class="btn btn-primary m-4">Go Home</button>
+        <table>
+          <tr><th style="width: 30em" >Zone Name</th>
+            <th style="width: 30em" >City</th>
+            <th style="width: 20em" >GMT Offset</th>
+            <th style="width: 20em" >Time in Zone</th></tr>
+          <tr *ngFor="let n of (userTimeZones$ | async)" 
+          app-time-zone-item="true" [timeZone]="n">
+          </tr>
+        </table>
     </div>
 </div>

@@ -7,6 +7,7 @@ import * as fromRoot from 'app/core/store';
 import { UpdateUserComponent } from './';
 import { UserUpdateForm } from 'app/core/models/user-update';
 import { UserInfo } from 'app/core/models/session';
+import { filterNotNull } from 'app/core/utils/rx-utils';
 
 import { Http, RequestOptions } from '@angular/http';
 
@@ -21,7 +22,7 @@ import { Http, RequestOptions } from '@angular/http';
 
     constructor( store: Store<fromRoot.State>, route: ActivatedRoute, http: Http) {
       super(store,
-        store.select(fromRoot.getUserInfo),
+        filterNotNull(store.select(fromRoot.getUserInfo)),
         SelfUpdateComponent.getUserId(route),
       http);
     }
