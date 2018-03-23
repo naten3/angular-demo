@@ -34,6 +34,12 @@ public class TimeZoneController {
     return timeZoneService.findByUserId(userId);
   }
 
+  @GetMapping("/users/me/time-zones")
+  public @ResponseBody
+  List<TimeZone> getMyTimeZones(@AuthenticationPrincipal CustomSpringUser principal){
+    return getUserTimeZones(principal, principal.getId());
+  }
+
   @PutMapping("/time-zones/{id}")
   public @ResponseBody TimeZone updateTimeZone(@AuthenticationPrincipal CustomSpringUser principal,
                                                    @PathVariable long id, @RequestBody TimeZone timeZone){

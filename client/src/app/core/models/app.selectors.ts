@@ -72,6 +72,7 @@ export const getUserInviteSuccess = createSelector(getUserInvite, fromUserInvite
 export const getUserInviteErrors = createSelector(getUserInvite, fromUserInvite.getErrors);
 
 export const getTimeZoneState: (state: State) => fromTimeZone.State = (state: State) => state.timeZone;
+export const getUserTimeZones = createSelector(getTimeZoneState, fromTimeZone.getUserTimeZones);
 export const getTimeZones = createSelector(getTimeZoneState, fromTimeZone.getTimeZones);
 export const getTimeZoneUser = createSelector(getTimeZoneState, fromTimeZone.getUser);
 export const getTimeZoneHasErrors: (state: State) => boolean =

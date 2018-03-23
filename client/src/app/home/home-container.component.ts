@@ -30,6 +30,9 @@ import * as fromRoot from 'app/core/store';
         [routerLink]="['admin/users']" class="nav-link"><a>Manage Users</a></li>
         <li routerLinkActive="active" routerLinkActiveOptions="{exact:true}" 
         [routerLink]="['admin/invite-user']" class="nav-link"><a>Invite New User</a></li>
+        <li routerLinkActive="active" routerLinkActiveOptions="{exact:true}" 
+        [routerLink]="['users',(userId$ | async),'time-zones']" class="nav-link"><a>
+        View My Time Zones</a></li>
       </ul>
 
 <router-outlet></router-outlet>
@@ -46,6 +49,7 @@ export class HomeContainerComponent implements OnDestroy {
     appState$: Observable<State>;
     loading$: Observable<boolean>;
     userInfo$: Observable<UserInfo>;
+    userId$: Observable<number>;
     profileUrl$: Observable<string>;
     firstName$: Observable<string>;
     _key$: any;
@@ -55,12 +59,17 @@ export class HomeContainerComponent implements OnDestroy {
         private store: Store<fromRoot.State>
     ) {
       this.userInfo$ = store.select(fromRoot.getUserInfo);
-      this.profileUrl$ = this.userInfo$
-      .pipe(filter(u => !!u))
+
+      const nonNullUserInfo$: Observable<UserInfo> = this.userInfo$
+      .pipe(filter(x => !!x));
+
+      this.userId$ =  nonNullUserInfo$
+      .map(x => (x as UserInfo).id);
+
+      this.profileUrl$ = nonNullUserInfo$
       .map(getDisplayProfileImage);
 
-      this.firstName$ = this.userInfo$
-      .pipe(filter(u => !!u))
+      this.firstName$ = nonNullUserInfo$
       .map(u => (u as UserInfo).firstName);
     }
 

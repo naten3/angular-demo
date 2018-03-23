@@ -1,1 +1,1 @@
-export * from './time-zone.component';
+export * from './time-zone-container.component';
