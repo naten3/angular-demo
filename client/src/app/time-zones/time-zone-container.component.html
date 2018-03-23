@@ -6,7 +6,7 @@
             <th style="width: 30em" >City</th>
             <th style="width: 20em" >GMT Offset</th>
             <th style="width: 20em" >Time in Zone</th></tr>
-          <tr *ngFor="let n of (userTimeZones$ | async)" 
+          <tr *ngFor="let n of (userTimeZones$ | async) trackBy: getTimezoneId" 
           app-time-zone-item="true" [timeZone]="n">
           </tr>
         </table>

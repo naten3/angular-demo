@@ -1,6 +1,6 @@
-import { Component, Input, OnInit, ChangeDetectionStrategy, 
+import { Component, Input, Output, OnInit, ChangeDetectionStrategy,
     OnChanges, AfterViewInit, ElementRef,
-     ViewChild, OnDestroy } from '@angular/core';
+     ViewChild, OnDestroy, EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { timer } from 'rxjs/observable/timer';
@@ -24,18 +24,24 @@ import { TimeZone } from 'app/core/models/time-zone';
         `]
 })
 
-export class TimeZoneItemComponent {
+export class TimeZoneItemComponent implements OnInit{
     @Input() timeZone: TimeZone;
+    @Output() updateTimeZone = new EventEmitter<number>();
 
     timeInZone$: Observable<string>;
 
-    constructor() {
-      const timeTimer$ = timer(0, 60000);
-      // TODO update with change in zone
+    constructor() {}
+
+    getGmtOffest(): string {
+      return this.timeZone.positiveOffset ? '+' : '-'
+      + this.timeZone.offsetHours + ':' + padStart(this.timeZone.offsetMinutes, 2, '0');
+    }
+
+    ngOnInit() {
+      const timeTimer$ = timer(0, 10000);
       this.timeInZone$ = timeTimer$
         .map( unused => {
         const currentTime = moment.utc();
-
         const offset = { hours: this.timeZone.offsetHours, minutes: this.timeZone.offsetMinutes};
         const timeWithOffset = this.timeZone.positiveOffset ?
         currentTime.add(offset)
@@ -44,9 +50,5 @@ export class TimeZoneItemComponent {
       });
     }
 
-    getGmtOffest(): string {
-      return this.timeZone.positiveOffset ? '+' : '-'
-      + this.timeZone.offsetHours + ':' + padStart(this.timeZone.offsetMinutes, 2, '0');
-    }
 }
 

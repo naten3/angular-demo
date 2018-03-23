@@ -37,14 +37,6 @@ export class TimeZoneComponent {
       });
     }
 
-  goToLogin() {
-    this.store.dispatch(go('/'));
-  }
-
-  goToHom() {
-    this.store.dispatch(go('/home'));
-  }
-
   getTimezoneId(timeZone: TimeZone) {
     return timeZone.id;
   }
