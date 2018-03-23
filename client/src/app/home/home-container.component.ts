@@ -9,7 +9,7 @@ import 'rxjs/add/observable/timer';
 import { go } from '@ngrx/router-store';
 
 import { State } from 'app/core/models/app.state';
-import { UserInfo, getDisplayProfileImage } from 'app/core/models/session';
+import { UserInfo, getDisplayProfileImage, checkIfUserAdmin } from 'app/core/models/session';
 import * as saveActions from 'app/core/store/actions/save.actions';
 import * as sessionActions from 'app/core/store/actions/session.actions';
 import * as fromRoot from 'app/core/store';
@@ -26,9 +26,9 @@ import * as fromRoot from 'app/core/store';
       <ul class="nav nav-pills nav-justified">
         <li routerLinkActive="active" [routerLink]="['users/me/update']" 
         routerLinkActiveOptions="{exact:true}" class="nav-link"><a>Update My Profile</a></li>
-        <li routerLinkActive="active" routerLinkActiveOptions="{exact:true}" 
+        <li routerLinkActive="active" routerLinkActiveOptions="{exact:true}" *ngIf="isAdminUser$ | async"
         [routerLink]="['admin/users']" class="nav-link"><a>Manage Users</a></li>
-        <li routerLinkActive="active" routerLinkActiveOptions="{exact:true}" 
+        <li routerLinkActive="active" routerLinkActiveOptions="{exact:true}" *ngIf="isAdminUser$ | async"
         [routerLink]="['admin/invite-user']" class="nav-link"><a>Invite New User</a></li>
         <li routerLinkActive="active" routerLinkActiveOptions="{exact:true}" 
         [routerLink]="['users',(userId$ | async),'time-zones']" class="nav-link"><a>
@@ -50,6 +50,7 @@ export class HomeContainerComponent implements OnDestroy {
     loading$: Observable<boolean>;
     userInfo$: Observable<UserInfo>;
     userId$: Observable<number>;
+    isAdminUser$: Observable<boolean>;
     profileUrl$: Observable<string>;
     firstName$: Observable<string>;
     _key$: any;
@@ -62,6 +63,8 @@ export class HomeContainerComponent implements OnDestroy {
 
       const nonNullUserInfo$: Observable<UserInfo> = this.userInfo$
       .pipe(filter(x => !!x));
+
+      this.isAdminUser$ = nonNullUserInfo$.map( ui => checkIfUserAdmin(ui));
 
       this.userId$ =  nonNullUserInfo$
       .map(x => (x as UserInfo).id);

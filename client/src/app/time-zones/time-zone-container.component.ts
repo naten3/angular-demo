@@ -24,6 +24,7 @@ export class TimeZoneComponent {
   ownerInfo$: Observable<UserInfo>;
   userTimeZones$: Observable<Array<TimeZone>>;
 
+  // TODO add ids on child items
   constructor(
     private store: Store<fromRoot.State>,
     private router: Router,
