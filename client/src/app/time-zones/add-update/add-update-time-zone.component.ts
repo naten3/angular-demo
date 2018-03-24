@@ -76,16 +76,15 @@ export class AddUpdateTimeZoneComponent implements OnInit {
     this.loading = false;
     this.submitted = false;
     this.success = false;
-    this.form.reset();
     if (!!timeZone) {
       this.prepopulateForm(timeZone);
     } else {
       this.clearModel();
     }
+    this.form.resetForm(this.model);
   }
 
   private prepopulateForm(timeZone: TimeZone ) {
-    this.model = {};
     this.model.positiveOffset = timeZone.positiveOffset;
     this.model.offsetHours = timeZone.offsetHours;
     this.model.offsetMinutes = timeZone.offsetMinutes;
@@ -95,11 +94,7 @@ export class AddUpdateTimeZoneComponent implements OnInit {
 
   private clearModel() {
     this.model = {};
-    this.model.positiveOffset = null;
-    this.model.offsetHours = null;
     this.model.offsetMinutes = 0;
-    this.model.cityName = null;
-    this.model.timeZoneName = null;
   }
 
   public setSuccess(success: boolean) {
