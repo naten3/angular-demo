@@ -74,8 +74,8 @@ export const updateTimeZone = (timeZone: TimeZone,  userId: number) => {
 export const updateTimeZoneSuccess = (timeZone: TimeZone,  userId: number) => {
   return { 'type': UPDATE_TIME_ZONE_SUCCESS, 'payload': { timeZone, userId}};
 };
-export const updateTimeZoneFailure = (userId: number) => {
-  return { 'type': UPDATE_TIME_ZONE_SUCCESS, 'payload': userId};
+export const updateTimeZoneFailure = (id: number, userId: number) => {
+  return { 'type': UPDATE_TIME_ZONE_FAILURE, 'payload': {id, userId}};
 };
 
 export const deleteTimeZone = (id: number, userId: number) => {

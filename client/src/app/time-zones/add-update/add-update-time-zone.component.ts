@@ -50,7 +50,7 @@ export class AddUpdateTimeZoneComponent implements OnInit {
   save(value: any) {
     if (this.model.offsetHours > 12 || this.model.offsetHours < 0) {
       value.form.controls.offsetHours.setErrors('range error');
-    } else if (this.model.offsetHours > 59 || this.model.offsetHours < 0) {
+    } else if (this.model.offsetMinutes > 59 || this.model.offsetMinutes < 0) {
       value.form.controls.offsetMinutes.setErrors('range error');
     }else {
       const newTimeZone = {
@@ -67,21 +67,39 @@ export class AddUpdateTimeZoneComponent implements OnInit {
   }
 
   public setTimeZone(timeZone: TimeZone) {
-    this.resetForm();
-    this.prepopulateForm(timeZone);
+    this.resetForm(timeZone);
+    this.timeZone = timeZone;
   }
 
-  public resetForm() {
-    this.timeZone = null;
+  public resetForm(timeZone: TimeZone | null = null) {
+    this.timeZone = timeZone;
     this.loading = false;
     this.submitted = false;
     this.success = false;
-    this.model = { offsetMinutes: 0 };
-    this.form.resetForm();
+    this.form.reset();
+    if (!!timeZone) {
+      this.prepopulateForm(timeZone);
+    } else {
+      this.clearModel();
+    }
   }
 
   private prepopulateForm(timeZone: TimeZone ) {
-    Object.assign(this.model, timeZone);
+    this.model = {};
+    this.model.positiveOffset = timeZone.positiveOffset;
+    this.model.offsetHours = timeZone.offsetHours;
+    this.model.offsetMinutes = timeZone.offsetMinutes;
+    this.model.cityName = timeZone.cityName;
+    this.model.timeZoneName = timeZone.timeZoneName;
+  }
+
+  private clearModel() {
+    this.model = {};
+    this.model.positiveOffset = null;
+    this.model.offsetHours = null;
+    this.model.offsetMinutes = 0;
+    this.model.cityName = null;
+    this.model.timeZoneName = null;
   }
 
   public setSuccess(success: boolean) {

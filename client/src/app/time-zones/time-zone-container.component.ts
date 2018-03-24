@@ -15,19 +15,25 @@ import { TimeZone } from 'app/core/models/time-zone';
 import { filterNotNull } from 'app/core/utils/rx-utils';
 import * as fromTimeZoneActions from 'app/core/store/actions/time-zone.actions';
 
-
-
 @Component({
     selector: 'app-time-zone',
-    templateUrl: './time-zone-container.component.html'
+    templateUrl: './time-zone-container.component.html',
+    styles: [`
+      .tz-update-wrapper {
+        float: left;
+        width: 50%;
+      }
+    `]
 })
 export class TimeZoneComponent {
   @ViewChild('createTimeZone') createTimeZoneComponent: AddUpdateTimeZoneComponent;
+  @ViewChild('editTimeZone') editTimeZoneComponent: AddUpdateTimeZoneComponent;
 
   userId: number;
 
   ownerInfo$: Observable<UserInfo>;
   userTimeZones$: Observable<Array<TimeZone>>;
+  currentlyEditing = false;
 
   constructor(
     private store: Store<fromRoot.State>,
@@ -54,5 +60,16 @@ export class TimeZoneComponent {
 
   delete(id: number) {
     this.store.dispatch(fromTimeZoneActions.deleteTimeZone(id, this.userId));
+  }
+
+  edit(timeZone: TimeZone) {
+    this.editTimeZoneComponent.resetForm(timeZone);
+    this.currentlyEditing = true;
+  }
+
+  saveTimeZoneEdit(timeZone: TimeZone) {
+    this.createTimeZoneComponent.resetForm();
+    this.currentlyEditing = false;
+    this.store.dispatch(fromTimeZoneActions.updateTimeZone(timeZone, this.userId));
   }
 }

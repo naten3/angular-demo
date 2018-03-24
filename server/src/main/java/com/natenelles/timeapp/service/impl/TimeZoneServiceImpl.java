@@ -46,8 +46,14 @@ public class TimeZoneServiceImpl implements TimeZoneService {
   }
 
   @Override
-  public TimeZone updateTimeZone(TimeZone timeZone) {
-    return null;
+  public TimeZone updateTimeZone(TimeZone timeZone, long id) {
+    UserTimeZone utz = timeZoneRepository.findOne(id);
+    if(utz == null) {
+      throw new ResourceNotFoundException("No matching time zone");
+    }
+    UserTimeZone update = convertToEntity(timeZone, utz.getUserId());
+    UserTimeZone userTimeZone = timeZoneRepository.save(update);
+    return convertToModel(userTimeZone);
   }
 
   @Override

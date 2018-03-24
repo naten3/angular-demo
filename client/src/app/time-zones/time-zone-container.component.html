@@ -1,9 +1,13 @@
 <div class="col-md-6 col-md-offset-3">
      <div>
-        Time Zones
-        <app-add-update-time-zone #createTimeZone [title]="'Create New Time Zone'"
-        (timeZoneSave)="createNew($event)"
-        ></app-add-update-time-zone>
+        <div class="tz-update-wrapper">
+          <app-add-update-time-zone #createTimeZone [title]="'Create New Time Zone'"
+          (timeZoneSave)="createNew($event)"></app-add-update-time-zone>
+        </div>
+        <div class="tz-update-wrapper" [style.visibility] = "currentlyEditing ? 'visible' : 'hidden'">
+          <app-add-update-time-zone #editTimeZone [title]="'Edit Time Zone'"
+          (timeZoneSave)="saveTimeZoneEdit($event)"></app-add-update-time-zone>
+        </div>
         <table>
           <tr><th style="width: 30em" >Zone Name</th>
             <th style="width: 30em" >City</th>

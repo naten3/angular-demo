@@ -12,7 +12,7 @@ public interface TimeZoneService {
 
   TimeZone createTimeZone(long userId, TimeZone timeZone);
 
-  TimeZone updateTimeZone(TimeZone timeZone);
+  TimeZone updateTimeZone(TimeZone timeZone, long id);
 
   void deleteTimeZone(long id);
 

@@ -44,7 +44,7 @@ public class TimeZoneController {
   public @ResponseBody TimeZone updateTimeZone(@AuthenticationPrincipal CustomSpringUser principal,
                                                    @PathVariable long id, @RequestBody TimeZone timeZone){
     checkUserOrAdmin(principal, timeZoneService.getTimeZoneOwner(id));
-    return timeZoneService.updateTimeZone(timeZone);
+    return timeZoneService.updateTimeZone(timeZone, id);
   }
 
   @PostMapping("/users/{userId}/time-zones")

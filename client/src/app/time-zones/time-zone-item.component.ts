@@ -67,6 +67,5 @@ export class TimeZoneItemComponent implements OnInit{
     delete() {
       this.deleteEmitter.emit(this.timeZone.id);
     }
-
 }
 
