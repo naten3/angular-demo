@@ -23,6 +23,8 @@ spring:
   servlet.multipart:
     max-file-size: 10MB
     max-request-size: 10MB
+  server:
+    context-root: /api
 datasource:
   primary:
     driver-class-name: "org.h2.Driver"
@@ -32,11 +34,11 @@ server.connection-timeout: 5000
 
 embedded-redis: true
 
-email-verification-url: "http://localhost:8090/#/email-verify"
-user-invite-url: "http://localhost:8090/#/user-create"
+email-verification-url: "http://default-environment.gmiyyqg4qr.us-east-2.elasticbeanstalk.com/#/email-verify"
+user-invite-url: "http://default-environment.gmiyyqg4qr.us-east-2.elasticbeanstalk.com/#/user-create"
 #needs to be on social provider whitelists
-social-login-host: "http://localhost:8090/api"
-social-redirect-url: "http://localhost:8090/#/social/login"
+social-login-host: "http://default-environment.gmiyyqg4qr.us-east-2.elasticbeanstalk.com/api"
+social-redirect-url: "http://default-environment.gmiyyqg4qr.us-east-2.elasticbeanstalk.com/#/social/login"
 default-profile-url: "https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg"
 
 spring.mail:

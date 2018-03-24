@@ -21,6 +21,9 @@ import { TimeZone } from 'app/core/models/time-zone';
     <td>{{getGmtOffest()}}</td>
     <td>{{timeInZone$ | async}}</td>
   `, styles: [`
+        app-add-update-time-zone {
+          width: 50%;
+        }
         `]
 })
 
@@ -33,7 +36,7 @@ export class TimeZoneItemComponent implements OnInit{
     constructor() {}
 
     getGmtOffest(): string {
-      return this.timeZone.positiveOffset ? '+' : '-'
+      return (this.timeZone.positiveOffset ? '+' : '-')
       + this.timeZone.offsetHours + ':' + padStart(this.timeZone.offsetMinutes, 2, '0');
     }
 

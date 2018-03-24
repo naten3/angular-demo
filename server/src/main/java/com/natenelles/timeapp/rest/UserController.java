@@ -23,7 +23,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -56,6 +58,9 @@ public class UserController {
 
   @Autowired
   SessionRepository sessionRepository;
+
+  @GetMapping("/session-init")
+  public void sessionInit() {}
 
   @GetMapping("/user/me")
   public UserResponse getUser(@AuthenticationPrincipal CustomSpringUser user) throws ResourceNotFoundException {
@@ -97,9 +102,11 @@ public class UserController {
       } else {
         UserResponse userResponse = result.getUser().get();
         String encodedPassword = passwordEncoder.encode(userCreateRequest.getPassword());
+        Set<GrantedAuthority> authorities = result.getUser().get().getRoles().stream()
+                .map(r -> new SimpleGrantedAuthority(r)).collect(Collectors.toSet());
         CustomSpringUser user = CustomSpringUser.fromUserResponse(userResponse, encodedPassword);
         SecurityContextHolder.getContext()
-                .setAuthentication(new UsernamePasswordAuthenticationToken(user, encodedPassword));
+                .setAuthentication(new UsernamePasswordAuthenticationToken(user, encodedPassword, authorities));
         return new ResponseEntity(userResponse, HttpStatus.OK);
       }
     }

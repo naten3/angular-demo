@@ -1,0 +1,58 @@
+<div>
+  <h5>{{title}}</h5>
+  <form name="form" (ngSubmit)="f.form.valid && save(f)" #f="ngForm" novalidate ngNativeValidate>
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !timeZoneName.valid }">
+      <label for="timeZoneName">Name</label>
+      <input type="text" class="form-control" [(ngModel)]="model.timeZoneName" name="timeZoneName" 
+        #timeZoneName="ngModel" required maxLength="100" autocomplete="off"/>
+      <div *ngIf="f.submitted && !timeZoneName.valid" class="help-block">
+        Name is required and must be fewer than 300 characters
+      </div>
+    </div>
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !cityName.valid }">
+      <label for="cityName">City</label>
+      <input type="text" class="form-control" [(ngModel)]="model.cityName" name="cityName" 
+        #cityName="ngModel" required maxLength="100" autocomplete="off"/>
+      <div *ngIf="f.submitted && !cityName.valid" class="help-block">
+        City name is required and must be fewer than 300 characters
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="positiveOffset">Offset Direction</label>
+      <select class="form-control" [(ngModel)]="model.positiveOffset" name="positiveOffset" 
+      #positiveOffset="ngModel" required>
+        <option [ngValue]="true">Positive</option>
+        <option [ngValue]="false">Negative</option>
+      </select>
+      <div *ngIf="f.submitted && !positiveOffset.valid" class="help-block">
+          Must choose positive or negative offset
+        </div>
+    </div>
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !offsetHours.valid }">
+      <label for="offsetHours">Offset hours</label>
+      <input type="number" min="0" max="12" class="form-control" [(ngModel)]="model.offsetHours" name="offsetHours" 
+        #offsetHours="ngModel" autocomplete="off" required/>
+      <div *ngIf="f.submitted && !offsetHours.valid" class="help-block">
+        Must choose offset hours between 0 and 12
+      </div>
+    </div>
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !offsetMinutes.valid }">
+      <label for="offsetMinutes">Offset Minutes</label>
+      <input type="number" min="0" max="59" class="form-control" [(ngModel)]="model.offsetMinutes" 
+        name="offsetMinutes" #offsetMinutes="ngModel" autocomplete="off" required/>
+      <div *ngIf="f.submitted && !offsetMinutes.valid" class="help-block">
+        Must choose offset minutes between 0 and 59
+      </div>
+    </div>
+    <div class="form-group">
+        <div class="control-group info">
+          <div class="controls">
+            <button [disabled]="submitted" class="btn btn-primary">Submit</button>
+          </div>
+        </div>
+    </div>
+    <div *ngIf="success">
+      Success!
+    </div>
+  </form>
+</div>

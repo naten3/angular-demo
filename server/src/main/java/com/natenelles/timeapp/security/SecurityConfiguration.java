@@ -83,7 +83,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     .authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/login**").permitAll()
             .antMatchers("/signin/**").permitAll()
     .antMatchers(HttpMethod.GET, "/users/available**", "/users/verify-email**",
-            "/users/signup-invite**", "/actuator/health").permitAll()
+            "/users/signup-invite**", "/actuator/health", "/session-init").permitAll()
     .regexMatchers(HttpMethod.POST, "\\/users\\/?").permitAll()
     .anyRequest().authenticated()
     .and()

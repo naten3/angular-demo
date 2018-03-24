@@ -79,4 +79,18 @@ export class TimeZoneEffects {
       }
   })
   .catch(e => Observable.of(fromTimeZoneActions.requestTimeZoneUserFailure(action.payload))));
+
+  @Effect() createTimeZone$ = this.actions$
+  .ofType(fromTimeZoneActions.CREATE_TIME_ZONE)
+  .switchMap(action => this.http.post(`/api/users/${action.payload.userId}/time-zones`,
+  action.payload.timeZone,
+  { headers: SessionService.getSessionHeader()})
+  .map(res => {
+      if (res.ok) {
+        return fromTimeZoneActions.createTimeZoneSuccess(res.json(), action.payload.userId);
+      } else {
+        return fromTimeZoneActions.requestTimeZoneUserFailure(action.payload.userId);
+      }
+  })
+  .catch(e => Observable.of(fromTimeZoneActions.requestTimeZoneUserFailure(action.payload.userId))));
 }

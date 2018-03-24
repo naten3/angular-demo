@@ -43,4 +43,8 @@
         <sql>SET IDENTITY_INSERT MEAL OFF</sql>
     </changeSet>
 
+    <changeSet author="nate.nelles" id="user_invite_data" context="testdata">
+        <loadData tableName="USER_INVITE" file="user_invite.csv" relativeToChangelogFile="true" />
+    </changeSet>
+
 </databaseChangeLog>

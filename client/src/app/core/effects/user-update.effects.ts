@@ -41,7 +41,7 @@ export class UserUpdateEffects {
     .switchMap(action => {
       return this.http.post('/api/users', action.payload)
       .switchMap(res => {
-        SessionService.saveSessionId(res.headers['x-auth-token']);
+        SessionService.saveSessionId(res.headers.get('x-auth-token'));
         return Observable.of(fromUserUpdate.userCreateSuccess(), fromSession.loginStatusChange(res.json())) ;
       })
       .catch(e => {
