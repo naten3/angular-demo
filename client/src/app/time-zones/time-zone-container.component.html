@@ -8,9 +8,13 @@
           <tr><th style="width: 30em" >Zone Name</th>
             <th style="width: 30em" >City</th>
             <th style="width: 20em" >GMT Offset</th>
-            <th style="width: 20em" >Time in Zone</th></tr>
+            <th style="width: 20em" >Time in Zone</th>
+            <th style="width: 20em"></th>
+            <th style="width: 20em"></th>
+            </tr>
           <tr *ngFor="let n of (userTimeZones$ | async) trackBy: getTimezoneId" 
-          app-time-zone-item="true" [timeZone]="n">
+          app-time-zone-item="true" [timeZone]="n" 
+          (updateTimeZoneEmitter)="edit($event)" (deleteEmitter)="delete($event)">
           </tr>
         </table>
     </div>

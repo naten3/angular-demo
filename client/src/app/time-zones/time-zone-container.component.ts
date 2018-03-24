@@ -51,4 +51,8 @@ export class TimeZoneComponent {
     this.createTimeZoneComponent.resetForm();
     this.store.dispatch(fromTimeZoneActions.createTimeZone(timeZone, this.userId));
   }
+
+  delete(id: number) {
+    this.store.dispatch(fromTimeZoneActions.deleteTimeZone(id, this.userId));
+  }
 }

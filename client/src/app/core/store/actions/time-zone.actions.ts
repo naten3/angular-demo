@@ -78,3 +78,14 @@ export const updateTimeZoneFailure = (userId: number) => {
   return { 'type': UPDATE_TIME_ZONE_SUCCESS, 'payload': userId};
 };
 
+export const deleteTimeZone = (id: number, userId: number) => {
+  return { 'type': DELETE_TIME_ZONE, 'payload': { id, userId}};
+};
+
+export const deleteTimeSuccess = (id: number, userId: number) => {
+  return { 'type': DELETE_TIME_ZONE_SUCCESS, 'payload': { id, userId}};
+};
+
+export const deleteTimeFailure = (id: number, userId: number) => {
+  return { 'type': DELETE_TIME_ZONE_FAILURE, 'payload': { id, userId}};
+};

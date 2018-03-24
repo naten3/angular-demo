@@ -20,6 +20,12 @@ import { TimeZone } from 'app/core/models/time-zone';
     <td>{{timeZone.cityName}}</td>
     <td>{{getGmtOffest()}}</td>
     <td>{{timeInZone$ | async}}</td>
+    <td>
+      <button (click)="edit()" class="btn btn-primary">Edit</button>
+    </td>
+    <td>
+    <button (click)="delete()" class="btn btn-primary">Delete</button>
+    </td>
   `, styles: [`
         app-add-update-time-zone {
           width: 50%;
@@ -29,7 +35,8 @@ import { TimeZone } from 'app/core/models/time-zone';
 
 export class TimeZoneItemComponent implements OnInit{
     @Input() timeZone: TimeZone;
-    @Output() updateTimeZone = new EventEmitter<number>();
+    @Output() updateTimeZoneEmitter = new EventEmitter<TimeZone>();
+    @Output() deleteEmitter = new EventEmitter<number>();
 
     timeInZone$: Observable<string>;
 
@@ -51,6 +58,14 @@ export class TimeZoneItemComponent implements OnInit{
         : currentTime.subtract(offset);
         return timeWithOffset.format('hh:mm A');
       });
+    }
+
+    edit() {
+      this.updateTimeZoneEmitter.emit(this.timeZone);
+    }
+
+    delete() {
+      this.deleteEmitter.emit(this.timeZone.id);
     }
 
 }

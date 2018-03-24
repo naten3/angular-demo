@@ -87,5 +87,4 @@ export class AddUpdateTimeZoneComponent implements OnInit {
   public setSuccess(success: boolean) {
     this.success = success;
   }
-
 }

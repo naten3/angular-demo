@@ -78,7 +78,8 @@ export class TimeZoneEffects {
         return fromTimeZoneActions.requestTimeZoneUserFailure(action.payload);
       }
   })
-  .catch(e => Observable.of(fromTimeZoneActions.requestTimeZoneUserFailure(action.payload))));
+  .catch(e => Observable.of(
+    fromTimeZoneActions.requestTimeZoneUserFailure(action.payload))));
 
   @Effect() createTimeZone$ = this.actions$
   .ofType(fromTimeZoneActions.CREATE_TIME_ZONE)
@@ -92,5 +93,22 @@ export class TimeZoneEffects {
         return fromTimeZoneActions.requestTimeZoneUserFailure(action.payload.userId);
       }
   })
-  .catch(e => Observable.of(fromTimeZoneActions.requestTimeZoneUserFailure(action.payload.userId))));
+  .catch(e => Observable.of(
+    fromTimeZoneActions.requestTimeZoneUserFailure(action.payload.userId))));
+
+@Effect() deleteTimeZone$ = this.actions$
+.ofType(fromTimeZoneActions.DELETE_TIME_ZONE)
+.switchMap(action => this.http.delete(`/api/time-zones/${action.payload.id}`,
+{ headers: SessionService.getSessionHeader()})
+.map(res => {
+    if (res.ok) {
+      return fromTimeZoneActions.deleteTimeSuccess(action.payload.id, action.payload.userId);
+    } else {
+      return fromTimeZoneActions.deleteTimeFailure(action.payload.id, action.payload.userId);
+    }
+})
+.catch(e => Observable.of(
+  fromTimeZoneActions.deleteTimeFailure(action.payload.id, action.payload.userId))));
+
 }
+

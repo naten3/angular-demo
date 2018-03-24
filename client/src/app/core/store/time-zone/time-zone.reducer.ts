@@ -38,6 +38,22 @@ export function reducer(state: State = initialState, action: Action): State {
     case fromTimeZoneActions.CREATE_TIME_ZONE_FAILURE:
      // TODO
       return state;
+    case fromTimeZoneActions.DELETE_TIME_ZONE_SUCCESS:
+      if (!!state.timeZones && state.timeZones.userId === action.payload.userId) {
+        const newTimeZones = 
+          state.timeZones.timeZones.filter(x => x.id !== action.payload.id);
+        const newUserTimeZone = Object.assign(clone(state.timeZones), {
+          timeZones: newTimeZones
+        });
+        return Object.assign(clone(state), {
+          timeZones: newUserTimeZone
+        });
+      } else {
+        return state;
+      }
+    case fromTimeZoneActions.DELETE_TIME_ZONE_FAILURE:
+      // TODO
+       return state;
     case fromTimeZoneActions.TIME_ZONE_RESET:
       return initialState;
     default:
