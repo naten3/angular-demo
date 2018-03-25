@@ -33,10 +33,10 @@
     </div>
     <div class="form-group col" [ngClass]="{ 'has-error': f.submitted && !offsetHours.valid }">
       <label for="offsetHours">Offset hours</label>
-      <input type="number" min="0" max="12" class="form-control" [(ngModel)]="model.offsetHours" name="offsetHours" 
+      <input type="number" min="0" max="14" class="form-control" [(ngModel)]="model.offsetHours" name="offsetHours" 
         #offsetHours="ngModel" autocomplete="off" required/>
       <div *ngIf="f.submitted && !offsetHours.valid" class="help-block">
-        Must choose offset hours between 0 and 12
+        Must choose offset hours between 0 and 14
       </div>
     </div>
     <div class="form-group col" [ngClass]="{ 'has-error': f.submitted && !offsetMinutes.valid }">

@@ -51,7 +51,7 @@ export class AddUpdateTimeZoneComponent implements OnInit {
   }
 
   save(value: any) {
-    if (this.model.offsetHours > 12 || this.model.offsetHours < 0) {
+    if (this.model.offsetHours > 14 || this.model.offsetHours < 0) {
       value.form.controls.offsetHours.setErrors('range error');
     } else if (this.model.offsetMinutes > 59 || this.model.offsetMinutes < 0) {
       value.form.controls.offsetMinutes.setErrors('range error');

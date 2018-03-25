@@ -14,7 +14,7 @@ public class TimeZone {
     private boolean positiveOffset;
 
     @Min(0)
-    @Max(23)
+    @Max(14)
     @NotNull
     private int offsetHours;
 
