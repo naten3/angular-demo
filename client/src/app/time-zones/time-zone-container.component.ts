@@ -22,6 +22,7 @@ import * as fromTimeZoneActions from 'app/core/store/actions/time-zone.actions';
       .tz-update-wrapper {
         float: left;
         width: 50%;
+        padding: 0 5px;
       }
     `]
 })

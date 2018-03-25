@@ -10,19 +10,22 @@ import { TimeZone } from 'app/core/models/time-zone';
   templateUrl: './add-update-time-zone.component.html',
   styles: [`
     label {
-      font-size: 12px;
+      font-size: .5em;
       margin-bottom: 3px;
     }
     input {
       line-height: .1em;
-      font-size: 10px;
+      font-size: 10pt;
     }
     select {
-      height: 2em !important;
-      font-size: 10px !important;
+      height: 2.6em !important;
+      font-size: .5em !important;
     }
     .form-group {
       margin-bottom: 4px;
+    }
+    .help-block {
+      font-size: .5em;
     }
   `]
 })
