@@ -44,7 +44,8 @@ import static com.natenelles.timeapp.util.StreamUtils.optStream;
 @Transactional
 @Service
 public class UserServiceImpl implements UserService {
-  private static final String invalidFacebookRegex = String.format( "^%s.*",FacebookConnectionSignup.FACEBOOK_NAME_PREFIX);
+  public static final String invalidFacebookRegex = String.format( "^%s.*",FacebookConnectionSignup.FACEBOOK_NAME_PREFIX);
+  public static final String invalidGoogleRegex = String.format( "^%s.*",FacebookConnectionSignup.GOOGLE_NAME_PREFIX);
 
   private UserRepository userRepository;
   private TimeZoneRepository timeZoneRepository;
@@ -94,7 +95,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Set<UserSaveError> createUser(final UserCreateRequest ucr) {
-    if (ucr.getUsername().matches(invalidFacebookRegex)) {
+    if (ucr.getUsername().matches(invalidFacebookRegex) || ucr.getUsername().matches(invalidGoogleRegex)) {
       return ImmutableSet.of(UserSaveError.ILLEGAL_USERNAME);
     }
 
@@ -274,7 +275,7 @@ public class UserServiceImpl implements UserService {
   }
 
   private static boolean isSocialUser(User user) {
-    return user.getFacebookId().isPresent();
+    return user.getFacebookId().isPresent() || user.getGoogleId().isPresent();
   }
 
   /**

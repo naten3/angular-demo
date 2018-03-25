@@ -1,6 +1,8 @@
 package com.natenelles.timeapp.security;
 
+import com.google.common.collect.ImmutableSet;
 import com.natenelles.timeapp.entity.UserRole;
+import com.natenelles.timeapp.model.errors.UserSaveError;
 import com.natenelles.timeapp.service.intf.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,6 +15,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.natenelles.timeapp.service.impl.UserServiceImpl.invalidFacebookRegex;
+import static com.natenelles.timeapp.service.impl.UserServiceImpl.invalidGoogleRegex;
 
 @Component
 class CustomUserDetailService implements UserDetailsService {
@@ -30,6 +35,10 @@ class CustomUserDetailService implements UserDetailsService {
     boolean accountNonExpired = true;
     boolean credentialsNonExpired = true;
     boolean accountNonLocked = true;
+
+    if (username.matches(invalidFacebookRegex) || username.matches(invalidGoogleRegex)) {
+      return null;
+    }
 
     return userService.getSecurityUser(username).map(user -> {
       return new CustomSpringUser

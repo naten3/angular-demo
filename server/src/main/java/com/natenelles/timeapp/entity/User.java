@@ -37,7 +37,7 @@ public class User {
   private Set<UserRole> roles = new HashSet<>();
 
   private String facebookId;
-  private String twitterId;
+  private String googleId;
 
   private String profileImage;
   private String socialProfileImage;
@@ -101,12 +101,12 @@ public class User {
     this.facebookId = facebookId.orElse(null);
   }
 
-  public Optional<String> getTwitterId() {
-    return Optional.ofNullable(twitterId);
+  public Optional<String> getGoogleId() {
+    return Optional.ofNullable(googleId);
   }
 
-  public void setTwitterId(Optional<String> twitterId) {
-    this.twitterId = twitterId.orElse(null);
+  public void setGoogleId(Optional<String> googleId) {
+    this.googleId = googleId.orElse(null);
   }
 
   public Optional<String> getProfileImage() {

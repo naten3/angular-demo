@@ -13,7 +13,7 @@ public class UserRole {
   public static final String USER_ADMIN = "USER_ADMIN";
   public static final String ADMIN = "ADMIN";
   public static final String FACEBOOK_USER = "FACEBOOK_USER";
-  public static final String TWITTER_USER = "TWITTER_USER";
+  public static final String GOOGLE_USER = "GOOGLE_USER";
 
   public UserRole() {
   }

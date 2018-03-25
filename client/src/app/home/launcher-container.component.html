@@ -37,4 +37,11 @@
             <input type="submit" value="Login using Facebook" class="btn btn-primary"/>
         </div>
     </form>
+    <form action="/api/signin/google" method="POST" ngNoForm>
+      <div class="form-group">
+          <!--input type="hidden" name="scope" value="public_profile,email" /-->
+          <input type="hidden" name="redirect_uri" value="http://localhost:8090/home" />
+          <input type="submit" value="Login using Google" class="btn btn-primary"/>
+      </div>
+  </form>
 </div>

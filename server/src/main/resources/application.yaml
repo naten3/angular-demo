@@ -16,6 +16,9 @@ spring:
     facebook:
       app-id: dummy
       app-secret: dummy
+    google:
+      app-id: dummyy
+      app-secret: dummy
   http:
     multipart:
      max-file-size: 100MB

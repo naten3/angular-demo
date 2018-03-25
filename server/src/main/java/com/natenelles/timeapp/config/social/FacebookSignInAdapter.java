@@ -35,7 +35,7 @@ public class FacebookSignInAdapter implements SignInAdapter {
     @Override
     public String signIn(String localUserId, Connection<?> connection, NativeWebRequest request) {
         //TODO make this more secure
-        User user = userService.getByUsername(localUserId).orElseThrow(() -> new IllegalStateException("No user found with fb id"));
+        User user = userService.getByUsername(localUserId).orElseThrow(() -> new IllegalStateException("No user found with social id"));
 
         Set<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(UserRole::getRoleName)
@@ -46,8 +46,8 @@ public class FacebookSignInAdapter implements SignInAdapter {
                         user.getPassword(), true, true,
                         true, true, authorities, user.getId());
 
-        //This is a hack to authenticate
-        UsernamePasswordAuthenticationToken principal = new UsernamePasswordAuthenticationToken(customSpringUser, DUMMY);
+        UsernamePasswordAuthenticationToken principal =
+                new UsernamePasswordAuthenticationToken(customSpringUser, null, authorities);
 
         SecurityContextHolder.getContext().setAuthentication(principal);
 

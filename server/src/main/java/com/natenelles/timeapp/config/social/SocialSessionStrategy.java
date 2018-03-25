@@ -19,11 +19,14 @@ public class SocialSessionStrategy implements SessionStrategy {
         request.removeAttribute(name, RequestAttributes.SCOPE_SESSION);
     }
 
-    //*I don't know why it's looking for wrong parameter name TODO
+    //*oauth2State is wrong for facebook, oauthToken is wrong for Twitter
     private static String getRealAttributeName(String name) {
         if (name.equals("oauth2State")) {
             return "state";
-        } else {
+        } else if (name.equals("oauthToken")) {
+            return "oauth_token";
+        }
+        else {
             return name;
         }
     }

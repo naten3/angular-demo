@@ -19,7 +19,7 @@
             </column>
             <column name="EMAIL_VERIFICATION_TOKEN" type="nvarchar(100)"/>
             <column name="FACEBOOK_ID" type="nvarchar(300)"/>
-            <column name="TWITTER_ID" type="nvarchar(300)"/>
+            <column name="GOOGLE_ID" type="nvarchar(300)"/>
             <column name="PROFILE_IMAGE" type="nvarchar(700)"/>
             <column name="SOCIAL_PROFILE_IMAGE" type="nvarchar(700)"/>
             <column name="FIRST_NAME" type="nvarchar(100)">
