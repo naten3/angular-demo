@@ -283,7 +283,7 @@ public class UserServiceImpl implements UserService {
   private User convertToNewUser(UserCreateRequest ucr, String emailVerificationToken, String email) {
     User user = new User();
     user.setUsername(ucr.getUsername());
-    user.setPassword(ucr.getPassword()); //TODO Bcrypt
+    user.setPassword(passwordEncoder.encode(ucr.getPassword()));
     user.setEmail(email);
     user.setFirstName(ucr.getFirstName());
     user.setLastName(ucr.getLastName());
