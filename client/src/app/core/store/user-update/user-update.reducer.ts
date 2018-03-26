@@ -31,7 +31,7 @@ export function reducer(state = initialState, action: Action) {
             success: false,
             submitted: true,
             pendingUpdate: false,
-            errors: action.payload
+            errors: action.payload.errors
           });
         case fromActions.USER_UPDATE_RESET:
           return initialState;

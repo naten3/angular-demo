@@ -24,6 +24,7 @@ export const UNLOCK_USER_SUCCESS = '[User Update] UNLOCK USER SUCCESS';
 export const UNLOCK_USER_FAILURE = '[User Update] UNLOCK USER FAILURE';
 
 export const PROFILE_IMAGE_UPDATE_SUCCESS = '[User Update] UPDATE PROFILE IMAGE SUCCESS';
+export const PROFILE_IMAGE_UPDATE_FAILURE = '[User Update] UPDATE PROFILE IMAGE FAILURE';
 
 import { UserSaveRequest } from 'app/core/models/user-save';
 import { UserUpdateForm, UserUpdateRequest } from 'app/core/models/user-update';
@@ -49,8 +50,8 @@ export const updateUser = (userUpdateRequest: UserUpdateRequest) => {
 export const userUpdateSuccess = (userInfo: UserInfo) => {
     return {'type': USER_UPDATE_SUCCESS, 'payload': userInfo};
 };
-export const userUpdateFailure = (errors: Array<string>) => {
-    return {'type': USER_UPDATE_FAILURE, 'payload': errors};
+export const userUpdateFailure = (errors: Array<string>, userId: number) => {
+    return {'type': USER_UPDATE_FAILURE, 'payload': {errors, userId}};
 };
 
 export const userUpdateReset = () => { return {'type': USER_UPDATE_RESET}; };
@@ -93,4 +94,9 @@ export const updateProfileImageSuccess = (id: number, url: string) => {
         id,
         url
     }};
-}
+};
+
+export const updateProfileImageFailure = (id: number) => {
+  return {'type': PROFILE_IMAGE_UPDATE_FAILURE, 'payload': id};
+};
+

@@ -9,6 +9,7 @@ import { back, go } from '@ngrx/router-store';
 import { SessionService } from 'app/core/services';
 import * as fromUserUpdate from 'app/core/store/actions/user-update.actions';
 import * as fromSession from 'app/core/store/actions/session.actions';
+import * as fromToastActions from 'app/core/store/actions/toast.actions';
 import { UserInfo } from 'app/core/models/session';
 import * as fromRoot from 'app/core/store';
 
@@ -63,10 +64,10 @@ export class UserUpdateEffects {
         if (res.ok) {
             return fromUserUpdate.userUpdateSuccess(res.json());
         } else {
-          return fromUserUpdate.userUpdateFailure(res.json().errors);
+          return fromUserUpdate.userUpdateFailure(res.json().errors, userId);
         }
     })
-    .catch(e => Observable.of(fromUserUpdate.userUpdateFailure(['unknown'])));
+    .catch(e => Observable.of(fromUserUpdate.userUpdateFailure(['unknown'], userId)));
   });
 
   @Effect() updatePassword$ = this.actions$
@@ -120,4 +121,49 @@ export class UserUpdateEffects {
   @Effect() leaveDeletedUser$ = this.actions$
   .ofType(fromUserUpdate.DELETE_USER_SUCCESS)
   .map( action => fromUserUpdate.userUpdateReset());
+
+  @Effect() userUpdateError$ = this.actions$
+  .ofType(fromUserUpdate.USER_UPDATE_FAILURE)
+  .map(action => fromToastActions.faillToast(`Error Updating User`, 'Error'));
+
+  @Effect() userUpdateSuccess$ = this.actions$
+  .ofType(fromUserUpdate.USER_UPDATE_SUCCESS)
+  .map(action => fromToastActions.successToast(`User was updated successfully`,
+   'Success!'));
+
+   @Effect() passwordUpdateError$ = this.actions$
+   .ofType(fromUserUpdate.UPDATE_PASSWORD_FAILURE)
+   .map(action => fromToastActions.faillToast(`Error Updating User Password`, 'Error'));
+ 
+   @Effect() passwordUpdateSuccess$ = this.actions$
+   .ofType(fromUserUpdate.UPDATE_PASSWORD_SUCCESS)
+   .map(action => fromToastActions.successToast(`User Password Was Updated Successfully`,
+    'Success!'));
+
+    @Effect() profileImageUpdateError$ = this.actions$
+    .ofType(fromUserUpdate.PROFILE_IMAGE_UPDATE_FAILURE)
+    .map(action => fromToastActions.faillToast(`Error Updating Profile Image`, 'Error'));
+  
+    @Effect() profileImageUpdateSuccess$ = this.actions$
+    .ofType(fromUserUpdate.PROFILE_IMAGE_UPDATE_SUCCESS)
+    .map(action => fromToastActions.successToast(`Profile Imsage Was Updated Successfully`,
+     'Success!'));
+
+     @Effect() unlockUpdateError$ = this.actions$
+     .ofType(fromUserUpdate.UNLOCK_USER_FAILURE)
+     .map(action => fromToastActions.faillToast(`Error Unlocking User`, 'Error'));
+   
+     @Effect() unlockUpdateSuccess$ = this.actions$
+     .ofType(fromUserUpdate.UNLOCK_USER_SUCCESS)
+     .map(action => fromToastActions.successToast(`User was Unlocked Successfully`,
+      'Success!'));
+
+      @Effect()deleteUserErrors$ = this.actions$
+      .ofType(fromUserUpdate.DELETE_USER_FAILURE)
+      .map(action => fromToastActions.faillToast(`Error Deleting User`, 'Error'));
+    
+      @Effect() deleteUserSuccess$ = this.actions$
+      .ofType(fromUserUpdate.DELETE_USER_SUCCESS)
+      .map(action => fromToastActions.successToast(`User was Deleted Successfully`,
+       'Success!'));
 }

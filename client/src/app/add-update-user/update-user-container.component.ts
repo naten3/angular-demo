@@ -167,7 +167,10 @@ export abstract class UpdateUserComponent implements OnDestroy {
         const headers = SessionService.getSessionHeader()
         const options = new RequestOptions({ headers });
         this.http.post(`api/users/${this.userId}/image/upload`, formData, options)
-            .catch(error => Observable.throw(error))
+            .catch(error => {
+              this.store.dispatch(fromUserUpdate.updateProfileImageFailure(this.userId));
+              return Observable.throw(error);
+            })
             .subscribe( res => {
                 this.store.dispatch(fromUserUpdate.updateProfileImageSuccess(this.userId, res.json().url ));
                 this.fileInput.nativeElement.value = null;

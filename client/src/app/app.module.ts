@@ -7,6 +7,8 @@ import { StoreModule, INITIAL_STATE } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { RouterModule } from '@angular/router';
+import { ToastModule } from 'ng2-toastr/ng2-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 
@@ -29,7 +31,8 @@ import { routes } from 'app/app.routes';
 import { SharedModule } from 'app/shared/shared.module';
 import { LauncherContainerComponent, EmailVerifyComponent, HomeContainerComponent } from 'app/home';
 import { AddUserComponent, SelfUpdateComponent, AdminUserUpdateComponent } from 'app/add-update-user';
-import { AuthEffects, UserUpdateEffects, AdminUserListEffecs, UserInviteEffects, TimeZoneEffects } from 'app/core/effects';
+import { AuthEffects, UserUpdateEffects, AdminUserListEffecs, UserInviteEffects, 
+  TimeZoneEffects, ToastEffects } from 'app/core/effects';
 import { AuthGuard, LoginGuard, SocialLoginGuard, UserAdminGuard,
    AdminOrOwnerGuard } from 'app/core/guards';
 import { EmailVerifyResolver, IdResolver, UserAdminListResolver, ManagedUserResolver,
@@ -73,7 +76,9 @@ import { EmailVerifyResolver, IdResolver, UserAdminListResolver, ManagedUserReso
     EffectsModule.run(UserUpdateEffects),
     EffectsModule.run(AdminUserListEffecs),
     EffectsModule.run(UserInviteEffects),
-    EffectsModule.run(TimeZoneEffects)
+    EffectsModule.run(TimeZoneEffects),
+    EffectsModule.run(ToastEffects),
+    BrowserModule, BrowserAnimationsModule, ToastModule.forRoot()
   ],
   providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }, AuthGuard, LoginGuard,
     AdminOrOwnerGuard,
