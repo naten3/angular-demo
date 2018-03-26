@@ -1,15 +1,20 @@
 <div>
-     <div>
+     <div class="pb-4">
         <div *ngIf="shouldShowOwnerInfo$ | async" class="bg-warning">
            {{ownerInfoText() | async}}
         </div>
-        <div class="tz-update-wrapper">
+        <div class="row">
+        <div class="tz-update-wrapper col">
           <app-add-update-time-zone #createTimeZone [title]="'Create New Time Zone'"
           (timeZoneSave)="createNew($event)"></app-add-update-time-zone>
         </div>
-        <div class="tz-update-wrapper" [style.visibility] = "currentlyEditing ? 'visible' : 'hidden'">
+        <div class="tz-update-wrapper col" [style.visibility] = "currentlyEditing ? 'visible' : 'hidden'">
           <app-add-update-time-zone #editTimeZone [title]="'Edit Time Zone'"
           (timeZoneSave)="saveTimeZoneEdit($event)"></app-add-update-time-zone>
+        </div>
+        </div>
+        <div class="row">
+          Filter By Name: <input type="text" (input)="filterTimeZones($event.target.value)" />
         </div>
         <table>
           <tr><th style="width: 30em" >Zone Name</th>
@@ -19,7 +24,7 @@
             <th style="width: 20em"></th>
             <th style="width: 20em"></th>
             </tr>
-          <tr *ngFor="let n of (userTimeZones$ | async) trackBy: getTimezoneId" 
+          <tr *ngFor="let n of (timeZoneList() | async) trackBy: getTimezoneId" 
           app-time-zone-item="true" [timeZone]="n" 
           (updateTimeZoneEmitter)="edit($event)" (deleteEmitter)="delete($event)">
           </tr>

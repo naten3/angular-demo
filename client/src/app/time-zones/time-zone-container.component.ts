@@ -1,7 +1,10 @@
 import { AfterViewInit, Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operators';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import 'rxjs/add/observable/fromevent';
 import { Router, ActivatedRoute } from '@angular/router';
 import { go } from '@ngrx/router-store';
@@ -20,8 +23,6 @@ import * as fromTimeZoneActions from 'app/core/store/actions/time-zone.actions';
     templateUrl: './time-zone-container.component.html',
     styles: [`
       .tz-update-wrapper {
-        float: left;
-        width: 50%;
         padding: 0 5px;
       }
     `]
@@ -35,6 +36,7 @@ export class TimeZoneComponent {
   ownerInfo$: Observable<UserInfo>;
   userTimeZones$: Observable<Array<TimeZone>>;
   shouldShowOwnerInfo$: Observable<boolean>;
+  filterText$: Subject<string> = new BehaviorSubject('');
 
   currentlyEditing = false;
 
@@ -44,10 +46,6 @@ export class TimeZoneComponent {
     private route: ActivatedRoute) {
       this.ownerInfo$ = filterNotNull(store.select(fromRoot.getTimeZoneUser));
       this.userTimeZones$ = filterNotNull(store.select(fromRoot.getTimeZones))
-      .map(x => {
-        console.log('time zones ' + x.map(y => y.id).join(','));
-        return x;
-      });
 
       this.userId = Number(route.snapshot.params['userId']);
 
@@ -57,6 +55,20 @@ export class TimeZoneComponent {
 
   getTimezoneId(timeZone: TimeZone) {
     return timeZone.id;
+  }
+
+  timeZoneList(): Observable<Array<TimeZone>> {
+    return combineLatest(this.userTimeZones$, this.filterText$).map(timeZonesWithFilter => {
+      const timeZones = timeZonesWithFilter[0];
+      const filter = timeZonesWithFilter[1];
+      console.log("filter is " + filter);
+      if (!filter) {
+        return timeZones;
+      } else {
+        return timeZones.filter(tz =>
+          tz.timeZoneName.toUpperCase().includes(filter.toUpperCase()));
+      }
+    });
   }
 
   createNew(timeZone: TimeZone) {
@@ -80,7 +92,11 @@ export class TimeZoneComponent {
   }
 
   ownerInfoText(): Observable<string> {
-    return this.ownerInfo$.map(oi => 
+    return this.ownerInfo$.map(oi =>
     `Showing Time Zones for ${oi.firstName} ${oi.lastName} username: ${oi.username}`);
+  }
+
+  filterTimeZones(filter: string) {
+    this.filterText$.next(filter);
   }
 }
