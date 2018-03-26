@@ -1,5 +1,8 @@
 <div>
      <div>
+        <div *ngIf="shouldShowOwnerInfo$ | async">
+           {{ownerInfoText() | async}}
+        </div>
         <div class="tz-update-wrapper">
           <app-add-update-time-zone #createTimeZone [title]="'Create New Time Zone'"
           (timeZoneSave)="createNew($event)"></app-add-update-time-zone>

@@ -25,11 +25,6 @@ export const DELETE_TIME_ZONE_FAILURE = '[Time Zone] DELETE FAILURE';
 import { UserInfo } from 'app/core/models/session';
 import { TimeZone } from 'app/core/models/time-zone';
 
-// Use this to request from route guard
-export const requestNewTimeZoneState = (userid: number) => {
-  return { 'type': REQUEST_NEW_TIME_ZONE_STATE, 'payload': userid };
-};
-
 export const requestTimeZones = (userId: number) => {
   return { 'type': TIME_ZONE_REQUEST, 'payload': userId };
 };
@@ -43,7 +38,7 @@ export const timeZoneFailure  = (userId: number, errors: Array<string>) => {
 export const timeZoneReset  = () => {return { 'type': TIME_ZONE_RESET}; };
 
 export const requestTimeZoneUser = (userId: number) => {
-  return { 'type': TIME_ZONE_USER_SUCCESS, 'payload': userId};
+  return { 'type': TIME_ZONE_USER_REQUEST, 'payload': userId};
 };
 
 export const requestTimeZoneUserSuccess = (userInfo: UserInfo) => {

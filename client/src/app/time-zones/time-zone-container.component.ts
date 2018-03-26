@@ -34,6 +34,8 @@ export class TimeZoneComponent {
 
   ownerInfo$: Observable<UserInfo>;
   userTimeZones$: Observable<Array<TimeZone>>;
+  shouldShowOwnerInfo$: Observable<boolean>;
+
   currentlyEditing = false;
 
   constructor(
@@ -48,6 +50,9 @@ export class TimeZoneComponent {
       });
 
       this.userId = Number(route.snapshot.params['userId']);
+
+      this.shouldShowOwnerInfo$ = filterNotNull(store.select(fromRoot.getUserInfo)).map(ui =>
+        ui.id !== this.userId);
     }
 
   getTimezoneId(timeZone: TimeZone) {
@@ -72,5 +77,10 @@ export class TimeZoneComponent {
     this.createTimeZoneComponent.resetForm();
     this.currentlyEditing = false;
     this.store.dispatch(fromTimeZoneActions.updateTimeZone(timeZone, this.userId));
+  }
+
+  ownerInfoText(): Observable<string> {
+    return this.ownerInfo$.map(oi => 
+    `Showing Time Zones for ${oi.firstName} ${oi.lastName} username: ${oi.username}`);
   }
 }

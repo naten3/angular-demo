@@ -14,6 +14,11 @@
             <button class="btn btn-danger" (click)="deleteUser()">Delete this User</button>
         </div>
      </div>
+     <div *ngIf="canViewUserTimeZones$ | async">
+        <div class="controls">
+            <button class="btn btn-primary" (click)="viewTimeZones()">View Time Zones</button>
+        </div>
+     </div>
       <div class = "row">
           <img id="updateUserProfileImage" [src]="profileImage$ | async" class="m-5">
           <input #profileImageUpload type="file" name="file" (change)="fileChange($event) && profileImageUpload.clear()" placeholder="Upload Profile Picture" 

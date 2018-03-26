@@ -21,6 +21,7 @@ import { updateUser, updatePassword } from 'app/core/store/actions/user-update.a
 export abstract class UpdateUserComponent implements OnDestroy {
 
   canDeleteUser$ = Observable.of(false);
+  canViewUserTimeZones$ = Observable.of(false);
   isDeletedUser$ = Observable.of(false);
 
   isLoggedInAsAdmin$: Observable<boolean>;
@@ -76,7 +77,8 @@ export abstract class UpdateUserComponent implements OnDestroy {
 
       this.notSocialUser$ = userInfo$.map(ui => !ui.socialUser);
 
-      const currentFormData$ =  combineLatest(userInfo$, this.isLoggedInAsAdmin$).map( uiWithIsAdmin => {
+      const currentFormData$ =  combineLatest(userInfo$, this.isLoggedInAsAdmin$)
+        .map( uiWithIsAdmin => {
         const ui: UserInfo = uiWithIsAdmin[0];
         const isAdmin = uiWithIsAdmin[1];
         return {
@@ -130,6 +132,10 @@ export abstract class UpdateUserComponent implements OnDestroy {
     if ( confirm('Are you sure you want to delete this user?')) {
       this.store.dispatch(fromUserUpdate.deleteUserRequest(this.userId));
     }
+  }
+
+  private viewTimeZones() {
+    this.store.dispatch(fromRouter.go(`/home/users/${this.userId}/time-zones`))
   }
 
   manageUsers() {

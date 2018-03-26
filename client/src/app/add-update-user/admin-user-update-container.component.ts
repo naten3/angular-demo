@@ -7,7 +7,8 @@ import { ActivatedRoute } from '@angular/router';
 import * as fromRoot from 'app/core/store';
 import { UpdateUserComponent } from './';
 import { UserUpdateForm } from 'app/core/models/user-update';
-import { UserInfo } from 'app/core/models/session';
+import { UserInfo, checkIfAdmin } from 'app/core/models/session';
+import { filterNotNull } from 'app/core/utils/rx-utils';
 
 import { Http, RequestOptions } from '@angular/http';
 
@@ -22,13 +23,17 @@ import { Http, RequestOptions } from '@angular/http';
 
     constructor( store: Store<fromRoot.State>, route: ActivatedRoute, http: Http) {
       super(store,
-        store.select(fromRoot.getCurrentlyManagedUser).pipe(filter(x => !!x)),
+        filterNotNull(store.select(fromRoot.getCurrentlyManagedUser)),
         AdminUserUpdateComponent.getUserId(route),
       http);
+
       this.canDeleteUser$ = store.select(fromRoot.getUserInfo)
       .map( ui => !!ui && ui.id !==  AdminUserUpdateComponent.getUserId(route));
 
       this.isDeletedUser$ = store.select(fromRoot.getAdminDeletedUsers).map(deletedUsers =>
         deletedUsers.has(AdminUserUpdateComponent.getUserId(route)));
+
+      this.canViewUserTimeZones$ =  store.select(fromRoot.getUserInfo)
+      .map( ui => !!ui && checkIfAdmin(ui));
     }
   }

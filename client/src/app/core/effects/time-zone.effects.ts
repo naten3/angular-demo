@@ -20,37 +20,6 @@ export class TimeZoneEffects {
     private actions$: Actions
   ) { }
 
-  // assembles the needed data, doing nothing for fields which are correct
-  @Effect() requestTimeZoneState$ = this.actions$
-    .ofType(fromTimeZoneActions.REQUEST_NEW_TIME_ZONE_STATE)
-    .withLatestFrom(this.store)
-    .switchMap(actionWithStore => {
-      const userId: number = actionWithStore[0].payload;
-      // assumption: this won't be called before authentication because of route guards
-      const currentUser: UserInfo = actionWithStore[1].session.userInfo;
-      const currentTimeZoneUser: UserInfo = actionWithStore[1].timeZone.user;
-      const currentTimeZones = actionWithStore[1].timeZone.timeZones;
-      let userAction$: Observable<any>;
-      if (!!currentTimeZoneUser && currentTimeZoneUser.id === userId) {
-        // user is already loaded
-        userAction$ = Observable.of();
-      } else if (currentUser.id === userId) {
-        // user is current user, no need to fetch
-        userAction$ = Observable.of(fromTimeZoneActions.setTimeZoneUser(currentUser));
-      } else {
-        // have to fetch user
-        userAction$ = Observable.of(fromTimeZoneActions.requestTimeZoneUser(userId));
-      }
-
-      let timeZoneAction$: Observable<any>;
-      if ( !!currentTimeZones && currentTimeZones.userId === userId) {
-        timeZoneAction$ = Observable.of();
-      } else {
-        timeZoneAction$ = Observable.of(fromTimeZoneActions.requestTimeZones(userId))
-      }
-      return concat(userAction$, timeZoneAction$);
-  });
-
   @Effect() fetchTimeZone$ = this.actions$
   .ofType(fromTimeZoneActions.TIME_ZONE_REQUEST)
   .switchMap( action => {
@@ -69,17 +38,27 @@ export class TimeZoneEffects {
 
   @Effect() requestTimeZoneUser$ = this.actions$
   .ofType(fromTimeZoneActions.TIME_ZONE_USER_REQUEST)
-  .switchMap(action => this.http.get(`/api/users/${action.payload}`,
-  { headers: SessionService.getSessionHeader()})
-  .map(res => {
+  .withLatestFrom(this.store)
+  .switchMap( actionWithStore => {
+    const requestedUserId: number = actionWithStore[0].payload;
+    const latestStore = actionWithStore[1];
+    if (!!latestStore.session.userInfo && latestStore.session.userInfo.id === requestedUserId) {
+      // it's the currently logged in user so just use that;
+      return Observable.of(fromTimeZoneActions.
+        requestTimeZoneUserSuccess(latestStore.session.userInfo));
+    }
+    return this.http.get(`/api/users/${requestedUserId}`,
+    { headers: SessionService.getSessionHeader()})
+    .map(res => {
       if (res.ok) {
         return fromTimeZoneActions.requestTimeZoneUserSuccess(res.json());
       } else {
-        return fromTimeZoneActions.requestTimeZoneUserFailure(action.payload);
+        return fromTimeZoneActions.requestTimeZoneUserFailure(requestedUserId);
       }
-  })
-  .catch(e => Observable.of(
-    fromTimeZoneActions.requestTimeZoneUserFailure(action.payload))));
+    })
+    .catch(e => Observable.of(
+      fromTimeZoneActions.requestTimeZoneUserFailure(requestedUserId)));
+  });
 
   @Effect() createTimeZone$ = this.actions$
   .ofType(fromTimeZoneActions.CREATE_TIME_ZONE)

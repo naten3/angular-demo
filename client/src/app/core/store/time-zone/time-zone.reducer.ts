@@ -12,6 +12,7 @@ export function reducer(state: State = initialState, action: Action): State {
     case LOGOUT:
       return initialState;
     case fromTimeZoneActions.TIME_ZONE_SUCCESS:
+    debugger; // TODO remove
       return Object.assign(clone(state),
       { timeZones: { userId: action.payload.userId, timeZones: action.payload.timeZones} });
     case fromTimeZoneActions.TIME_ZONE_FAILURE:
