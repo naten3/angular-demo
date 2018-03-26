@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, EventEmitter, Output, ViewChild , Input, ElementRef} from '@angular/core';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { Subscription } from 'rxjs/Subscription';
@@ -57,6 +58,8 @@ export abstract class UpdateUserComponent implements OnDestroy {
 
   @ViewChild('role')
   roleSelector: ElementRef;
+
+  @ViewChild('pf') passwordForm: NgForm;
 
   constructor( private store: Store<fromRoot.State>,
     private userInfo$: Observable<UserInfo>,
@@ -125,6 +128,7 @@ export abstract class UpdateUserComponent implements OnDestroy {
 
   updatePassword() {
     this.store.dispatch(updatePassword(this.userId, this.passwordModel.password));
+    this.passwordForm.resetForm();
   }
 
   private mapErrorCodeToMessage(errorCode: string): string {

@@ -19,6 +19,7 @@ export class LauncherContainerComponent {
     model: any = {};
     @ViewChild('username') username: ElementRef;
     @ViewChild('password') password: ElementRef;
+    @ViewChild('f') loginForm: NgForm;
 
     userInfo$: Observable<UserInfo>;
     enableButton$: Observable<boolean>;
@@ -41,6 +42,7 @@ export class LauncherContainerComponent {
 
     login(myForm: NgForm) {
         this.store.dispatch(login(this.model.username, this.model.password));
+        this.loginForm.resetForm();
     }
 
     register() {

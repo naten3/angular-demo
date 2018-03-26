@@ -3,6 +3,7 @@ package com.natenelles.timeapp.config.social;
 import com.natenelles.timeapp.entity.User;
 import com.natenelles.timeapp.entity.UserRole;
 import com.natenelles.timeapp.security.CustomSpringUser;
+import com.natenelles.timeapp.service.intf.SessionService;
 import com.natenelles.timeapp.service.intf.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,24 +18,22 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 
-import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.natenelles.timeapp.config.social.FacebookConnectionSignup.DUMMY;
-import static com.natenelles.timeapp.config.social.SocialUtils.getFacebookUser;
-
 @Component
-public class FacebookSignInAdapter implements SignInAdapter {
+public class SocialSignInAdapter implements SignInAdapter {
     @Autowired
     private UserService userService;
 
     @Value("${social-redirect-url}")
     private String socialRedirectUrl;
 
+    @Autowired
+    SessionService sessionService;
+
     @Override
     public String signIn(String localUserId, Connection<?> connection, NativeWebRequest request) {
-        //TODO make this more secure
         User user = userService.getByUsername(localUserId).orElseThrow(() -> new IllegalStateException("No user found with social id"));
 
         Set<GrantedAuthority> authorities = user.getRoles().stream()
@@ -52,6 +51,7 @@ public class FacebookSignInAdapter implements SignInAdapter {
         SecurityContextHolder.getContext().setAuthentication(principal);
 
         String authToken = RequestContextHolder.currentRequestAttributes().getSessionId();
+        sessionService.handleLogin(user.getId(), authToken);
         String redirectUrl = URIBuilder.fromUri(socialRedirectUrl).queryParam("x-auth-token", authToken).build().toString();
 
         return redirectUrl;

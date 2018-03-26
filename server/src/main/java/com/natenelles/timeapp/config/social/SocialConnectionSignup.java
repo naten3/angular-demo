@@ -19,7 +19,7 @@ import static com.natenelles.timeapp.config.social.SocialUtils.getFacebookUser;
 import static com.natenelles.timeapp.config.social.SocialUtils.getGoogleApi;
 
 @Service
-public class FacebookConnectionSignup implements ConnectionSignUp {
+public class SocialConnectionSignup implements ConnectionSignUp {
     public static final String FACEBOOK_NAME_PREFIX = "~FB";
     public static final String GOOGLE_NAME_PREFIX = "~GP";
     public static final String DUMMY = "DUMMY";

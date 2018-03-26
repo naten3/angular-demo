@@ -14,6 +14,7 @@ import com.natenelles.timeapp.model.users.UserCreateRequest;
 import com.natenelles.timeapp.model.users.UserResponse;
 import com.natenelles.timeapp.model.users.UserUpdateRequest;
 import com.natenelles.timeapp.security.CustomSpringUser;
+import com.natenelles.timeapp.service.intf.SessionService;
 import com.natenelles.timeapp.service.intf.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
@@ -57,9 +59,8 @@ public class UserController {
   UserService userService;
   @Autowired
   PasswordEncoder passwordEncoder;
-
   @Autowired
-  SessionRepository sessionRepository;
+  SessionService sessionService;
 
   @GetMapping("/session-init")
   public void sessionInit() {}
@@ -74,10 +75,7 @@ public class UserController {
 
   @GetMapping("/admin/users")
   public Page<UserResponse> getAllUsers(@AuthenticationPrincipal CustomSpringUser user, Pageable pageable) throws UnauthorizedException{
-    Set<String> authorities = user.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toSet());
-    if (!authorities.contains(ADMIN) && !authorities.contains(USER_ADMIN)) {
-      throw new UnauthorizedException("Only admins or user admins can get all users");
-    }
+    checkUserAdmin(user);
     return userService.getAllUsers(pageable);
   }
 
@@ -109,6 +107,9 @@ public class UserController {
         CustomSpringUser user = CustomSpringUser.fromUserResponse(userResponse, encodedPassword);
         SecurityContextHolder.getContext()
                 .setAuthentication(new UsernamePasswordAuthenticationToken(user, encodedPassword, authorities));
+
+        String authToken = RequestContextHolder.currentRequestAttributes().getSessionId();
+        sessionService.handleLogin(user.getId(), authToken);
         return new ResponseEntity(userResponse, HttpStatus.OK);
       }
     }

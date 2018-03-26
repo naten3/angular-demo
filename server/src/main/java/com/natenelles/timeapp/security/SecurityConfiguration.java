@@ -1,8 +1,7 @@
 package com.natenelles.timeapp.security;
 
-import com.allanditzel.springframework.security.web.csrf.CsrfTokenResponseHeaderBindingFilter;
-import com.natenelles.timeapp.config.social.FacebookConnectionSignup;
-import com.natenelles.timeapp.config.social.FacebookSignInAdapter;
+import com.natenelles.timeapp.config.social.SocialConnectionSignup;
+import com.natenelles.timeapp.config.social.SocialSignInAdapter;
 import com.natenelles.timeapp.config.social.SocialSessionStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,24 +10,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.session.web.http.HeaderHttpSessionStrategy;
 import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.mem.InMemoryUsersConnectionRepository;
 import org.springframework.social.connect.web.ProviderSignInController;
-
-import javax.annotation.PostConstruct;
 
 @Configuration
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
@@ -56,18 +48,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   private UsersConnectionRepository usersConnectionRepository;
 
   @Autowired
-  private FacebookConnectionSignup facebookConnectionSignup;
+  private SocialConnectionSignup facebookConnectionSignup;
 
   @Autowired
   private AuthenticationFailureHandler authenticationFailureHandler;
 
-  //@Bean
-  //public DaoAuthenticationProvider authProvider(PasswordEncoder passwordEncoder) {
-  //  DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-  //  authProvider.setUserDetailsService(userDetailService);
-  //  authProvider.setPasswordEncoder(passwordEncoder);
-  //  return authProvider;
-  //}
+  @Autowired
+  private CustomLogoutHandler customLogoutHandler;
 
 
   @Override
@@ -95,15 +82,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     .successHandler(authenticationSuccessHandler)
     .failureHandler(authenticationFailureHandler)
     .and()
-    .logout().logoutSuccessHandler((request, response, authentication) -> response.setStatus(HttpStatus.OK.value()))
-    .and()
-    .addFilterAfter(new CsrfTokenResponseHeaderBindingFilter(), CsrfFilter.class); //TODO make this a cookie
-    //.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
+    .logout().logoutSuccessHandler(customLogoutHandler);
   }
 
   @Bean
   public ProviderSignInController providerSignInController(
-          FacebookSignInAdapter facebookSignInAdapter,
+          SocialSignInAdapter facebookSignInAdapter,
           @Value("${social-login-host}") String socialLoginHost,
           @Value("${social-redirect-url}") String socialRedirectUrl) {
     ((InMemoryUsersConnectionRepository) usersConnectionRepository)

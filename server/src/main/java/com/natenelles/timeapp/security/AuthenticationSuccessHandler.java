@@ -2,6 +2,7 @@ package com.natenelles.timeapp.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.natenelles.timeapp.model.users.UserResponse;
+import com.natenelles.timeapp.service.intf.SessionService;
 import com.natenelles.timeapp.service.intf.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +29,8 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
   private ObjectMapper jacksonObjectMapper;
   @Autowired
   private UserService userService;
+  @Autowired
+  SessionService sessionService;
 
 
 
@@ -42,11 +46,16 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
   {
     userService.resetInvalidLoginCount(((CustomSpringUser) authentication.getPrincipal()).getId());
 
-    //Add user info to response
+
     SavedRequest savedRequest = requestCache.getRequest(request, response);
 
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
     CustomSpringUser user = ((CustomSpringUser) authentication.getPrincipal());
+
+    //Save session key
+    sessionService.handleLogin(user.getId(), RequestContextHolder.currentRequestAttributes().getSessionId());
+
+    //Add user info to response
 
     UserResponse userResponse = userService.getUser(user.getId()).orElseThrow(ServletException::new);
     response.getWriter().write(jacksonObjectMapper.writeValueAsString(userResponse));

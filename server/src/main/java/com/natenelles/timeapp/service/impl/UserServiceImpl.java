@@ -2,7 +2,7 @@ package com.natenelles.timeapp.service.impl;
 
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.google.common.collect.ImmutableSet;
-import com.natenelles.timeapp.config.social.FacebookConnectionSignup;
+import com.natenelles.timeapp.config.social.SocialConnectionSignup;
 import com.natenelles.timeapp.entity.User;
 import com.natenelles.timeapp.entity.UserInvite;
 import com.natenelles.timeapp.entity.UserRole;
@@ -20,11 +20,13 @@ import com.natenelles.timeapp.repository.UserInviteRepository;
 import com.natenelles.timeapp.repository.UserRepository;
 import com.natenelles.timeapp.service.intf.EmailService;
 import com.natenelles.timeapp.service.intf.FileUploadService;
+import com.natenelles.timeapp.service.intf.SessionService;
 import com.natenelles.timeapp.service.intf.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,8 +47,8 @@ import static com.natenelles.timeapp.util.StreamUtils.optStream;
 @Transactional
 @Service
 public class UserServiceImpl implements UserService {
-  public static final String invalidFacebookRegex = String.format( "^%s.*",FacebookConnectionSignup.FACEBOOK_NAME_PREFIX);
-  public static final String invalidGoogleRegex = String.format( "^%s.*",FacebookConnectionSignup.GOOGLE_NAME_PREFIX);
+  public static final String invalidFacebookRegex = String.format( "^%s.*", SocialConnectionSignup.FACEBOOK_NAME_PREFIX);
+  public static final String invalidGoogleRegex = String.format( "^%s.*", SocialConnectionSignup.GOOGLE_NAME_PREFIX);
 
   private UserRepository userRepository;
   private TimeZoneRepository timeZoneRepository;
@@ -54,6 +56,7 @@ public class UserServiceImpl implements UserService {
   private FileUploadService fileUploadService;
   private UserInviteRepository userInviteRepository;
   private PasswordEncoder passwordEncoder;
+  private SessionService sessionService;
 
   @Value("${default-profile-url}")
   private String defaultProfileUrl;
@@ -67,15 +70,16 @@ public class UserServiceImpl implements UserService {
                          EmailService emailService,
                          FileUploadService fileUploadService,
                          UserInviteRepository userInviteRepository,
-                         PasswordEncoder passwordEncoder) {
+                         PasswordEncoder passwordEncoder,
+                         SessionService sessionServices) {
     this.userRepository = userRepository;
     this.timeZoneRepository = timeZoneRepository;
     this.emailService = emailService;
     this.fileUploadService = fileUploadService;
     this.userInviteRepository = userInviteRepository;
     this.passwordEncoder = passwordEncoder;
+    this.sessionService = sessionServices;
   }
-
 
   @Override
   public Optional<UserResponse> getUser(long id){
@@ -145,7 +149,6 @@ public class UserServiceImpl implements UserService {
     User user = convertToNewUser(ucr, userInvite.get());
     userRepository.save(user);
     userInviteRepository.delete(userInvite.get());
-
     return new CreateFromInviteResult(convertToUserResponse(user));
   }
 
@@ -157,16 +160,22 @@ public class UserServiceImpl implements UserService {
       originalUser.setLastName(uur.getLastName());
       if (uur.getRole().isPresent()) {
         Set<UserRole> baseRoles = originalUser.getRoles();
+        Set<UserRole> roles = baseRoles;
         String role = uur.getRole().get();
         if (role.equals(UserRole.USER_ADMIN)) {
-          originalUser.setRoles(swapRole(UserRole.USER_ADMIN, UserRole.ADMIN, baseRoles));
+          roles = swapRole(UserRole.USER_ADMIN, UserRole.ADMIN, baseRoles);
         } else if (role.equals(UserRole.ADMIN)) {
-          originalUser.setRoles(swapRole(UserRole.ADMIN, UserRole.USER_ADMIN, baseRoles));
+          roles = swapRole(UserRole.ADMIN, UserRole.USER_ADMIN, baseRoles);
         } if (role.equals(UserRole.USER)) {
-          Set<UserRole> roles = baseRoles.stream().filter(r -> !r.getRoleName().equals(UserRole.ADMIN)
+          roles = baseRoles.stream().filter(r -> !r.getRoleName().equals(UserRole.ADMIN)
                   && !r.getRoleName().equals(UserRole.USER_ADMIN))
                   .collect(Collectors.toSet());
-          originalUser.setRoles(roles);
+        }
+
+        originalUser.setRoles(roles);
+        if (!(new HashSet(roles).equals(new HashSet(baseRoles)))) {
+          sessionService.handleChangeRoles(userId,
+                  roles.stream().map(ur -> new SimpleGrantedAuthority(ur.getRoleName())).collect(Collectors.toSet()));
         }
       }
       return convertToUserResponse(userRepository.save(originalUser));
@@ -197,6 +206,7 @@ public class UserServiceImpl implements UserService {
   @Override public void deleteUser(final long id) {
     timeZoneRepository.deleteByUserId(id);
     userRepository.delete(id);
+    sessionService.handleDeleteUser(id);
   }
 
   @Override
