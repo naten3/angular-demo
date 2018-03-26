@@ -18,7 +18,7 @@ import * as fromRoot from 'app/core/store';
     template: `
 
 
-  <div class="row page-header">
+  <div class="row page-header bg-info p-4">
     <img id="homeProfileImage" [src]="profileUrl$ | async">
     <h2 id="welcomeMessage">Welcome {{firstName$ | async}}!</h2>
     <button (click)="logout()" class="btn btn-primary">Logout</button>

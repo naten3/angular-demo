@@ -1,6 +1,6 @@
 <div>
      <div>
-        <div *ngIf="shouldShowOwnerInfo$ | async">
+        <div *ngIf="shouldShowOwnerInfo$ | async" class="bg-warning">
            {{ownerInfoText() | async}}
         </div>
         <div class="tz-update-wrapper">
