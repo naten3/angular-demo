@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -46,7 +47,8 @@ import java.util.stream.Collectors;
 
 import static com.natenelles.timeapp.entity.UserRole.ADMIN;
 import static com.natenelles.timeapp.entity.UserRole.USER_ADMIN;
-import static com.natenelles.timeapp.util.SecurityUtil.checkUserOrUserAdmin;
+import static com.natenelles.timeapp.util.SecurityUtil.checkOwnerOrUserAdmin;
+import static com.natenelles.timeapp.util.SecurityUtil.checkUserAdmin;
 
 @RestController
 public class UserController {
@@ -117,7 +119,7 @@ public class UserController {
                                  @RequestBody UserUpdateRequest userUpdateRequest)
   throws ResourceNotFoundException{
     Set<String> authorities = principal.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toSet());
-    checkUserOrUserAdmin(principal, id);
+    checkOwnerOrUserAdmin(principal, id);
     if (userUpdateRequest.getRole().isPresent()) {
       String role = userUpdateRequest.getRole().get();
       if (!authorities.contains(ADMIN)) {
@@ -132,13 +134,7 @@ public class UserController {
           @AuthenticationPrincipal CustomSpringUser principal, @PathVariable long id,
                                    @RequestBody UpdatePasswordRequest updatePasswordRequest)
           throws UnauthorizedException, ResourceNotFoundException{
-    Set<String> authorities = principal.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toSet());
-    if (principal.getId() != id &&
-            !authorities.contains(ADMIN)
-            && !authorities.contains(USER_ADMIN)) {
-      throw new UnauthorizedException();
-    }
-
+    checkOwnerOrUserAdmin(principal, id);
     Set<UpdatePasswordError> errors = userService.updateUserPassword(id, updatePasswordRequest.getPassword());
 
     return new SuccessResponse<>(errors.isEmpty(), Optional.of(errors));
@@ -148,7 +144,7 @@ public class UserController {
   public UserResponse getUser(@AuthenticationPrincipal CustomSpringUser principal,
                          @PathVariable long id)
           throws UnauthorizedException, ResourceNotFoundException{
-    checkUserOrUserAdmin(principal, id);
+    checkOwnerOrUserAdmin(principal, id);
     return userService.getUser(id).orElseThrow(ResourceNotFoundException::new);
   }
 
@@ -156,8 +152,8 @@ public class UserController {
   public void deleteUser(@AuthenticationPrincipal CustomSpringUser principal,
                          @PathVariable long id)
           throws UnauthorizedException, ResourceNotFoundException{
-    UserResponse user = userService.getUser(id).orElseThrow(ResourceNotFoundException::new);
-    checkUserOrUserAdmin(principal, id);
+    userService.getUser(id).orElseThrow(ResourceNotFoundException::new);
+    checkOwnerOrUserAdmin(principal, id);
     userService.deleteUser(id);
   }
 
@@ -171,7 +167,9 @@ public class UserController {
   }
 
   @PostMapping("/users/signup-invite")
-  public SuccessResponse inviteUser(@RequestBody SignupInvite signupInvite) {
+  public SuccessResponse inviteUser(@AuthenticationPrincipal CustomSpringUser principal,
+                                    @RequestBody SignupInvite signupInvite) {
+    checkUserAdmin(principal);
     Set<UserInviteError> inviteErrors= userService.inviteUser(signupInvite);
     return new SuccessResponse(inviteErrors.isEmpty(), Optional.of(inviteErrors));
   }
@@ -187,11 +185,19 @@ public class UserController {
           @RequestParam("file") MultipartFile file,
           @PathVariable("id") long userId,
           @AuthenticationPrincipal CustomSpringUser principal){
-    checkUserOrUserAdmin(principal, userId);
+    checkOwnerOrUserAdmin(principal, userId);
     try {
       return userService.uploadProfileImage(file, userId);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
+
+  @GetMapping("/admin/user-unlock")
+  public void unlockUser(@AuthenticationPrincipal CustomSpringUser user, @RequestParam("id") long userId)
+          throws UnauthorizedException{
+    checkUserAdmin(user);
+    userService.unlockUser(userId);
+  }
+
 }

@@ -23,8 +23,11 @@ export abstract class UpdateUserComponent implements OnDestroy {
   canDeleteUser$ = Observable.of(false);
   canViewUserTimeZones$ = Observable.of(false);
   isDeletedUser$ = Observable.of(false);
+  canUnlockUser$: Observable<boolean>;
+  isUnlockPendingUpdate$: Observable<boolean>;
 
   isLoggedInAsAdmin$: Observable<boolean>;
+  isLoggedInAsUserAdmin$: Observable<boolean>;
   success$: Observable<boolean>;
   submitted$: Observable<boolean>;
   pendingUpdate$: Observable<boolean>;
@@ -60,12 +63,13 @@ export abstract class UpdateUserComponent implements OnDestroy {
     private userId: number,
     private http: Http) {
       this.isLoggedInAsAdmin$ = store.select(fromRoot.isAdmin);
-
+      this.isLoggedInAsUserAdmin$ = store.select(fromRoot.isUserAdmin)
       this.success$ = store.select(fromRoot.getUserUpdateSuccess);
       this.submitted$ = store.select(fromRoot.getUserUpdateSubmitted);
       this.pendingUpdate$ = store.select(fromRoot.getUserUpdatePending);
       this.errors$ = store.select(fromRoot.getUserUpdateErrors)
       .map(codes => codes.map(this.mapErrorCodeToMessage));
+      this.isUnlockPendingUpdate$ = store.select(fromRoot.getUnlockPendingUpdate);
 
       this.passwordSuccess$ = store.select(fromRoot.getPasswordUpdateSuccess);
       this.passwordSubmitted$ = store.select(fromRoot.getPasswordUpdateSubmitted);
@@ -76,6 +80,10 @@ export abstract class UpdateUserComponent implements OnDestroy {
       this.profileImage$ = userInfo$.map(getDisplayProfileImage);
 
       this.notSocialUser$ = userInfo$.map(ui => !ui.socialUser);
+
+      this.canUnlockUser$ = combineLatest(userInfo$.map(ui => ui.accountLocked),
+      this.isLoggedInAsUserAdmin$).map(x => x[0] && x[1]);
+
 
       const currentFormData$ =  combineLatest(userInfo$, this.isLoggedInAsAdmin$)
         .map( uiWithIsAdmin => {
@@ -140,6 +148,10 @@ export abstract class UpdateUserComponent implements OnDestroy {
 
   manageUsers() {
     this.store.dispatch(fromRouter.go('/home/admin/users'));
+  }
+
+  unlockUser() {
+    this.store.dispatch(fromUserUpdate.unlockUserRequest(this.userId));
   }
 
   fileChange(event) {

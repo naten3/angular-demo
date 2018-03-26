@@ -17,7 +17,12 @@ import { UserInfo, getDisplayProfileImage, ROLE_ADMIN, ROLE_USER_ADMIN,
     <div class="card" style="width: 12rem;">
     <img class="card-img-top" [src]="getDisplayImage()" alt="profile image">
     <div class="card-body">
+      <div>
       <h6 class="card-title m-0">{{user.firstName}} {{user.lastName}}</h6>
+      </div>
+      <div *ngIf="user.accountLocked" class="bg-danger">
+        LOCKED
+      </div>
     </div>
     <ul class="list-group list-group-flush">
       

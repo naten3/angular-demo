@@ -1,5 +1,6 @@
 package com.natenelles.timeapp.service.impl;
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.google.common.collect.ImmutableSet;
 import com.natenelles.timeapp.config.social.FacebookConnectionSignup;
 import com.natenelles.timeapp.entity.User;
@@ -56,6 +57,9 @@ public class UserServiceImpl implements UserService {
 
   @Value("${default-profile-url}")
   private String defaultProfileUrl;
+
+  @Value("${max-invalid-logins: 3}")
+  private Integer maxInvalidLogins;
 
   @Autowired
   public UserServiceImpl(UserRepository userRepository,
@@ -176,8 +180,7 @@ public class UserServiceImpl implements UserService {
     if (user.getPassword().equals(password)) {
       return ImmutableSet.of(UpdatePasswordError.SAME_PASSWORD);
     } else {
-      //TODO hash
-      user.setPassword(password);
+      user.setPassword(passwordEncoder.encode(password));
       userRepository.save(user);
       return Collections.emptySet();
     }
@@ -259,6 +262,37 @@ public class UserServiceImpl implements UserService {
     }
   }
 
+  @Override
+  @Transactional
+  public void handleLoginFailure(String username) {
+    Optional.ofNullable(userRepository.findByUsername(username)).ifPresent(user -> {
+      if (!user.isAccountLocked()) {
+        user.incrementInvalidLoginCount();
+        if (user.getInvalidLoginCount() >= maxInvalidLogins) {
+          user.setAccountLocked(true);
+        }
+        userRepository.save(user);
+      }
+    });
+  }
+
+  @Override
+  public void resetInvalidLoginCount(long id) {
+    User user = Optional.ofNullable(userRepository.findOne(id))
+            .orElseThrow(() -> new IllegalArgumentException("Invalid username"));
+    user.setInvalidLoginCount(0);
+    userRepository.save(user);
+  }
+
+  @Override
+  public void unlockUser(long id) {
+    User user = Optional.ofNullable(userRepository.findOne(id))
+            .orElseThrow(() -> new NotFoundException("Invalid username"));
+    user.setInvalidLoginCount(0);
+    user.setAccountLocked(false);
+    userRepository.save(user);
+  }
+
   private UserResponse convertToUserResponse(User user) {
     Set<String> roles = user.getRoles().stream()
             .map(UserRole::getRoleName)
@@ -271,6 +305,7 @@ public class UserServiceImpl implements UserService {
             user.getSocialProfileImage(),
             isSocialUser(user),
             user.isEmailVerified(),
+            user.isAccountLocked(),
             roles);
   }
 

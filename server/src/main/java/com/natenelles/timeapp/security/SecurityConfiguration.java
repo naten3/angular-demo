@@ -19,6 +19,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.session.web.http.HeaderHttpSessionStrategy;
@@ -57,6 +58,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Autowired
   private FacebookConnectionSignup facebookConnectionSignup;
 
+  @Autowired
+  private AuthenticationFailureHandler authenticationFailureHandler;
+
   //@Bean
   //public DaoAuthenticationProvider authProvider(PasswordEncoder passwordEncoder) {
   //  DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -89,7 +93,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     .and()
     .formLogin()
     .successHandler(authenticationSuccessHandler)
-    .failureHandler(new SimpleUrlAuthenticationFailureHandler())
+    .failureHandler(authenticationFailureHandler)
     .and()
     .logout().logoutSuccessHandler((request, response, authentication) -> response.setStatus(HttpStatus.OK.value()))
     .and()

@@ -9,3 +9,6 @@ export const getPasswordPendingUpdate = (state: State) => state ? state.password
 export const getPasswordSubmitted = (state: State) => state ? state.passwordSubmitted : false;
 export const getPasswordSuccess = (state: State) => state ? state.passwordSuccess : false;
 export const getPasswordErrors = (state: State) => state ? state.passwordErrors : [];
+
+export const getUnlockPendingUpdate = (state: State) => state.pendingUpdate;
+

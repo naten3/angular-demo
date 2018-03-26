@@ -14,10 +14,12 @@ public class UserResponse {
   private Optional<String> profileImage;
   private Optional<String> socialProfileImage;
   private boolean emailVerified;
+  private boolean accountLocked;
   private Set<String> roles;
 
   public UserResponse(Long id, String username, String firstName, String lastName, String email, Optional<String> profileImage,
-                      Optional<String> socialProfileImage, boolean socialUser, boolean emailVerified, Set<String> roles) {
+                      Optional<String> socialProfileImage, boolean socialUser, boolean emailVerified,
+                      boolean accountLocked, Set<String> roles) {
     this.id = id;
     this.username = username;
     this.firstName = firstName;
@@ -27,6 +29,7 @@ public class UserResponse {
     this.socialProfileImage = socialProfileImage;
     this.socialUser = socialUser;
     this.emailVerified = emailVerified;
+    this.accountLocked = accountLocked;
     this.roles = roles;
   }
 
@@ -104,6 +107,14 @@ public class UserResponse {
 
   public void setEmailVerified(boolean emailVerified) {
     this.emailVerified = emailVerified;
+  }
+
+  public boolean isAccountLocked() {
+    return accountLocked;
+  }
+
+  public void setAccountLocked(boolean accountLocked) {
+    this.accountLocked = accountLocked;
   }
 
   public void setRoles(final Set<String> roles) {

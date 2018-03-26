@@ -13,6 +13,8 @@ export interface State {
     deleteSubmitted: boolean;
     deletePendingUpdate: boolean;
     deleteErrors?: Array<string>;
+
+    unlockPendingUpdateId: boolean;
 }
 
 export const initialState: State = {
@@ -29,6 +31,8 @@ export const initialState: State = {
     deleteSuccess: false,
     deleteSubmitted: false,
     deletePendingUpdate: false,
-    deleteErrors: []
+    deleteErrors: [],
+
+    unlockPendingUpdateId: false
 };
 

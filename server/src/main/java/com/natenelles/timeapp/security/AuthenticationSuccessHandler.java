@@ -40,10 +40,11 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
   throws ServletException, IOException
 
   {
-
-    SavedRequest savedRequest = requestCache.getRequest(request, response);
+    userService.resetInvalidLoginCount(((CustomSpringUser) authentication.getPrincipal()).getId());
 
     //Add user info to response
+    SavedRequest savedRequest = requestCache.getRequest(request, response);
+
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
     CustomSpringUser user = ((CustomSpringUser) authentication.getPrincipal());
 

@@ -4,21 +4,23 @@
   </div>
   <div class="body overlay-wrapper">
      <div *ngIf="isDeletedUser$ | async"  class="overlay">
-       <div class="bg-info">
+       <div class="bg-info p-4">
           This User has been deleted!
           <button class="btn btn-primary d-block" (click)="manageUsers()">Back To Users</button>
         </div>
      </div>
+     <div class="row">
      <div *ngIf="canDeleteUser$ | async">
-        <div class="controls">
-            <button class="btn btn-danger" (click)="deleteUser()">Delete this User</button>
-        </div>
+        <button class="btn btn-danger m-2" (click)="deleteUser()">Delete this User</button>
      </div>
      <div *ngIf="canViewUserTimeZones$ | async">
-        <div class="controls">
-            <button class="btn btn-primary" (click)="viewTimeZones()">View Time Zones</button>
-        </div>
+        <button class="btn btn-primary m-2" (click)="viewTimeZones()">Manage Time Zones</button>
      </div>
+     <div *ngIf="canUnlockUser$ | async">
+        <button class="btn btn-primary m-2" [disabled]="this.isUnlockPendingUpdate$ | async"
+         (click)="unlockUser()">Unlock User</button>
+     </div>
+    </div>
       <div class = "row">
           <img id="updateUserProfileImage" [src]="profileImage$ | async" class="m-5">
           <input #profileImageUpload type="file" name="file" (change)="fileChange($event) && profileImageUpload.clear()" placeholder="Upload Profile Picture" 
@@ -35,7 +37,8 @@
       <div class="form-group" [ngClass]="{ 'has-error': pf.submitted && !password.valid }">
         <label for="password">Password</label>
         <input type="password" id="password" [(ngModel)]="passwordModel.password" class="form-control" 
-        #password="ngModel" name="password" required maxLength="100" autocomplete="off"/>
+        #password="ngModel" name="password" required minLength="8" 
+        maxLength="100" autocomplete="off"/>
         <div *ngIf="pf.submitted && !password.valid" class="help-block">
           Password is required and must be between 8 and 100 characters
         </div>

@@ -28,6 +28,8 @@
             <column name="LAST_NAME" type="nvarchar(100)">
                 <constraints nullable="false"/>
             </column>
+            <column name="INVALID_LOGIN_COUNT" type="INT" defaultValue="0" />
+            <column name="ACCOUNT_LOCKED" type="boolean" defaultValue="false" />
         </createTable>
 
         <createTable tableName="ROLE">
@@ -41,7 +43,6 @@
                 <constraints primaryKey="true" primaryKeyName="PK_USER_ROLE" />
             </column>
             <column name="USER_ID" type="int">
-                <!--TODO figuree out how to delete these orphans and readd FK-->
                 <constraints nullable="false" />
             </column>
             <column name="ROLE_NAME" type="nvarchar(100)">
@@ -73,6 +74,14 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="USER_ID"
+                                 baseTableName="USER_TIME_ZONE"
+                                 constraintName="FK_USER_USER_TIME_ZONE"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="USER_ID"
+                                 referencedTableName="USER"/>
 
         <createTable tableName="USER_INVITE">
             <column name="EMAIL" type="nvarchar(300)">

@@ -95,10 +95,26 @@ export class UserUpdateEffects {
         if (res.ok) {
           return fromUserUpdate.deleteUserSuccess(userId);
         } else {
-          return fromUserUpdate.userUpdateFailure(res.json().errors);
+          return fromUserUpdate.deleteUserFailure(userId);
         }
     })
-    .catch(e => Observable.of(fromUserUpdate.userUpdateFailure(['unknown'])));
+    .catch(e => Observable.of(fromUserUpdate.deleteUserFailure(userId)));
+  });
+
+  @Effect() unlockUser$ = this.actions$
+  .ofType(fromUserUpdate.UNLOCK_USER_REQUEST)
+  .switchMap(action => {
+    const userId = action.payload;
+    return this.http.get(`/api/admin/user-unlock?id=${userId}`,
+    { headers: SessionService.getSessionHeader()} )
+    .map(res => {
+        if (res.ok) {
+          return fromUserUpdate.unlockUserSuccess(userId);
+        } else {
+          return fromUserUpdate.unlockUserFailure(userId);
+        }
+    })
+    .catch(e => Observable.of(fromUserUpdate.unlockUserFailure(userId)));
   });
 
   @Effect() leaveDeletedUser$ = this.actions$

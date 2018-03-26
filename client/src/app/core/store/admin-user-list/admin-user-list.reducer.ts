@@ -76,13 +76,16 @@ export function reducer(state: State = initialState, action: Action) {
       const newDeletedUsers = new Set(state.deletedUsers);
       newDeletedUsers.add(action.payload);
       const assignObj: any = {};
-      assignObj.deletedUsers = newDeletedUsers; 
+      assignObj.deletedUsers = newDeletedUsers;
       const managedUser = state.currentlyManagedUser;
       if (!!managedUser && managedUser.id === action.payload) {
         assignObj.currentlyManagedUser = null;
         assignObj.fetchManagedUserFailure = false;
       }
-    return Object.assign(clone(state), assignObj);
+      return Object.assign(clone(state), assignObj);
+    case fromUserUpdate.UNLOCK_USER_SUCCESS:
+    // tslint:disable no-use-before-declare
+      return unlockUser(state, action.payload);
     default:
         return state;
   };
@@ -128,3 +131,9 @@ applyOperationToMatchingUser(state, id, (user) => {
 
 const replaceUser = (state: State, id: number, userInfo: UserInfo) =>
 applyOperationToMatchingUser(state, id, (user) => userInfo);
+
+const unlockUser = (state: State, id: number) =>
+applyOperationToMatchingUser(state, id, (user) => {
+  user.accountLocked = false;
+  return user;
+});

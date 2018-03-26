@@ -15,6 +15,7 @@ export interface UserInfo {
     socialProfileImage?: string;
     socialUser: boolean;
     emailVerified: boolean;
+    accountLocked: boolean;
     roles: Array<string>;
 }
 

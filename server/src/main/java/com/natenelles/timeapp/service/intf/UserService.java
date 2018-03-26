@@ -48,6 +48,12 @@ public interface UserService {
 
   ImageUploadResponse uploadProfileImage(MultipartFile file, long userId);
 
+  void handleLoginFailure(String username);
+
+  void resetInvalidLoginCount(long id);
+
+  void unlockUser(long id);
+
   class CreateFromInviteResult {
     Optional<Set<UserSaveError>> errors = Optional.empty();
     Optional<UserResponse> user = Optional.empty();

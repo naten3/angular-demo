@@ -19,6 +19,10 @@ export const DELETE_USER_REQUEST = '[User Update] DELETE USER';
 export const DELETE_USER_SUCCESS = '[User Update] DELETE USER SUCCESS';
 export const DELETE_USER_FAILURE = '[User Update] DELETE USER FAILURE';
 
+export const UNLOCK_USER_REQUEST = '[User Update] UNLOCK USER';
+export const UNLOCK_USER_SUCCESS = '[User Update] UNLOCK USER SUCCESS';
+export const UNLOCK_USER_FAILURE = '[User Update] UNLOCK USER FAILURE';
+
 export const PROFILE_IMAGE_UPDATE_SUCCESS = '[User Update] UPDATE PROFILE IMAGE SUCCESS';
 
 import { UserSaveRequest } from 'app/core/models/user-save';
@@ -72,6 +76,16 @@ export const deleteUserSuccess = (userId: number) => {
 };
 export const deleteUserFailure = (errors: Array<string>) => {
     return {'type': DELETE_USER_FAILURE, 'payload': errors};
+};
+
+export const unlockUserRequest = (userId: number) => {
+  return {'type': UNLOCK_USER_REQUEST, 'payload': userId};
+};
+export const unlockUserSuccess = (userId: number) => {
+  return {'type': UNLOCK_USER_SUCCESS, payload: userId};
+};
+export const unlockUserFailure = (errors: Array<string>) => {
+  return {'type': UNLOCK_USER_FAILURE, 'payload': errors};
 };
 
 export const updateProfileImageSuccess = (id: number, url: string) => {

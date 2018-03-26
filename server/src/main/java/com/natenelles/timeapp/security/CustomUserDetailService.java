@@ -30,11 +30,6 @@ class CustomUserDetailService implements UserDetailsService {
   }
 
   public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-    //todo locking?
-    boolean enabled = true;
-    boolean accountNonExpired = true;
-    boolean credentialsNonExpired = true;
-    boolean accountNonLocked = true;
 
     if (username.matches(invalidFacebookRegex) || username.matches(invalidGoogleRegex)) {
       return null;
@@ -43,8 +38,8 @@ class CustomUserDetailService implements UserDetailsService {
     return userService.getSecurityUser(username).map(user -> {
       return new CustomSpringUser
       (user.getUsername(),
-      user.getPassword(), enabled, accountNonExpired,
-      credentialsNonExpired, accountNonLocked, getAuthorities(user.getRoles()), user.getId());
+      user.getPassword(), true, true,
+      true, !user.isAccountLocked(), getAuthorities(user.getRoles()), user.getId());
     }).orElseThrow(() -> new UsernameNotFoundException(
     "No user found with username: " + username));
   }

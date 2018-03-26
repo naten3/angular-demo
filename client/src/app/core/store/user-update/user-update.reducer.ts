@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { Action, combineReducers } from '@ngrx/store';
-import { cloneDeep } from 'lodash';
+import { clone } from 'lodash';
 import { LOGOUT } from 'app/core/store/actions/session.actions';
 
 import * as fromActions from 'app/core/store/actions/user-update.actions';
@@ -11,14 +11,14 @@ export function reducer(state = initialState, action: Action) {
         case LOGOUT:
           return initialState;
         case fromActions.UPDATE_USER_REQUEST:
-          return Object.assign(cloneDeep(state),
+          return Object.assign(clone(state),
           {
             success: false,
             submitted: true,
             pendingUpdate: true,
             errors: []});
         case fromActions.USER_UPDATE_SUCCESS:
-          return Object.assign(cloneDeep(state),
+          return Object.assign(clone(state),
           {
             success: true,
             submitted: true,
@@ -26,7 +26,7 @@ export function reducer(state = initialState, action: Action) {
             errors: []
           });
         case fromActions.USER_UPDATE_FAILURE:
-          return Object.assign(cloneDeep(state),
+          return Object.assign(clone(state),
           {
             success: false,
             submitted: true,
@@ -36,7 +36,7 @@ export function reducer(state = initialState, action: Action) {
         case fromActions.USER_UPDATE_RESET:
           return initialState;
         case fromActions.UPDATE_PASSWORD_RESET:
-          return Object.assign(cloneDeep(state),
+          return Object.assign(clone(state),
           {
             passwordSuccess: false,
             passwordSubmitted: false,
@@ -44,7 +44,7 @@ export function reducer(state = initialState, action: Action) {
             passwordErrors: []
           });
         case fromActions.UPDATE_PASSWORD_REQUEST:
-          return Object.assign(cloneDeep(state),
+          return Object.assign(clone(state),
           {
             passwordSuccess: false,
             passwordSubmitted: true,
@@ -52,7 +52,7 @@ export function reducer(state = initialState, action: Action) {
             passwordErrors: []
           });
         case fromActions.UPDATE_PASSWORD_SUCCESS:
-          return Object.assign(cloneDeep(state),
+          return Object.assign(clone(state),
           {
             passwordSuccess: true,
             passwordSubmitted: true,
@@ -60,15 +60,15 @@ export function reducer(state = initialState, action: Action) {
             passwordErrors: []
           });
         case fromActions.UPDATE_PASSWORD_FAILURE:
-          return Object.assign(cloneDeep(state),
+          return Object.assign(clone(state),
           {
             passwordSuccess: false,
             passwordSubmitted: true,
             passwordPendingUpdate: false,
             passwordErrors: action.payload
-          });        
+          });
           case fromActions.DELETE_USER_REQUEST:
-          return Object.assign(cloneDeep(state),
+          return Object.assign(clone(state),
           {
             deleteSuccess: false,
             deleteSubmitted: true,
@@ -76,7 +76,7 @@ export function reducer(state = initialState, action: Action) {
             deleteErrors: []
           });
         case fromActions.DELETE_USER_SUCCESS:
-          return Object.assign(cloneDeep(state),
+          return Object.assign(clone(state),
           {
             deleteSuccess: true,
             deleteSubmitted: true,
@@ -84,13 +84,19 @@ export function reducer(state = initialState, action: Action) {
             deleteErrors: []
           });
         case fromActions.DELETE_USER_FAILURE:
-          return Object.assign(cloneDeep(state),
+          return Object.assign(clone(state),
           {
             deleteSuccess: false,
             deleteSubmitted: true,
             deletePendingUpdate: false,
             deleteErrors: action.payload
           });
+        case fromActions.UNLOCK_USER_REQUEST:
+          return Object.assign(clone(state), { unlockPendingUpdateId: true });
+        case fromActions.UNLOCK_USER_SUCCESS:
+          return Object.assign(clone(state), { unlockPendingUpdateId: false });
+        case fromActions.UNLOCK_USER_FAILURE:
+          return Object.assign(clone(state), { unlockPendingUpdateId: false });
         default:
           return state;
     };

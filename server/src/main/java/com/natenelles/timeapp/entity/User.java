@@ -45,6 +45,9 @@ public class User {
   private String firstName;
   private String lastName;
 
+  private int invalidLoginCount;
+  boolean accountLocked;
+
   public long getId() {
     return id;
   }
@@ -139,6 +142,26 @@ public class User {
 
   public void setLastName(String lastName) {
     this.lastName = lastName;
+  }
+
+  public int getInvalidLoginCount() {
+    return invalidLoginCount;
+  }
+
+  public void setInvalidLoginCount(int invalidLoginCount) {
+    this.invalidLoginCount = invalidLoginCount;
+  }
+
+  public void incrementInvalidLoginCount() {
+    invalidLoginCount++;
+  }
+
+  public boolean isAccountLocked() {
+    return accountLocked;
+  }
+
+  public void setAccountLocked(boolean accountLocked) {
+    this.accountLocked = accountLocked;
   }
 
   public Set<UserRole> getRoles() {
