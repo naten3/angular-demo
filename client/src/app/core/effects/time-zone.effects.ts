@@ -10,6 +10,7 @@ import { SessionService } from 'app/core/services';
 import { UserInfo } from 'app/core/models/session';
 import * as fromTimeZoneActions from 'app/core/store/actions/time-zone.actions';
 import * as fromTimeZone from 'app/core/models/time-zone';
+import * as fromToastActions from 'app/core/store/actions/toast.actions';
 import * as fromSession from 'app/core/store/actions/session.actions';
 import * as fromRoot from 'app/core/store';
 
@@ -125,5 +126,21 @@ export class TimeZoneEffects {
     }
     return Observable.of(fromTimeZoneActions.deleteTimeFailure(action.payload.id, action.payload.userId));
   }));
+
+  @Effect() deleteTimeZoneError$ = this.actions$
+  .ofType(fromTimeZoneActions.DELETE_TIME_ZONE_FAILURE)
+  .map(action => fromToastActions.faillToast(`Error Deleting Time Zone`, 'Error'));
+
+  @Effect() updateTimeZoneError$ = this.actions$
+  .ofType(fromTimeZoneActions.UPDATE_TIME_ZONE_FAILURE)
+  .map(action => fromToastActions.faillToast(`Error Updating Time Zone`, 'Error'));
+
+  @Effect() createTimeZoneError$ = this.actions$
+  .ofType(fromTimeZoneActions.CREATE_TIME_ZONE_FAILURE)
+  .map(action => fromToastActions.faillToast(`Error Creating Time Zone`, 'Error'));
+
+  @Effect() readTimeZoneError$ = this.actions$
+  .ofType(fromTimeZoneActions.TIME_ZONE_FAILURE)
+  .map(action => fromToastActions.faillToast(`Error Fetching User Time Zones`, 'Error'));
 }
 
