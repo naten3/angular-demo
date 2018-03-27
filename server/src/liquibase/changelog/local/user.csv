@@ -7,6 +7,6 @@ USER_ID,USERNAME,PASSWORD,EMAIL,EMAIL_VERIFIED,EMAIL_VERIFICATION_TOKEN,FIRST_NA
 3,useradmin,"$2a$04$F7qvK/nz6Y.5MA3IpIs5lu9TtyitS/rVaKRmS8KFlAGtqiJO25zmy",nate3@fakedomain.com,true,a,Bob,Belcher,https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg
 #password is password for rest
 4,nate2,"$2a$04$X/YxHdHfgCps2RgjV5.Yo.GLNV8dTzNgdUQHPVUgXM6rjDg7HrMaq",nate4@fakedomain.com,false,a,Philip,Jennings,https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg
-5,nate7,"$2a$04$X/YxHdHfgCps2RgjV5.Yo.GLNV8dTzNgdUQHPVUgXM6rjDg7HrMaq",nate5@fakedomain.com,false,a,Elizabeth,Jennings,https://s3.us-east-2.amazonaws.com/natetimeappbucket/pexels-photo-415829.jpeg
+5,nate7,"$2a$04$X/YxHdHfgCps2RgjV5.Yo.GLNV8dTzNgdUQHPVUgXM6rjDg7HrMaq",nate5@fakedomain.com,true,a,Elizabeth,Jennings,https://s3.us-east-2.amazonaws.com/natetimeappbucket/pexels-photo-415829.jpeg
 6,nate8,"$2a$04$X/YxHdHfgCps2RgjV5.Yo.GLNV8dTzNgdUQHPVUgXM6rjDg7HrMaq",nate4@fakedomain.com,true,a,Kareena,Kapoor,https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg
 7,nate9,"$2a$04$X/YxHdHfgCps2RgjV5.Yo.GLNV8dTzNgdUQHPVUgXM6rjDg7HrMaq",nate6@fakedomain.com,true,a,Priyanka,Chopra,https://s3.us-east-2.amazonaws.com/natetimeappbucket/defaultprofile.svg

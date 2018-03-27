@@ -67,7 +67,12 @@ export class UserUpdateEffects {
           return fromUserUpdate.userUpdateFailure(res.json().errors, userId);
         }
     })
-    .catch(e => Observable.of(fromUserUpdate.userUpdateFailure(['unknown'], userId)));
+    .catch(e => {
+      if (e.status === 401) {
+        return Observable.of(fromSession.logout());
+      }
+      return Observable.of(fromUserUpdate.userUpdateFailure(['unknown'], userId));
+    });
   });
 
   @Effect() updatePassword$ = this.actions$
@@ -83,7 +88,12 @@ export class UserUpdateEffects {
           return fromUserUpdate.updatePasswordFailure(res.json().errors);
         }
     })
-    .catch(e => Observable.of(fromUserUpdate.updatePasswordFailure(['unknown'])));
+    .catch(e => {
+      if (e.status === 401) {
+        return Observable.of(fromSession.logout());
+      }
+      return Observable.of(fromUserUpdate.updatePasswordFailure(['unknown']));
+    });
   });
 
   @Effect() deleteUser$ = this.actions$
@@ -99,7 +109,12 @@ export class UserUpdateEffects {
           return fromUserUpdate.deleteUserFailure(userId);
         }
     })
-    .catch(e => Observable.of(fromUserUpdate.deleteUserFailure(userId)));
+    .catch(e => {
+      if (e.status === 401) {
+        return Observable.of(fromSession.logout());
+      }
+      return Observable.of(fromUserUpdate.deleteUserFailure(userId));
+    });
   });
 
   @Effect() unlockUser$ = this.actions$
@@ -115,7 +130,12 @@ export class UserUpdateEffects {
           return fromUserUpdate.unlockUserFailure(userId);
         }
     })
-    .catch(e => Observable.of(fromUserUpdate.unlockUserFailure(userId)));
+    .catch(e => {
+      if (e.status.status === 401) {
+        return Observable.of(fromSession.logout());
+      }
+      return Observable.of(fromUserUpdate.unlockUserFailure(userId));
+    });
   });
 
   @Effect() leaveDeletedUser$ = this.actions$
@@ -134,7 +154,7 @@ export class UserUpdateEffects {
    @Effect() passwordUpdateError$ = this.actions$
    .ofType(fromUserUpdate.UPDATE_PASSWORD_FAILURE)
    .map(action => fromToastActions.faillToast(`Error Updating User Password`, 'Error'));
- 
+
    @Effect() passwordUpdateSuccess$ = this.actions$
    .ofType(fromUserUpdate.UPDATE_PASSWORD_SUCCESS)
    .map(action => fromToastActions.successToast(`User Password Was Updated Successfully`,
@@ -143,7 +163,7 @@ export class UserUpdateEffects {
     @Effect() profileImageUpdateError$ = this.actions$
     .ofType(fromUserUpdate.PROFILE_IMAGE_UPDATE_FAILURE)
     .map(action => fromToastActions.faillToast(`Error Updating Profile Image`, 'Error'));
-  
+
     @Effect() profileImageUpdateSuccess$ = this.actions$
     .ofType(fromUserUpdate.PROFILE_IMAGE_UPDATE_SUCCESS)
     .map(action => fromToastActions.successToast(`Profile Imsage Was Updated Successfully`,
@@ -152,7 +172,7 @@ export class UserUpdateEffects {
      @Effect() unlockUpdateError$ = this.actions$
      .ofType(fromUserUpdate.UNLOCK_USER_FAILURE)
      .map(action => fromToastActions.faillToast(`Error Unlocking User`, 'Error'));
-   
+
      @Effect() unlockUpdateSuccess$ = this.actions$
      .ofType(fromUserUpdate.UNLOCK_USER_SUCCESS)
      .map(action => fromToastActions.successToast(`User was Unlocked Successfully`,
@@ -161,7 +181,7 @@ export class UserUpdateEffects {
       @Effect()deleteUserErrors$ = this.actions$
       .ofType(fromUserUpdate.DELETE_USER_FAILURE)
       .map(action => fromToastActions.faillToast(`Error Deleting User`, 'Error'));
-    
+
       @Effect() deleteUserSuccess$ = this.actions$
       .ofType(fromUserUpdate.DELETE_USER_SUCCESS)
       .map(action => fromToastActions.successToast(`User was Deleted Successfully`,
