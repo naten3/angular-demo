@@ -10,6 +10,7 @@ import { SessionService } from 'app/core/services';
 import { UserInfo } from 'app/core/models/session';
 import * as fromTimeZoneActions from 'app/core/store/actions/time-zone.actions';
 import * as fromTimeZone from 'app/core/models/time-zone';
+import * as fromSession from 'app/core/store/actions/session.actions';
 import * as fromRoot from 'app/core/store';
 
 @Injectable()
@@ -33,7 +34,12 @@ export class TimeZoneEffects {
         return fromTimeZoneActions.timeZoneFailure(userId, res.json());
       }
   })
-  .catch(e => Observable.of(fromTimeZoneActions.timeZoneFailure(userId, ['unknown'])));
+  .catch(e => {
+    if (e.status === 401) {
+      return Observable.of(fromSession.logout());
+    }
+    return Observable.of(fromTimeZoneActions.timeZoneFailure(userId, ['unknown']));
+    });
   });
 
   @Effect() requestTimeZoneUser$ = this.actions$
@@ -56,8 +62,12 @@ export class TimeZoneEffects {
         return fromTimeZoneActions.requestTimeZoneUserFailure(requestedUserId);
       }
     })
-    .catch(e => Observable.of(
-      fromTimeZoneActions.requestTimeZoneUserFailure(requestedUserId)));
+    .catch(e => {
+      if (e.status === 401) {
+        return Observable.of(fromSession.logout());
+      }
+      return Observable.of(fromTimeZoneActions.requestTimeZoneUserFailure(requestedUserId));
+    });
   });
 
   @Effect() createTimeZone$ = this.actions$
@@ -72,8 +82,12 @@ export class TimeZoneEffects {
         return fromTimeZoneActions.requestTimeZoneUserFailure(action.payload.userId);
       }
   })
-  .catch(e => Observable.of(
-    fromTimeZoneActions.requestTimeZoneUserFailure(action.payload.userId))));
+  .catch(e => {
+    if (e.status === 401) {
+      return Observable.of(fromSession.logout());
+    }
+    return Observable.of(fromTimeZoneActions.requestTimeZoneUserFailure(action.payload.userId));
+  }));
 
   @Effect() updateTimeZone$ = this.actions$
   .ofType(fromTimeZoneActions.UPDATE_TIME_ZONE)
@@ -87,8 +101,12 @@ export class TimeZoneEffects {
         return fromTimeZoneActions.updateTimeZoneFailure(action.payload.id, action.payload.userId);
       }
   })
-  .catch(e => Observable.of(
-    fromTimeZoneActions.updateTimeZoneFailure(action.payload.id, action.payload.userId))));
+  .catch(e => {
+    if (e.status === 401) {
+      return Observable.of(fromSession.logout());
+    }
+    return Observable.of(fromTimeZoneActions.updateTimeZoneFailure(action.payload.id, action.payload.userId));
+  }));
 
   @Effect() deleteTimeZone$ = this.actions$
   .ofType(fromTimeZoneActions.DELETE_TIME_ZONE)
@@ -101,8 +119,11 @@ export class TimeZoneEffects {
         return fromTimeZoneActions.deleteTimeFailure(action.payload.id, action.payload.userId);
       }
   })
-  .catch(e => Observable.of(
-    fromTimeZoneActions.deleteTimeFailure(action.payload.id, action.payload.userId))));
-
+  .catch(e => {
+    if (e.status === 401) {
+      return Observable.of(fromSession.logout());
+    }
+    return Observable.of(fromTimeZoneActions.deleteTimeFailure(action.payload.id, action.payload.userId));
+  }));
 }
 
