@@ -1,8 +1,8 @@
 package com.natenelles.timeapp.security;
 
 import com.natenelles.timeapp.config.social.SocialConnectionSignup;
-import com.natenelles.timeapp.config.social.SocialSignInAdapter;
 import com.natenelles.timeapp.config.social.SocialSessionStrategy;
+import com.natenelles.timeapp.config.social.SocialSignInAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -67,8 +67,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
-    .csrf().disable()//.csrfTokenRepository(csrfTokenRepository()).ignoringAntMatchers("/login")//TODO
-    //.and()
+    .csrf().disable()
     .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
     .and()
     .authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/login**").permitAll()

@@ -1,7 +1,6 @@
 package com.natenelles.timeapp.security;
 
 import com.natenelles.timeapp.service.intf.SessionService;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;

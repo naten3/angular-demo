@@ -1,7 +1,5 @@
 package com.natenelles.timeapp.security;
 
-import com.natenelles.timeapp.entity.User;
-import com.natenelles.timeapp.repository.UserRepository;
 import com.natenelles.timeapp.service.intf.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
