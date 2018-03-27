@@ -7,6 +7,8 @@ zuul:
       path: /**
       url: http://localhost:4200
 
+  host.socket-timeout-millis: 240000
+
 ribbon.eureka.enabled: false
 
 spring:
