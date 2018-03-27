@@ -56,7 +56,7 @@ export class TimeZoneItemComponent implements OnInit{
         const timeWithOffset = this.timeZone.positiveOffset ?
         currentTime.add(offset)
         : currentTime.subtract(offset);
-        return timeWithOffset.format('hh:mm A');
+        return timeWithOffset.format('hh:mm A DD-MMM-YY');
       });
     }
 

@@ -61,7 +61,6 @@ export class TimeZoneComponent {
     return combineLatest(this.userTimeZones$, this.filterText$).map(timeZonesWithFilter => {
       const timeZones = timeZonesWithFilter[0];
       const filter = timeZonesWithFilter[1];
-      console.log("filter is " + filter);
       if (!filter) {
         return timeZones;
       } else {

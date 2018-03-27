@@ -20,9 +20,9 @@
           <tr><th style="width: 30em" >Zone Name</th>
             <th style="width: 30em" >City</th>
             <th style="width: 20em" >GMT Offset</th>
-            <th style="width: 20em" >Time in Zone</th>
-            <th style="width: 20em"></th>
-            <th style="width: 20em"></th>
+            <th style="width: 25em" >Time in Zone</th>
+            <th style="width: 15em"></th>
+            <th style="width: 15em"></th>
             </tr>
           <tr *ngFor="let n of (timeZoneList() | async) trackBy: getTimezoneId" 
           app-time-zone-item="true" [timeZone]="n" 
