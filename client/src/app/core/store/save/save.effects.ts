@@ -12,8 +12,8 @@ import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
 import * as R from 'ramda';
 
+import { LocalStorageService } from '../../services';
 import * as fromSave from '../actions/save.actions';
-import { LocalStorageService } from 'app/core/services/local-storage.service';
 
 @Injectable()
 export class SaveEffects {
@@ -22,9 +22,7 @@ export class SaveEffects {
     .ofType(fromSave.SAVE_APP_STATE)
     .map(toPayload)
     .switchMap(state => this.localStorageService.saveAppState(state))
-    .map((o) => fromSave.saveAppStateSuccess(o))
-    .catch((e) => of(fromSave.saveAppStateFail(e)));
-  constructor(
-    private actions$: Actions, private localStorageService: LocalStorageService
-  ) { }
+    .map(o => fromSave.saveAppStateSuccess(o))
+    .catch(e => of(fromSave.saveAppStateFail(e)));
+  constructor(private actions$: Actions, private localStorageService: LocalStorageService) {}
 }

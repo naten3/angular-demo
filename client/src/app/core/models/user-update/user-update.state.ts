@@ -1,38 +1,37 @@
 export interface State {
-    success: boolean;
-    submitted: boolean;
-    pendingUpdate: boolean;
-    errors?: Array<string>;
+  success: boolean;
+  submitted: boolean;
+  pendingUpdate: boolean;
+  errors?: Array<string>;
 
-    passwordSuccess: boolean;
-    passwordSubmitted: boolean;
-    passwordPendingUpdate: boolean;
-    passwordErrors?: Array<string>;
+  passwordSuccess: boolean;
+  passwordSubmitted: boolean;
+  passwordPendingUpdate: boolean;
+  passwordErrors?: Array<string>;
 
-    deleteSuccess: boolean;
-    deleteSubmitted: boolean;
-    deletePendingUpdate: boolean;
-    deleteErrors?: Array<string>;
+  deleteSuccess: boolean;
+  deleteSubmitted: boolean;
+  deletePendingUpdate: boolean;
+  deleteErrors?: Array<string>;
 
-    unlockPendingUpdateId: boolean;
+  unlockPendingUpdateId: boolean;
 }
 
 export const initialState: State = {
-    success: false,
-    submitted: false,
-    pendingUpdate: false,
-    errors: [],
+  success: false,
+  submitted: false,
+  pendingUpdate: false,
+  errors: [],
 
-    passwordSuccess: false,
-    passwordSubmitted: false,
-    passwordPendingUpdate: false,
-    passwordErrors: [],
+  passwordSuccess: false,
+  passwordSubmitted: false,
+  passwordPendingUpdate: false,
+  passwordErrors: [],
 
-    deleteSuccess: false,
-    deleteSubmitted: false,
-    deletePendingUpdate: false,
-    deleteErrors: [],
+  deleteSuccess: false,
+  deleteSubmitted: false,
+  deletePendingUpdate: false,
+  deleteErrors: [],
 
-    unlockPendingUpdateId: false
+  unlockPendingUpdateId: false
 };
-

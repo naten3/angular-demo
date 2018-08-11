@@ -14,8 +14,8 @@ import * as saveActions from 'app/core/store/actions/save.actions';
 import * as sessionActions from 'app/core/store/actions/session.actions';
 import * as fromRoot from 'app/core/store';
 @Component({
-    selector: 'app-home',
-    template: `
+  selector: 'app-home',
+  template: `
 
 
   <div class="row page-header bg-info p-4">
@@ -36,57 +36,52 @@ import * as fromRoot from 'app/core/store';
       </ul>
 
 <router-outlet></router-outlet>
-`, styles: [`
-  #homeProfileImage { margin: 0 2em;}
-  #welcomeMessage { margin: 0 2em;}
-`]
+`,
+  styles: [
+    `
+      #homeProfileImage {
+        margin: 0 2em;
+      }
+      #welcomeMessage {
+        margin: 0 2em;
+      }
+    `
+  ]
 })
-
 export class HomeContainerComponent implements OnDestroy {
-    appState: fromRoot.State;
-    stateFromStore: any;
-    onSave$: Subject<any> = new Subject<any>();
-    appState$: Observable<State>;
-    loading$: Observable<boolean>;
-    userInfo$: Observable<UserInfo>;
-    userId$: Observable<number>;
-    isAdminUser$: Observable<boolean>;
-    profileUrl$: Observable<string>;
-    firstName$: Observable<string>;
-    _key$: any;
-    _onSave$: any;
-    constructor(
-        private route: ActivatedRoute,
-        private store: Store<fromRoot.State>
-    ) {
-      this.userInfo$ = store.select(fromRoot.getUserInfo);
+  appState: fromRoot.State;
+  stateFromStore: any;
+  onSave$: Subject<any> = new Subject<any>();
+  appState$: Observable<State>;
+  loading$: Observable<boolean>;
+  userInfo$: Observable<UserInfo>;
+  userId$: Observable<number>;
+  isAdminUser$: Observable<boolean>;
+  profileUrl$: Observable<string>;
+  firstName$: Observable<string>;
+  _key$: any;
+  _onSave$: any;
+  constructor(private route: ActivatedRoute, private store: Store<fromRoot.State>) {
+    this.userInfo$ = store.select(fromRoot.getUserInfo);
 
-      const nonNullUserInfo$: Observable<UserInfo> = this.userInfo$
-      .pipe(filter(x => !!x));
+    const nonNullUserInfo$: Observable<UserInfo> = this.userInfo$.pipe(filter(x => !!x));
 
-      this.isAdminUser$ = nonNullUserInfo$.map( ui => checkIfUserAdmin(ui));
+    this.isAdminUser$ = nonNullUserInfo$.map(ui => checkIfUserAdmin(ui));
 
-      this.userId$ =  nonNullUserInfo$
-      .map(x => (x as UserInfo).id);
+    this.userId$ = nonNullUserInfo$.map(x => (x as UserInfo).id);
 
-      this.profileUrl$ = nonNullUserInfo$
-      .map(getDisplayProfileImage);
+    this.profileUrl$ = nonNullUserInfo$.map(getDisplayProfileImage);
 
-      this.firstName$ = nonNullUserInfo$
-      .map(u => (u as UserInfo).firstName);
+    this.firstName$ = nonNullUserInfo$.map(u => (u as UserInfo).firstName);
+  }
+
+  ngOnDestroy() {
+    if (this._key$) {
+      this._key$.unsubscribe();
     }
+  }
 
-    ngOnDestroy() {
-        if (this._key$) {
-            this._key$.unsubscribe();
-        }
-
-    }
-
-    logout() {
-      this.store.dispatch(sessionActions.logout());
-    }
-
+  logout() {
+    this.store.dispatch(sessionActions.logout());
+  }
 }
-
-

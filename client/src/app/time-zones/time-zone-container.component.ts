@@ -19,17 +19,21 @@ import { filterNotNull } from 'app/core/utils/rx-utils';
 import * as fromTimeZoneActions from 'app/core/store/actions/time-zone.actions';
 
 @Component({
-    selector: 'app-time-zone',
-    templateUrl: './time-zone-container.component.html',
-    styles: [`
+  selector: 'app-time-zone',
+  templateUrl: './time-zone-container.component.html',
+  styles: [
+    `
       .tz-update-wrapper {
         padding: 0 5px;
       }
-    `]
+    `
+  ]
 })
 export class TimeZoneComponent {
-  @ViewChild('createTimeZone') createTimeZoneComponent: AddUpdateTimeZoneComponent;
-  @ViewChild('editTimeZone') editTimeZoneComponent: AddUpdateTimeZoneComponent;
+  @ViewChild('createTimeZone')
+  createTimeZoneComponent: AddUpdateTimeZoneComponent;
+  @ViewChild('editTimeZone')
+  editTimeZoneComponent: AddUpdateTimeZoneComponent;
 
   userId: number;
 
@@ -40,18 +44,14 @@ export class TimeZoneComponent {
 
   currentlyEditing = false;
 
-  constructor(
-    private store: Store<fromRoot.State>,
-    private router: Router,
-    private route: ActivatedRoute) {
-      this.ownerInfo$ = filterNotNull(store.select(fromRoot.getTimeZoneUser));
-      this.userTimeZones$ = filterNotNull(store.select(fromRoot.getTimeZones))
+  constructor(private store: Store<fromRoot.State>, private router: Router, private route: ActivatedRoute) {
+    this.ownerInfo$ = filterNotNull(store.select(fromRoot.getTimeZoneUser));
+    this.userTimeZones$ = filterNotNull(store.select(fromRoot.getTimeZones));
 
-      this.userId = Number(route.snapshot.params['userId']);
+    this.userId = Number(route.snapshot.params['userId']);
 
-      this.shouldShowOwnerInfo$ = filterNotNull(store.select(fromRoot.getUserInfo)).map(ui =>
-        ui.id !== this.userId);
-    }
+    this.shouldShowOwnerInfo$ = filterNotNull(store.select(fromRoot.getUserInfo)).map(ui => ui.id !== this.userId);
+  }
 
   getTimezoneId(timeZone: TimeZone) {
     return timeZone.id;
@@ -64,8 +64,7 @@ export class TimeZoneComponent {
       if (!filter) {
         return timeZones;
       } else {
-        return timeZones.filter(tz =>
-          tz.timeZoneName.toUpperCase().includes(filter.toUpperCase()));
+        return timeZones.filter(tz => tz.timeZoneName.toUpperCase().includes(filter.toUpperCase()));
       }
     });
   }
@@ -91,8 +90,7 @@ export class TimeZoneComponent {
   }
 
   ownerInfoText(): Observable<string> {
-    return this.ownerInfo$.map(oi =>
-    `Showing Time Zones for ${oi.firstName} ${oi.lastName} username: ${oi.username}`);
+    return this.ownerInfo$.map(oi => `Showing Time Zones for ${oi.firstName} ${oi.lastName} username: ${oi.username}`);
   }
 
   filterTimeZones(filter: string) {

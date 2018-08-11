@@ -1,5 +1,5 @@
 import { UserUpdateForm } from './';
 export class UserUpdateRequest {
-    userUpdateForm: UserUpdateForm;
-    userId: number;
+  userUpdateForm: UserUpdateForm;
+  userId: number;
 }

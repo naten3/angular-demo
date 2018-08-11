@@ -2,8 +2,6 @@ import * as fromRouter from '@ngrx/router-store';
 
 import { createSelector } from 'reselect';
 import { State } from 'app/core/models/app.state';
-import * as fromTodo from 'app/core/models/todo';
-import * as fromTree from 'app/core/models/tree';
 import * as fromSession from 'app/core/models/session';
 import * as fromSave from 'app/core/models/common/save.state';
 import * as fromUserSave from 'app/core/models/user-save';
@@ -23,12 +21,6 @@ export const getRouterPath = createSelector(getRouterState, (state: fromRouter.R
 
 export const getSaveState = (state: State) => state.save;
 export const getSaveStateLoading = createSelector(getSaveState, fromSave.getLoading);
-
-export const getTodosState = (state: State) => state.todos;
-export const getAllTodos = createSelector(getTodosState, fromTodo.getTodos);
-
-export const getTreeState = (state: State) => state.tree;
-export const getAllNodes = createSelector(getTreeState, fromTree.getNodes);
 
 export const getSessionState = (state: State) => state.session;
 export const getAuthenticated = (state: State) => !!state.session.userInfo;
@@ -76,5 +68,4 @@ export const getTimeZoneState: (state: State) => fromTimeZone.State = (state: St
 export const getUserTimeZones = createSelector(getTimeZoneState, fromTimeZone.getUserTimeZones);
 export const getTimeZones = createSelector(getTimeZoneState, fromTimeZone.getTimeZones);
 export const getTimeZoneUser = createSelector(getTimeZoneState, fromTimeZone.getUser);
-export const getTimeZoneHasErrors: (state: State) => boolean =
-  createSelector(getTimeZoneState, fromTimeZone.getFetchErrors);
+export const getTimeZoneHasErrors: (state: State) => boolean = createSelector(getTimeZoneState, fromTimeZone.getFetchErrors);

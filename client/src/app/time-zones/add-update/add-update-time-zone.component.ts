@@ -2,35 +2,36 @@ import { Component, OnInit, OnDestroy, EventEmitter, Output, Input, ViewChild } 
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { } from './';
+import {} from './';
 import { TimeZone } from 'app/core/models/time-zone';
 
 @Component({
   selector: 'app-add-update-time-zone',
   templateUrl: './add-update-time-zone.component.html',
-  styles: [`
-    label {
-      font-size: .5em;
-      margin-bottom: 3px;
-    }
-    input {
-      line-height: .1em;
-      font-size: 10pt;
-    }
-    select {
-      height: 2.6em !important;
-      font-size: .5em !important;
-    }
-    .form-group {
-      margin-bottom: 4px;
-    }
-    .help-block {
-      font-size: .5em;
-    }
-  `]
+  styles: [
+    `
+      label {
+        font-size: 0.5em;
+        margin-bottom: 3px;
+      }
+      input {
+        line-height: 0.1em;
+        font-size: 10pt;
+      }
+      select {
+        height: 2.6em !important;
+        font-size: 0.5em !important;
+      }
+      .form-group {
+        margin-bottom: 4px;
+      }
+      .help-block {
+        font-size: 0.5em;
+      }
+    `
+  ]
 })
 export class AddUpdateTimeZoneComponent implements OnInit {
-
   timeZone: TimeZone | null;
   modalTitle: string;
   loading: boolean;
@@ -39,10 +40,13 @@ export class AddUpdateTimeZoneComponent implements OnInit {
 
   model: any = {};
 
-  @Input('title') title: string;
-  @Output('timeZoneSave') public timeZoneSave: EventEmitter<TimeZone> = new EventEmitter();
+  @Input('title')
+  title: string;
+  @Output('timeZoneSave')
+  public timeZoneSave: EventEmitter<TimeZone> = new EventEmitter();
 
-  @ViewChild('f') form: NgForm;
+  @ViewChild('f')
+  form: NgForm;
 
   constructor() {}
 
@@ -55,7 +59,7 @@ export class AddUpdateTimeZoneComponent implements OnInit {
       value.form.controls.offsetHours.setErrors('range error');
     } else if (this.model.offsetMinutes > 59 || this.model.offsetMinutes < 0) {
       value.form.controls.offsetMinutes.setErrors('range error');
-    }else {
+    } else {
       const newTimeZone = {
         id: !!this.timeZone ? this.timeZone.id : null,
         positiveOffset: this.model.positiveOffset,
@@ -87,7 +91,7 @@ export class AddUpdateTimeZoneComponent implements OnInit {
     this.form.resetForm(this.model);
   }
 
-  private prepopulateForm(timeZone: TimeZone ) {
+  private prepopulateForm(timeZone: TimeZone) {
     this.model.positiveOffset = timeZone.positiveOffset;
     this.model.offsetHours = timeZone.offsetHours;
     this.model.offsetMinutes = timeZone.offsetMinutes;

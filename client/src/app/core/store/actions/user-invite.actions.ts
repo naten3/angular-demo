@@ -8,12 +8,15 @@ import { UserUpdateForm, UserUpdateRequest } from 'app/core/models/user-update';
 import { UserInfo } from 'app/core/models/session';
 
 export const inviteUser = (email: string) => {
-    return { 'type': USER_INVITE_REQUEST, 'payload': email };
+  return { type: USER_INVITE_REQUEST, payload: email };
 };
-export const userInviteSuccess = (email: string) => { return {'type': USER_INVITE_SUCCESS, 'payload': email}; };
+export const userInviteSuccess = (email: string) => {
+  return { type: USER_INVITE_SUCCESS, payload: email };
+};
 export const userInviteFailure = (errors: Array<string>) => {
-    return {'type': USER_INVITE_FAILURE, 'payload': errors};
+  return { type: USER_INVITE_FAILURE, payload: errors };
 };
 
-export const userInviteReset = () => { return {'type': USER_INVITE_RESET}; };
-
+export const userInviteReset = () => {
+  return { type: USER_INVITE_RESET };
+};

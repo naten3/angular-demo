@@ -26,61 +26,63 @@ import { UserInfo } from 'app/core/models/session';
 import { TimeZone } from 'app/core/models/time-zone';
 
 export const requestTimeZones = (userId: number) => {
-  return { 'type': TIME_ZONE_REQUEST, 'payload': userId };
+  return { type: TIME_ZONE_REQUEST, payload: userId };
 };
 export const timeZoneSuccess = (userId: number, timeZones: Array<TimeZone>) => {
-  return { 'type': TIME_ZONE_SUCCESS, 'payload': {userId, timeZones} };
+  return { type: TIME_ZONE_SUCCESS, payload: { userId, timeZones } };
 };
-export const timeZoneFailure  = (userId: number, errors: Array<string>) => {
-  return { 'type': TIME_ZONE_FAILURE, 'payload': {userId, errors} };
-  };
+export const timeZoneFailure = (userId: number, errors: Array<string>) => {
+  return { type: TIME_ZONE_FAILURE, payload: { userId, errors } };
+};
 
-export const timeZoneReset  = () => {return { 'type': TIME_ZONE_RESET}; };
+export const timeZoneReset = () => {
+  return { type: TIME_ZONE_RESET };
+};
 
 export const requestTimeZoneUser = (userId: number) => {
-  return { 'type': TIME_ZONE_USER_REQUEST, 'payload': userId};
+  return { type: TIME_ZONE_USER_REQUEST, payload: userId };
 };
 
 export const requestTimeZoneUserSuccess = (userInfo: UserInfo) => {
-  return { 'type': TIME_ZONE_USER_SUCCESS, 'payload': userInfo};
+  return { type: TIME_ZONE_USER_SUCCESS, payload: userInfo };
 };
 
 export const requestTimeZoneUserFailure = (userid: number) => {
-  return { 'type': TIME_ZONE_USER_FAILURE, 'payload': { userid }};
+  return { type: TIME_ZONE_USER_FAILURE, payload: { userid } };
 };
 
 export const setTimeZoneUser = (userInfo: UserInfo) => {
-  return { 'type': SET_TIME_ZONE_USER, 'payload': userInfo};
+  return { type: SET_TIME_ZONE_USER, payload: userInfo };
 };
 
-export const createTimeZone = (timeZone: TimeZone,  userId: number) => {
-  return { 'type': CREATE_TIME_ZONE, 'payload': { timeZone, userId}};
+export const createTimeZone = (timeZone: TimeZone, userId: number) => {
+  return { type: CREATE_TIME_ZONE, payload: { timeZone, userId } };
 };
-export const createTimeZoneSuccess = (timeZone: TimeZone,  userId: number) => {
-  return { 'type': CREATE_TIME_ZONE_SUCCESS, 'payload': { timeZone, userId}};
+export const createTimeZoneSuccess = (timeZone: TimeZone, userId: number) => {
+  return { type: CREATE_TIME_ZONE_SUCCESS, payload: { timeZone, userId } };
 };
 export const createTimeZoneFailure = (userId: number) => {
-  return { 'type': CREATE_TIME_ZONE_FAILURE, 'payload': userId};
+  return { type: CREATE_TIME_ZONE_FAILURE, payload: userId };
 };
 
-export const updateTimeZone = (timeZone: TimeZone,  userId: number) => {
-  return { 'type': UPDATE_TIME_ZONE, 'payload': { timeZone, userId}};
+export const updateTimeZone = (timeZone: TimeZone, userId: number) => {
+  return { type: UPDATE_TIME_ZONE, payload: { timeZone, userId } };
 };
-export const updateTimeZoneSuccess = (timeZone: TimeZone,  userId: number) => {
-  return { 'type': UPDATE_TIME_ZONE_SUCCESS, 'payload': { timeZone, userId}};
+export const updateTimeZoneSuccess = (timeZone: TimeZone, userId: number) => {
+  return { type: UPDATE_TIME_ZONE_SUCCESS, payload: { timeZone, userId } };
 };
 export const updateTimeZoneFailure = (id: number, userId: number) => {
-  return { 'type': UPDATE_TIME_ZONE_FAILURE, 'payload': {id, userId}};
+  return { type: UPDATE_TIME_ZONE_FAILURE, payload: { id, userId } };
 };
 
 export const deleteTimeZone = (id: number, userId: number) => {
-  return { 'type': DELETE_TIME_ZONE, 'payload': { id, userId}};
+  return { type: DELETE_TIME_ZONE, payload: { id, userId } };
 };
 
 export const deleteTimeSuccess = (id: number, userId: number) => {
-  return { 'type': DELETE_TIME_ZONE_SUCCESS, 'payload': { id, userId}};
+  return { type: DELETE_TIME_ZONE_SUCCESS, payload: { id, userId } };
 };
 
 export const deleteTimeFailure = (id: number, userId: number) => {
-  return { 'type': DELETE_TIME_ZONE_FAILURE, 'payload': { id, userId}};
+  return { type: DELETE_TIME_ZONE_FAILURE, payload: { id, userId } };
 };

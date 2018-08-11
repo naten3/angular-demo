@@ -22,9 +22,7 @@ export class RestoreEffects {
   restore$: Observable<Action> = this.actions$
     .ofType(appActions.RESTORE_APP_STATE)
     .map(toPayload)
-    .switchMap((key) => this.localStorageService.getAppState(key))
-    .map((s) => appActions.restoreAppStateSuccess(s));
-  constructor(
-    private actions$: Actions, private localStorageService: LocalStorageService
-  ) { }
+    .switchMap(key => this.localStorageService.getAppState(key))
+    .map(s => appActions.restoreAppStateSuccess(s));
+  constructor(private actions$: Actions, private localStorageService: LocalStorageService) {}
 }

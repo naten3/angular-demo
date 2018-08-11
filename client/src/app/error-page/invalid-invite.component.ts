@@ -7,14 +7,13 @@ import { Store } from '@ngrx/store';
 import { Http } from '@angular/http';
 
 @Component({
-    selector: 'app-invalid-invite',
-    templateUrl: './invalid-invite.component.html'
+  selector: 'app-invalid-invite',
+  templateUrl: './invalid-invite.component.html'
 })
 export class InvalidInviteComponent {
+  constructor(private router: Router, private route: ActivatedRoute) {}
 
-    constructor(private router: Router, private route: ActivatedRoute) {}
-
-    goToLogin() {
-        this.router.navigate(['/']);
-    }
+  goToLogin() {
+    this.router.navigate(['/']);
+  }
 }

@@ -14,7 +14,7 @@ export function reducer(state: State = initialState, action: Action) {
     case LOGOUT:
       return initialState;
     case fromAdminUserListActions.INCREMENT_PAGE:
-      if (!state.userPage || !state.userPage.last ) {
+      if (!state.userPage || !state.userPage.last) {
         return {
           page: state.page + 1,
           userPage: state.userPage,
@@ -26,52 +26,58 @@ export function reducer(state: State = initialState, action: Action) {
         return state;
       }
     case fromAdminUserListActions.DECREMENT_PAGE:
-      if (state.page > 0 ) {
+      if (state.page > 0) {
         return {
           page: state.page - 1,
           userPage: state.userPage,
           currentlyManagedUser: state.currentlyManagedUser,
           deletedUsers: state.deletedUsers
         };
-       } else {
-         console.log('Ignoring decrement, at first page');
-         return state;
-       }
+      } else {
+        console.log('Ignoring decrement, at first page');
+        return state;
+      }
     case fromAdminUserListActions.CHANGE_PAGE:
-        return {
-          page: action.payload,
-          userPage: state.userPage,
-          currentlyManagedUser: state.currentlyManagedUser,
-          deletedUsers: state.deletedUsers,
-        };
+      return {
+        page: action.payload,
+        userPage: state.userPage,
+        currentlyManagedUser: state.currentlyManagedUser,
+        deletedUsers: state.deletedUsers
+      };
     case fromAdminUserListActions.USER_LIST_PAGE_SUCCESS:
-        if ( action.payload.page === state.page) {
-          return {
-            page: state.page,
-            userPage: action.payload.userPage,
-            currentlyManagedUser: state.currentlyManagedUser,
-            deletedUsers: state.deletedUsers
-          };
-        } else {
-          console.log('Ignoring user page update since it\'s not for active page');
-          return state;
-        }
+      if (action.payload.page === state.page) {
+        return {
+          page: state.page,
+          userPage: action.payload.userPage,
+          currentlyManagedUser: state.currentlyManagedUser,
+          deletedUsers: state.deletedUsers
+        };
+      } else {
+        console.log("Ignoring user page update since it's not for active page");
+        return state;
+      }
     case fromUserUpdate.USER_UPDATE_SUCCESS:
-    // tslint:disable no-use-before-declare
+      // tslint:disable no-use-before-declare
       return replaceUser(state, action.payload.id, action.payload);
     case fromUserUpdate.PROFILE_IMAGE_UPDATE_SUCCESS:
-    // tslint:disable no-use-before-declare
+      // tslint:disable no-use-before-declare
       return replaceProfilePicture(state, action.payload.id, action.payload.url);
     case fromAdminUserListActions.MANAGE_USER:
-      return Object.assign(clone(state), {currentlyManagedUser: action.payload});
+      return Object.assign(clone(state), {
+        currentlyManagedUser: action.payload
+      });
     case fromAdminUserListActions.REQUEST_MANAGED_USER_SUCCESS:
-      return Object.assign(clone(state), {currentlyManagedUser: action.payload,
-      fetchManagedUserFailure: false});
+      return Object.assign(clone(state), {
+        currentlyManagedUser: action.payload,
+        fetchManagedUserFailure: false
+      });
     case fromAdminUserListActions.REQUEST_MANAGED_USER_FAILURE:
-      return Object.assign(clone(state), { fetchManagedUserFailure: true});
+      return Object.assign(clone(state), { fetchManagedUserFailure: true });
     case fromAdminUserListActions.MANAGED_USER_RESET:
-      return Object.assign(clone(state), {currentlyManagedUser: null,
-      fetchManagedUserFailure: false});
+      return Object.assign(clone(state), {
+        currentlyManagedUser: null,
+        fetchManagedUserFailure: false
+      });
     case fromUserUpdate.DELETE_USER_SUCCESS:
       const newDeletedUsers = new Set(state.deletedUsers);
       newDeletedUsers.add(action.payload);
@@ -84,19 +90,17 @@ export function reducer(state: State = initialState, action: Action) {
       }
       return Object.assign(clone(state), assignObj);
     case fromUserUpdate.UNLOCK_USER_SUCCESS:
-    // tslint:disable no-use-before-declare
+      // tslint:disable no-use-before-declare
       return unlockUser(state, action.payload);
     default:
-        return state;
-  };
-};
+      return state;
+  }
+}
 
-type UserReplace = ( ui: UserInfo) => UserInfo;
-const applyOperationToMatchingUser: (State, number, UserReplace) => State =
-(state, id, userReplaceFunc) => {
-  const matchesManagedUser = !!state.currentlyManagedUser &&
-  state.currentlyManagedUser.id === id;
-  const userOnPage = !!state.userPage && !!state.userPage.content.find( x => x.id === id);
+type UserReplace = (ui: UserInfo) => UserInfo;
+const applyOperationToMatchingUser: (State, number, UserReplace) => State = (state, id, userReplaceFunc) => {
+  const matchesManagedUser = !!state.currentlyManagedUser && state.currentlyManagedUser.id === id;
+  const userOnPage = !!state.userPage && !!state.userPage.content.find(x => x.id === id);
   if (matchesManagedUser || userOnPage) {
     let newManagedUser;
     if (matchesManagedUser) {
@@ -108,8 +112,7 @@ const applyOperationToMatchingUser: (State, number, UserReplace) => State =
     let newUserPage;
     if (userOnPage) {
       const pageClone: Page<UserInfo> = clone(state.userPage);
-      pageClone.content = pageClone.content.map(user => user.id === id ?
-        userReplaceFunc(cloneDeep(user)) : user );
+      pageClone.content = pageClone.content.map(user => (user.id === id ? userReplaceFunc(cloneDeep(user)) : user));
     } else {
       newUserPage = state.userPage;
     }
@@ -124,16 +127,15 @@ const applyOperationToMatchingUser: (State, number, UserReplace) => State =
 };
 
 const replaceProfilePicture = (state: State, id: number, newUrl: string) =>
-applyOperationToMatchingUser(state, id, (user) => {
-  user.profileImage = newUrl;
-  return user;
-});
+  applyOperationToMatchingUser(state, id, user => {
+    user.profileImage = newUrl;
+    return user;
+  });
 
-const replaceUser = (state: State, id: number, userInfo: UserInfo) =>
-applyOperationToMatchingUser(state, id, (user) => userInfo);
+const replaceUser = (state: State, id: number, userInfo: UserInfo) => applyOperationToMatchingUser(state, id, user => userInfo);
 
 const unlockUser = (state: State, id: number) =>
-applyOperationToMatchingUser(state, id, (user) => {
-  user.accountLocked = false;
-  return user;
-});
+  applyOperationToMatchingUser(state, id, user => {
+    user.accountLocked = false;
+    return user;
+  });

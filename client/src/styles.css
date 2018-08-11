@@ -1,28 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
 #nameEntryForm {
-    margin: 5px 0;
+  margin: 5px 0;
 }
 
 .page-header {
-    margin: 3em 0;
+  margin: 3em 0;
 }
 
 #homeProfileImage {
-    margin: 0 2em;
-    height: 50px;
-    width: 50px;
-    object-fit: cover;
+  margin: 0 2em;
+  height: 50px;
+  width: 50px;
+  object-fit: cover;
 }
 
 #updateUserProfileImage {
-    height: 100px;
-    width: 100px;
-    object-fit: cover;
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
 }
 
-.col-centered{
-    float: none;
-    margin: 0 auto;
+.col-centered {
+  float: none;
+  margin: 0 auto;
 }
 
 .overlay {
@@ -33,7 +33,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 2;
   cursor: pointer;
   text-align: center;
@@ -46,6 +46,8 @@
   position: relative;
 }
 
-table, th, td {
+table,
+th,
+td {
   border: 1px solid black;
 }

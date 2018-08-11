@@ -8,22 +8,16 @@ import { Http } from '@angular/http';
 import { Store } from '@ngrx/store';
 import * as fromRoot from 'app/core/store';
 
-
-
 @Component({
-    selector: 'app-not-found',
-    templateUrl: './not-found.component.html'
+  selector: 'app-not-found',
+  templateUrl: './not-found.component.html'
 })
 export class NotFoundComponent {
+  authenticated$: Observable<boolean>;
 
-  authenticated$: Observable<boolean>
-
-  constructor(
-    private store: Store<fromRoot.State>,
-    private router: Router,
-    private route: ActivatedRoute) {
-      this.authenticated$ = store.select(fromRoot.getAuthenticated);
-    }
+  constructor(private store: Store<fromRoot.State>, private router: Router, private route: ActivatedRoute) {
+    this.authenticated$ = store.select(fromRoot.getAuthenticated);
+  }
 
   goToLogin() {
     this.store.dispatch(go('/'));

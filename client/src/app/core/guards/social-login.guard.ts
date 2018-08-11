@@ -14,16 +14,14 @@ import * as fromRoot from 'app/core/store';
 // pull the token off the query param quickly
 @Injectable()
 export class SocialLoginGuard implements CanActivate {
+  hasUpdatedAuth$: Observable<boolean>;
+  userInfo$: Observable<any>;
+  sessionState$: Observable<State>;
 
-    hasUpdatedAuth$: Observable<boolean>;
-    userInfo$: Observable<any>;
-    sessionState$: Observable<State>;
-
-  constructor(private router: Router, private store: Store<fromRoot.State>,
-  private sessionService: SessionService) {
-      this.hasUpdatedAuth$ = store.select(fromRoot.getHasFetchedSessionStatus);
-      this.userInfo$ = store.select(fromRoot.getUserInfo);
-      this.sessionState$ = store.select(fromRoot.getSession);
+  constructor(private router: Router, private store: Store<fromRoot.State>, private sessionService: SessionService) {
+    this.hasUpdatedAuth$ = store.select(fromRoot.getHasFetchedSessionStatus);
+    this.userInfo$ = store.select(fromRoot.getUserInfo);
+    this.sessionState$ = store.select(fromRoot.getSession);
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {

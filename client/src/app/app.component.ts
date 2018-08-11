@@ -14,9 +14,7 @@ import { UserInfo } from 'app/core/models/session';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-
 export class AppComponent {
-
   userInfo$: Observable<UserInfo>;
 
   constructor(
@@ -24,10 +22,10 @@ export class AppComponent {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<fromRoot.State>,
-  private toastr: ToastsManager,
-  private vcr: ViewContainerRef) {
-      this.sessionService.getSessionStatus();
-      this.toastr.setRootViewContainerRef(vcr);
+    private toastr: ToastsManager,
+    private vcr: ViewContainerRef
+  ) {
+    this.sessionService.getSessionStatus();
+    this.toastr.setRootViewContainerRef(vcr);
   }
 }
-

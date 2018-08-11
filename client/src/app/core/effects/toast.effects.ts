@@ -16,21 +16,15 @@ import * as fromRoot from 'app/core/store';
 
 @Injectable()
 export class ToastEffects {
+  constructor(private toastr: ToastsManager, private actions$: Actions) {}
 
-  constructor(
-    private toastr: ToastsManager,
-    private actions$: Actions
-  ) {}
-
-  @Effect() successToast$ = this.actions$
-  .ofType(fromtToastActions.SUCCESS_TOAST)
-  .forEach(action => {
+  @Effect()
+  successToast$ = this.actions$.ofType(fromtToastActions.SUCCESS_TOAST).forEach(action => {
     this.toastr.success(action.payload.content, action.payload.title);
   });
 
-  @Effect() failToast$ = this.actions$
-  .ofType(fromtToastActions.FAIL_TOAST)
-  .forEach(action => {
+  @Effect()
+  failToast$ = this.actions$.ofType(fromtToastActions.FAIL_TOAST).forEach(action => {
     this.toastr.error(action.payload.content, action.payload.title);
   });
 }

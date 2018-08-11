@@ -1,19 +1,24 @@
-import { Component, Input, OnInit, ChangeDetectionStrategy, 
-    OnChanges, AfterViewInit, ElementRef,
-     ViewChild, OnDestroy } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ChangeDetectionStrategy,
+  OnChanges,
+  AfterViewInit,
+  ElementRef,
+  ViewChild,
+  OnDestroy
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
-import { TreeEvents } from 'app/tree/tree-events';
-import { SourceType } from 'app/core/models/tree';
 import { Subscription } from 'rxjs/Subscription';
 
-import { UserInfo, getDisplayProfileImage, ROLE_ADMIN, ROLE_USER_ADMIN,
-    ROLE_USER } from 'app/core/models/session';
+import { UserInfo, getDisplayProfileImage, ROLE_ADMIN, ROLE_USER_ADMIN, ROLE_USER } from 'app/core/models/session';
 
 @Component({
-    selector: 'app-user-item',
-    template: `
+  selector: 'app-user-item',
+  template: `
     <div class="card" style="width: 12rem;">
     <img class="card-img-top" [src]="getDisplayImage()" alt="profile image">
     <div class="card-body">
@@ -52,44 +57,72 @@ import { UserInfo, getDisplayProfileImage, ROLE_ADMIN, ROLE_USER_ADMIN,
       </li>
     </ul>
   </div>
-  `, styles: [`
-        ul {list-style-type: none;}
-        dl {margin: 0}
-        dt {font-size: 8pt}
-        dd {font-size: 8pt}
-        .card-body {padding: 4px;}
-        .list-group-item {padding: 3px 5px}
-        .card-img-top {object-fit: cover;}
-        .selected {background-color: yellow}
-        .focused { outline: 1px dashed red; }
-        :focus {outline:none}
-        .card-img-top { height: 12rem; width: 100%; }
-        `]
+  `,
+  styles: [
+    `
+      ul {
+        list-style-type: none;
+      }
+      dl {
+        margin: 0;
+      }
+      dt {
+        font-size: 8pt;
+      }
+      dd {
+        font-size: 8pt;
+      }
+      .card-body {
+        padding: 4px;
+      }
+      .list-group-item {
+        padding: 3px 5px;
+      }
+      .card-img-top {
+        object-fit: cover;
+      }
+      .selected {
+        background-color: yellow;
+      }
+      .focused {
+        outline: 1px dashed red;
+      }
+      :focus {
+        outline: none;
+      }
+      .card-img-top {
+        height: 12rem;
+        width: 100%;
+      }
+    `
+  ]
 })
-
 export class UserItemComponent {
-    @Input() user: UserInfo;
+  @Input()
+  user: UserInfo;
 
-    getDisplayImage(): string {
-        return getDisplayProfileImage(this.user);
-    }
+  getDisplayImage(): string {
+    return getDisplayProfileImage(this.user);
+  }
 
-    getRole(): string {
-        return this.user.roles.map(r => {
-            if (r === ROLE_ADMIN) {
-                return 'Admin';
-            } else if (r === ROLE_USER_ADMIN) {
-                return 'User Admin';
-            } else if (r === ROLE_USER) {
-                return 'User';
-            } else {
-                return '';
-            }
-        }).filter(r => !!r).join(',');
-    }
+  getRole(): string {
+    return this.user.roles
+      .map(r => {
+        if (r === ROLE_ADMIN) {
+          return 'Admin';
+        } else if (r === ROLE_USER_ADMIN) {
+          return 'User Admin';
+        } else if (r === ROLE_USER) {
+          return 'User';
+        } else {
+          return '';
+        }
+      })
+      .filter(r => !!r)
+      .join(',');
+  }
 
-    emailVerifiedString(): string {
-        return this.user.emailVerified ? 'Yes' : 'No';
-    }
+  emailVerifiedString(): string {
+    return this.user.emailVerified ? 'Yes' : 'No';
+  }
 }
-

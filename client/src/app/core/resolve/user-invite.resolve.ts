@@ -9,29 +9,26 @@ import * as fromRoot from 'app/core/store';
 
 @Injectable()
 export class UserInviteResolver implements Resolve<string> {
+  constructor(private store: Store<fromRoot.State>, private http: Http) {}
 
-    constructor(
-        private store: Store<fromRoot.State>,
-        private http: Http
-      ) { }
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<string> {
+    const token = route.queryParamMap.get('invite-token');
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<string> {
-        const token = route.queryParamMap.get('invite-token');
-
-        if (!token) {
-            return Observable.of(null);
-        } else {
-            const params: URLSearchParams = new URLSearchParams();
-            params.append('invite-token', token);
-            return this.http.get('/api/users/signup-invite', {params})
-            .map(res => {
-                return res.json().email;
-            }).catch( (er) => {
-                console.error('Invalid login token');
-                this.store.dispatch(replace('user-create/invalid-token'));
-                return Observable.of(null);
-            });
-        }
-
+    if (!token) {
+      return Observable.of(null);
+    } else {
+      const params: URLSearchParams = new URLSearchParams();
+      params.append('invite-token', token);
+      return this.http
+        .get('/api/users/signup-invite', { params })
+        .map(res => {
+          return res.json().email;
+        })
+        .catch(er => {
+          console.error('Invalid login token');
+          this.store.dispatch(replace('user-create/invalid-token'));
+          return Observable.of(null);
+        });
     }
+  }
 }

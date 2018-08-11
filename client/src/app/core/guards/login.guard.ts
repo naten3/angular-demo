@@ -13,29 +13,31 @@ import * as fromRoot from 'app/core/store';
 // make sure we're authenticated before hitting a route
 @Injectable()
 export class LoginGuard implements CanActivate {
-
-    hasUpdatedAuth$: Observable<boolean>;
-    userInfo$: Observable<any>;
-    sessionState$: Observable<State>;
+  hasUpdatedAuth$: Observable<boolean>;
+  userInfo$: Observable<any>;
+  sessionState$: Observable<State>;
 
   constructor(private router: Router, private store: Store<fromRoot.State>) {
-      this.hasUpdatedAuth$ = store.select(fromRoot.getHasFetchedSessionStatus);
-      this.userInfo$ = store.select(fromRoot.getUserInfo);
-      this.sessionState$ = store.select(fromRoot.getSession);
+    this.hasUpdatedAuth$ = store.select(fromRoot.getHasFetchedSessionStatus);
+    this.userInfo$ = store.select(fromRoot.getUserInfo);
+    this.sessionState$ = store.select(fromRoot.getSession);
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return this.sessionState$.pipe(filter(s => {
-      return (s as State).hasFetchedStatus;
-    }))
-    .map(s => {
-      if (!(s as State).userInfo) {
-        return true;
-      } else {
-        console.log('user logged in, navigating home');
-        this.store.dispatch(replace('/home'));
-        return false;
-      }
-    });
+    return this.sessionState$
+      .pipe(
+        filter(s => {
+          return (s as State).hasFetchedStatus;
+        })
+      )
+      .map(s => {
+        if (!(s as State).userInfo) {
+          return true;
+        } else {
+          console.log('user logged in, navigating home');
+          this.store.dispatch(replace('/home'));
+          return false;
+        }
+      });
   }
 }

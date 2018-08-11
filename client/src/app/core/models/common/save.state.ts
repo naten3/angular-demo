@@ -1,8 +1,8 @@
 export class State {
-    loading: boolean;
+  loading: boolean;
 }
 export const initialState = {
-    loading: false
+  loading: false
 };
 
 export const getLoading = (state: State) => state.loading;

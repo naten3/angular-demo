@@ -12,26 +12,21 @@ import * as fromRoot from 'app/core/store';
 
 @Injectable()
 export class UserInviteEffects {
-
   currentPage$: Observable<number>;
 
-  constructor(
-    private http: Http,
-    private actions$: Actions,
-    private store: Store<fromRoot.State>
-  ) {}
+  constructor(private http: Http, private actions$: Actions, private store: Store<fromRoot.State>) {}
 
-  @Effect() requestUserInvite$ = this.actions$
-  .ofType(fromUserInviteActions.USER_INVITE_REQUEST)
-  .switchMap(action => this.http.post(`/api/users//signup-invite`,
-  { email: action.payload},
-  { headers: SessionService.getSessionHeader()})
-  .map(res => {
-      if (res.json().success) {
-        return fromUserInviteActions.userInviteSuccess(action.payload);
-      } else {
-        return fromUserInviteActions.userInviteFailure(res.json().errors);
-      }
-  })
-  .catch(e => Observable.of(fromUserInviteActions.userInviteFailure((['unknown'])))));
+  @Effect()
+  requestUserInvite$ = this.actions$.ofType(fromUserInviteActions.USER_INVITE_REQUEST).switchMap(action =>
+    this.http
+      .post(`/api/users//signup-invite`, { email: action.payload }, { headers: SessionService.getSessionHeader() })
+      .map(res => {
+        if (res.json().success) {
+          return fromUserInviteActions.userInviteSuccess(action.payload);
+        } else {
+          return fromUserInviteActions.userInviteFailure(res.json().errors);
+        }
+      })
+      .catch(e => Observable.of(fromUserInviteActions.userInviteFailure(['unknown'])))
+  );
 }

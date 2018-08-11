@@ -31,72 +31,80 @@ import { UserUpdateForm, UserUpdateRequest } from 'app/core/models/user-update';
 import { UserInfo } from 'app/core/models/session';
 
 export const createUser = (userSaveRequest: UserSaveRequest) => {
-    return { 'type': CREATE_USER_REQUEST, 'payload': userSaveRequest };
+  return { type: CREATE_USER_REQUEST, payload: userSaveRequest };
 };
-export const userCreateSuccess = () => { return {'type': USER_CREATE_SUCCESS}; };
+export const userCreateSuccess = () => {
+  return { type: USER_CREATE_SUCCESS };
+};
 export const userCreateFailure = (errors: Array<string>) => {
-    return {'type': USER_CREATE_FAILURE, 'payload': errors};
+  return { type: USER_CREATE_FAILURE, payload: errors };
 };
 
 export const userInviteCreate = (userSaveRequest: UserSaveRequest) => {
-    return { 'type': USER_INVITE_CREATE_REQUEST, 'payload': userSaveRequest };
+  return { type: USER_INVITE_CREATE_REQUEST, payload: userSaveRequest };
 };
 
-export const userCreateReset = () => { return {'type': USER_CREATE_RESET}; };
+export const userCreateReset = () => {
+  return { type: USER_CREATE_RESET };
+};
 
 export const updateUser = (userUpdateRequest: UserUpdateRequest) => {
-    return {'type': UPDATE_USER_REQUEST, 'payload': userUpdateRequest};
+  return { type: UPDATE_USER_REQUEST, payload: userUpdateRequest };
 };
 export const userUpdateSuccess = (userInfo: UserInfo) => {
-    return {'type': USER_UPDATE_SUCCESS, 'payload': userInfo};
+  return { type: USER_UPDATE_SUCCESS, payload: userInfo };
 };
 export const userUpdateFailure = (errors: Array<string>, userId: number) => {
-    return {'type': USER_UPDATE_FAILURE, 'payload': {errors, userId}};
+  return { type: USER_UPDATE_FAILURE, payload: { errors, userId } };
 };
 
-export const userUpdateReset = () => { return {'type': USER_UPDATE_RESET}; };
+export const userUpdateReset = () => {
+  return { type: USER_UPDATE_RESET };
+};
 
 export const updatePassword = (userId: number, password: string) => {
-    return {'type': UPDATE_PASSWORD_REQUEST, 'payload': {userId, password}};
+  return { type: UPDATE_PASSWORD_REQUEST, payload: { userId, password } };
 };
 export const updatePasswordSuccess = () => {
-    return {'type': UPDATE_PASSWORD_SUCCESS};
+  return { type: UPDATE_PASSWORD_SUCCESS };
 };
 export const updatePasswordFailure = (errors: Array<string>) => {
-    return {'type': UPDATE_PASSWORD_FAILURE, 'payload': errors};
+  return { type: UPDATE_PASSWORD_FAILURE, payload: errors };
 };
 export const updatePasswordReset = () => {
-    return {'type': UPDATE_PASSWORD_RESET};
+  return { type: UPDATE_PASSWORD_RESET };
 };
 
 export const deleteUserRequest = (userId: number) => {
-    return {'type': DELETE_USER_REQUEST, 'payload': userId};
+  return { type: DELETE_USER_REQUEST, payload: userId };
 };
 export const deleteUserSuccess = (userId: number) => {
-    return {'type': DELETE_USER_SUCCESS, payload: userId};
+  return { type: DELETE_USER_SUCCESS, payload: userId };
 };
 export const deleteUserFailure = (errors: Array<string>) => {
-    return {'type': DELETE_USER_FAILURE, 'payload': errors};
+  return { type: DELETE_USER_FAILURE, payload: errors };
 };
 
 export const unlockUserRequest = (userId: number) => {
-  return {'type': UNLOCK_USER_REQUEST, 'payload': userId};
+  return { type: UNLOCK_USER_REQUEST, payload: userId };
 };
 export const unlockUserSuccess = (userId: number) => {
-  return {'type': UNLOCK_USER_SUCCESS, payload: userId};
+  return { type: UNLOCK_USER_SUCCESS, payload: userId };
 };
 export const unlockUserFailure = (errors: Array<string>) => {
-  return {'type': UNLOCK_USER_FAILURE, 'payload': errors};
+  return { type: UNLOCK_USER_FAILURE, payload: errors };
 };
 
 export const updateProfileImageSuccess = (id: number, url: string) => {
-    return {'type': PROFILE_IMAGE_UPDATE_SUCCESS, 'payload': {
-        id,
-        url
-    }};
+  return {
+    type: PROFILE_IMAGE_UPDATE_SUCCESS,
+    payload: {
+      id,
+      url
+    }
+  };
 };
 
 export const updateProfileImageFailure = (id: number) => {
-  return {'type': PROFILE_IMAGE_UPDATE_FAILURE, 'payload': id};
+  return { type: PROFILE_IMAGE_UPDATE_FAILURE, payload: id };
 };
-

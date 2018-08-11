@@ -7,18 +7,17 @@ import { Store } from '@ngrx/store';
 import { Http } from '@angular/http';
 
 @Component({
-    selector: 'app-email-verify',
-    templateUrl: './email-verify.component.html'
+  selector: 'app-email-verify',
+  templateUrl: './email-verify.component.html'
 })
 export class EmailVerifyComponent {
+  verifySuccess: boolean;
 
-    verifySuccess: boolean;
+  constructor(private router: Router, private route: ActivatedRoute) {
+    this.verifySuccess = route.snapshot.data['success'];
+  }
 
-    constructor(private router: Router, private route: ActivatedRoute) {
-        this.verifySuccess = route.snapshot.data['success'];
-    }
-
-    goToLogin() {
-        this.router.navigate(['/']);
-    }
+  goToLogin() {
+    this.router.navigate(['/']);
+  }
 }

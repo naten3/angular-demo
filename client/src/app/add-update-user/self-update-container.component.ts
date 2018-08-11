@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, EventEmitter, Output, ViewChild , Input} from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, Output, ViewChild, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute } from '@angular/router';
@@ -12,18 +12,14 @@ import { filterNotNull } from 'app/core/utils/rx-utils';
 import { Http, RequestOptions } from '@angular/http';
 
 @Component({
-    templateUrl: './update-user.component.html'
-  })
-  export class SelfUpdateComponent extends UpdateUserComponent {
-
-    static getUserId(route: ActivatedRoute): number {
-      return Number(route.snapshot.data['userId']);
-    }
-
-    constructor( store: Store<fromRoot.State>, route: ActivatedRoute, http: Http) {
-      super(store,
-        filterNotNull(store.select(fromRoot.getUserInfo)),
-        SelfUpdateComponent.getUserId(route),
-      http);
-    }
+  templateUrl: './update-user.component.html'
+})
+export class SelfUpdateComponent extends UpdateUserComponent {
+  static getUserId(route: ActivatedRoute): number {
+    return Number(route.snapshot.data['userId']);
   }
+
+  constructor(store: Store<fromRoot.State>, route: ActivatedRoute, http: Http) {
+    super(store, filterNotNull(store.select(fromRoot.getUserInfo)), SelfUpdateComponent.getUserId(route), http);
+  }
+}

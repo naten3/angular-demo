@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, EventEmitter, Output, ViewChild , Input, ElementRef} from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, Output, ViewChild, Input, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
@@ -13,14 +13,20 @@ import { SessionService } from 'app/core/services';
 import * as fromUserUpdate from 'app/core/store/actions/user-update.actions';
 
 import * as fromRoot from 'app/core/store';
-import { UserInfo, getDisplayProfileImage, isAdmin, ROLE_ADMIN, ROLE_USER, 
-  ROLE_USER_ADMIN, highestLevelRole, getRoleValue } from 'app/core/models/session';
+import {
+  UserInfo,
+  getDisplayProfileImage,
+  isAdmin,
+  ROLE_ADMIN,
+  ROLE_USER,
+  ROLE_USER_ADMIN,
+  highestLevelRole,
+  getRoleValue
+} from 'app/core/models/session';
 import { UserUpdateForm } from 'app/core/models/user-update';
 import { updateUser, updatePassword } from 'app/core/store/actions/user-update.actions';
 
-
 export abstract class UpdateUserComponent implements OnDestroy {
-
   canDeleteUser$ = Observable.of(false);
   canViewUserTimeZones$ = Observable.of(false);
   isDeletedUser$ = Observable.of(false);
@@ -47,11 +53,7 @@ export abstract class UpdateUserComponent implements OnDestroy {
   profileImage$: Observable<string>;
   notSocialUser$: Observable<boolean>;
 
-  roles = [
-    {name: 'User', code : ROLE_USER},
-    {name: 'User Admin', code : ROLE_USER_ADMIN},
-    {name: 'Admin', code : ROLE_ADMIN}
-  ];
+  roles = [{ name: 'User', code: ROLE_USER }, { name: 'User Admin', code: ROLE_USER_ADMIN }, { name: 'Admin', code: ROLE_ADMIN }];
 
   @ViewChild('profileImageUpload')
   fileInput: ElementRef;
@@ -59,71 +61,66 @@ export abstract class UpdateUserComponent implements OnDestroy {
   @ViewChild('role')
   roleSelector: ElementRef;
 
-  @ViewChild('pf') passwordForm: NgForm;
+  @ViewChild('pf')
+  passwordForm: NgForm;
 
-  constructor( private store: Store<fromRoot.State>,
-    private userInfo$: Observable<UserInfo>,
-    private userId: number,
-    private http: Http) {
-      this.isLoggedInAsAdmin$ = store.select(fromRoot.isAdmin);
-      this.isLoggedInAsUserAdmin$ = store.select(fromRoot.isUserAdmin)
-      this.success$ = store.select(fromRoot.getUserUpdateSuccess);
-      this.submitted$ = store.select(fromRoot.getUserUpdateSubmitted);
-      this.pendingUpdate$ = store.select(fromRoot.getUserUpdatePending);
-      this.errors$ = store.select(fromRoot.getUserUpdateErrors)
-      .map(codes => codes.map(this.mapErrorCodeToMessage));
-      this.isUnlockPendingUpdate$ = store.select(fromRoot.getUnlockPendingUpdate);
+  constructor(private store: Store<fromRoot.State>, private userInfo$: Observable<UserInfo>, private userId: number, private http: Http) {
+    this.isLoggedInAsAdmin$ = store.select(fromRoot.isAdmin);
+    this.isLoggedInAsUserAdmin$ = store.select(fromRoot.isUserAdmin);
+    this.success$ = store.select(fromRoot.getUserUpdateSuccess);
+    this.submitted$ = store.select(fromRoot.getUserUpdateSubmitted);
+    this.pendingUpdate$ = store.select(fromRoot.getUserUpdatePending);
+    this.errors$ = store.select(fromRoot.getUserUpdateErrors).map(codes => codes.map(this.mapErrorCodeToMessage));
+    this.isUnlockPendingUpdate$ = store.select(fromRoot.getUnlockPendingUpdate);
 
-      this.passwordSuccess$ = store.select(fromRoot.getPasswordUpdateSuccess);
-      this.passwordSubmitted$ = store.select(fromRoot.getPasswordUpdateSubmitted);
-      this.passwordPendingUpdate$ = store.select(fromRoot.getPasswordUpdatePending);
-      this.passwordErrors$ = store.select(fromRoot.getPasswordUpdateErrors)
-      .map(codes => codes.map(this.mapErrorCodeToMessage));
+    this.passwordSuccess$ = store.select(fromRoot.getPasswordUpdateSuccess);
+    this.passwordSubmitted$ = store.select(fromRoot.getPasswordUpdateSubmitted);
+    this.passwordPendingUpdate$ = store.select(fromRoot.getPasswordUpdatePending);
+    this.passwordErrors$ = store.select(fromRoot.getPasswordUpdateErrors).map(codes => codes.map(this.mapErrorCodeToMessage));
 
-      this.profileImage$ = userInfo$.map(getDisplayProfileImage);
+    this.profileImage$ = userInfo$.map(getDisplayProfileImage);
 
-      this.notSocialUser$ = userInfo$.map(ui => !ui.socialUser);
+    this.notSocialUser$ = userInfo$.map(ui => !ui.socialUser);
 
-      this.canUnlockUser$ = combineLatest(userInfo$.map(ui => ui.accountLocked),
-      this.isLoggedInAsUserAdmin$).map(x => x[0] && x[1]);
+    this.canUnlockUser$ = combineLatest(userInfo$.map(ui => ui.accountLocked), this.isLoggedInAsUserAdmin$).map(x => x[0] && x[1]);
 
-
-      const currentFormData$ =  combineLatest(userInfo$, this.isLoggedInAsAdmin$)
-        .map( uiWithIsAdmin => {
-        const ui: UserInfo = uiWithIsAdmin[0];
-        const isAdmin = uiWithIsAdmin[1];
-        return {
+    const currentFormData$ = combineLatest(userInfo$, this.isLoggedInAsAdmin$).map(uiWithIsAdmin => {
+      const ui: UserInfo = uiWithIsAdmin[0];
+      const isAdmin = uiWithIsAdmin[1];
+      return {
         firstName: ui.firstName,
         lastName: ui.lastName,
         role: isAdmin ? highestLevelRole(ui) : null
-        };
-      });
+      };
+    });
 
-      this.formDataSub = currentFormData$.subscribe(fd => {
-        this.model.firstName = fd.firstName;
-        this.model.lastName = fd.lastName;
-        this.model.role = fd.role;
-      });
+    this.formDataSub = currentFormData$.subscribe(fd => {
+      this.model.firstName = fd.firstName;
+      this.model.lastName = fd.lastName;
+      this.model.role = fd.role;
+    });
 
-      this.passwordSuccessSub = this.passwordSuccess$.subscribe( success => {
-        if (success) {
-          this.passwordModel.password = null;
-        }
-      });
+    this.passwordSuccessSub = this.passwordSuccess$.subscribe(success => {
+      if (success) {
+        this.passwordModel.password = null;
+      }
+    });
   }
 
   // TODO some indication when save succeeds
   save(value: any) {
-      const form: UserUpdateForm = {
-        firstName: this.model.firstName,
-        lastName: this.model.lastName,
-        role: this.model.role
-      };
+    const form: UserUpdateForm = {
+      firstName: this.model.firstName,
+      lastName: this.model.lastName,
+      role: this.model.role
+    };
 
-      this.store.dispatch(updateUser({
+    this.store.dispatch(
+      updateUser({
         userId: this.userId,
         userUpdateForm: form
-      }));
+      })
+    );
   }
 
   updatePassword() {
@@ -134,20 +131,20 @@ export abstract class UpdateUserComponent implements OnDestroy {
   private mapErrorCodeToMessage(errorCode: string): string {
     switch (errorCode) {
       case 'SAME_PASSWORD':
-      return 'The password has not changed';
+        return 'The password has not changed';
       default:
-      return 'There was an error with user update';
+        return 'There was an error with user update';
     }
   }
 
   private deleteUser() {
-    if ( confirm('Are you sure you want to delete this user?')) {
+    if (confirm('Are you sure you want to delete this user?')) {
       this.store.dispatch(fromUserUpdate.deleteUserRequest(this.userId));
     }
   }
 
   private viewTimeZones() {
-    this.store.dispatch(fromRouter.go(`/home/users/${this.userId}/time-zones`))
+    this.store.dispatch(fromRouter.go(`/home/users/${this.userId}/time-zones`));
   }
 
   manageUsers() {
@@ -162,21 +159,22 @@ export abstract class UpdateUserComponent implements OnDestroy {
     const fileList: FileList = event.target.files;
     if (fileList.length > 0) {
       const file: File = fileList[0];
-        const formData: FormData = new FormData();
-        formData.append('file', file, file.name);
-        const headers = SessionService.getSessionHeader()
-        const options = new RequestOptions({ headers });
-        this.http.post(`api/users/${this.userId}/image/upload`, formData, options)
-            .catch(error => {
-              this.store.dispatch(fromUserUpdate.updateProfileImageFailure(this.userId));
-              return Observable.throw(error);
-            })
-            .subscribe( res => {
-                this.store.dispatch(fromUserUpdate.updateProfileImageSuccess(this.userId, res.json().url ));
-                this.fileInput.nativeElement.value = null;
-            });
+      const formData: FormData = new FormData();
+      formData.append('file', file, file.name);
+      const headers = SessionService.getSessionHeader();
+      const options = new RequestOptions({ headers });
+      this.http
+        .post(`api/users/${this.userId}/image/upload`, formData, options)
+        .catch(error => {
+          this.store.dispatch(fromUserUpdate.updateProfileImageFailure(this.userId));
+          return Observable.throw(error);
+        })
+        .subscribe(res => {
+          this.store.dispatch(fromUserUpdate.updateProfileImageSuccess(this.userId, res.json().url));
+          this.fileInput.nativeElement.value = null;
+        });
     }
-}
+  }
 
   ngOnDestroy() {
     this.formDataSub.unsubscribe();

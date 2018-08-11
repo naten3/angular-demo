@@ -20,17 +20,16 @@ export class InviteUserComponent {
 
   model: any = {};
 
-  constructor( private store: Store<fromRoot.State>) {
-      this.success$ = store.select(fromRoot.getUserInviteSuccess);
-      this.submitted$ = store.select(fromRoot.getUserInviteSubmitted);
-      this.pendingUpdate$ = store.select(fromRoot.getUserInvitePending);
-      this.errors$ = store.select(fromRoot.getUserInviteErrors)
-      .map(codes => codes.map(this.mapErrorCodeToMessage));
+  constructor(private store: Store<fromRoot.State>) {
+    this.success$ = store.select(fromRoot.getUserInviteSuccess);
+    this.submitted$ = store.select(fromRoot.getUserInviteSubmitted);
+    this.pendingUpdate$ = store.select(fromRoot.getUserInvitePending);
+    this.errors$ = store.select(fromRoot.getUserInviteErrors).map(codes => codes.map(this.mapErrorCodeToMessage));
   }
 
   save(value: any) {
-      const email = this.model.email;
-      this.store.dispatch(fromUserInviteActions.inviteUser(email));
+    const email = this.model.email;
+    this.store.dispatch(fromUserInviteActions.inviteUser(email));
   }
 
   reset() {

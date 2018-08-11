@@ -1,5 +1,5 @@
 import { State } from 'app/core/models/session';
-import { ROLE_ADMIN, ROLE_USER_ADMIN, ROLE_USER, checkIfAdmin, checkIfUserAdmin} from 'app/core/models/session';
+import { ROLE_ADMIN, ROLE_USER_ADMIN, ROLE_USER, checkIfAdmin, checkIfUserAdmin } from 'app/core/models/session';
 
 export const getUserInfo = (state: State) => state.userInfo;
 export const getPendingUpdate = (state: State) => state.pendingUpdate;
