@@ -6,11 +6,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/observable/timer';
-import { go } from '@ngrx/router-store';
 
 import { State } from 'app/core/models/app.state';
 import { UserInfo, getDisplayProfileImage, checkIfUserAdmin } from 'app/core/models/session';
-import * as saveActions from 'app/core/store/actions/save.actions';
 import * as sessionActions from 'app/core/store/actions/session.actions';
 import * as fromRoot from 'app/core/store';
 @Component({

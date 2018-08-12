@@ -1,16 +1,14 @@
-import { Component, OnInit, OnDestroy, EventEmitter, Output, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { combineLatest } from 'rxjs/observable/combineLatest';
-import { filter } from 'rxjs/operators/filter';
 import { Subscription } from 'rxjs/Subscription';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as fromRouter from '@ngrx/router-store';
 
 import * as fromRoot from 'app/core/store';
 import { UserSaveRequest } from 'app/core/models/user-save';
-import { createUser, userCreateReset, userInviteCreate } from 'app/core/store/actions/user-update.actions';
+import { createUser, userInviteCreate } from 'app/core/store/actions/user-update.actions';
 
 @Component({
   templateUrl: './add-user.component.html'

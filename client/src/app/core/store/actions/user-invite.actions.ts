@@ -3,10 +3,6 @@ export const USER_INVITE_SUCCESS = '[User Invite] SUCCESS';
 export const USER_INVITE_FAILURE = '[User Invite] FAILURE';
 export const USER_INVITE_RESET = '[User Invite] RESET';
 
-import { UserSaveRequest } from 'app/core/models/user-save';
-import { UserUpdateForm, UserUpdateRequest } from 'app/core/models/user-update';
-import { UserInfo } from 'app/core/models/session';
-
 export const inviteUser = (email: string) => {
   return { type: USER_INVITE_REQUEST, payload: email };
 };

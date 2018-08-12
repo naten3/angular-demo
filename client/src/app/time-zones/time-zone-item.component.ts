@@ -1,21 +1,6 @@
-import {
-  Component,
-  Input,
-  Output,
-  OnInit,
-  ChangeDetectionStrategy,
-  OnChanges,
-  AfterViewInit,
-  ElementRef,
-  ViewChild,
-  OnDestroy,
-  EventEmitter
-} from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { timer } from 'rxjs/observable/timer';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { Subscription } from 'rxjs/Subscription';
 import { padStart } from 'lodash';
 import * as moment from 'moment';
 

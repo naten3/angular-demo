@@ -1,14 +1,10 @@
-import { AfterViewInit, Component, ViewChild, ElementRef, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { filter } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import 'rxjs/add/observable/fromevent';
 import { Router, ActivatedRoute } from '@angular/router';
-import { go } from '@ngrx/router-store';
-import { Http } from '@angular/http';
 import { Store } from '@ngrx/store';
 import * as fromRoot from 'app/core/store';
 

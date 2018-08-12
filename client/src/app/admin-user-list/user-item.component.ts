@@ -1,18 +1,5 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  ChangeDetectionStrategy,
-  OnChanges,
-  AfterViewInit,
-  ElementRef,
-  ViewChild,
-  OnDestroy
-} from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import { Component, Input } from '@angular/core';
 import 'rxjs/add/observable/of';
-import { Subscription } from 'rxjs/Subscription';
 
 import { UserInfo, getDisplayProfileImage, ROLE_ADMIN, ROLE_USER_ADMIN, ROLE_USER } from 'app/core/models/session';
 

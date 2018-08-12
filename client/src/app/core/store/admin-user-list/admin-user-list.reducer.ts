@@ -1,5 +1,4 @@
-import { createSelector } from 'reselect';
-import { Action, combineReducers } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 import { cloneDeep, clone } from 'lodash';
 
 import * as fromAdminUserListActions from 'app/core/store/actions/admin-user-list.actions';

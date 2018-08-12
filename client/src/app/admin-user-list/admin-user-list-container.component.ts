@@ -1,7 +1,6 @@
-import { Component, Input, ChangeDetectionStrategy, OnInit, OnDestroy, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 import { filter } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 

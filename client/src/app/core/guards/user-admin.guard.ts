@@ -1,12 +1,9 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { filter } from 'rxjs/operators';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import { replace } from '@ngrx/router-store';
-import { includes } from 'lodash';
 
 import { State } from 'app/core/models/session/session.state';
 import { checkIfUserAdmin } from 'app/core/models/session';

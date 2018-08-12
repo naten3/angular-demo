@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http } from '@angular/http';
 import { Actions, Effect } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { go } from '@ngrx/router-store';
-import { mergeMap } from 'rxjs/operators';
 
 import * as fromUserUpdate from 'app/core/store/actions/user-update.actions';
 import { SessionService } from 'app/core/services';

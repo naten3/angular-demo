@@ -1,4 +1,4 @@
-import { TimeZone, UserTimeZones } from './';
+import { UserTimeZones } from './';
 import { UserInfo } from 'app/core/models/session';
 
 export interface State {

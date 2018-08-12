@@ -2,15 +2,12 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromRouter from '@ngrx/router-store';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Http, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { take, filter, tap } from 'rxjs/operators';
-import { combineLatest } from 'rxjs/observable/combineLatest';
 
 import { UserInfo } from 'app/core/models/session';
 import * as fromRoot from 'app/core/store';
 import * as fromAdminUserListActions from 'app/core/store/actions/admin-user-list.actions';
-import * as fromAdminUserList from 'app/core/models/admin-user-list';
 
 // Get the admin user list before activating
 @Injectable()

@@ -1,5 +1,4 @@
-import { createSelector } from 'reselect';
-import { Action, combineReducers } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 import { clone } from 'lodash';
 import { LOGOUT } from 'app/core/store/actions/session.actions';
 

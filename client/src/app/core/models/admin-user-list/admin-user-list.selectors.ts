@@ -1,6 +1,4 @@
 import { State } from 'app/core/models/admin-user-list';
-import { UserInfo } from 'app/core/models/session';
-import { where } from 'lodash';
 
 export const getPageNumber = (state: State) => state.page;
 export const getUserPage = (state: State) => state.userPage;

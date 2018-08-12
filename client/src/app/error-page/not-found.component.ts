@@ -1,10 +1,8 @@
-import { AfterViewInit, Component, ViewChild, ElementRef } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromevent';
 import { Router, ActivatedRoute } from '@angular/router';
 import { go } from '@ngrx/router-store';
-import { Http } from '@angular/http';
 import { Store } from '@ngrx/store';
 import * as fromRoot from 'app/core/store';
 

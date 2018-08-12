@@ -1,7 +1,5 @@
 import { of } from 'rxjs/observable/of';
-import { tap } from 'ramda';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 
 import { initialState } from 'app/core/models/app.state';
 

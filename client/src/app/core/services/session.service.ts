@@ -1,4 +1,4 @@
-import { Http, Headers, URLSearchParams } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -6,10 +6,8 @@ import * as fromRoot from 'app/core/store';
 import 'rxjs/add/operator/map';
 
 import * as sessionActions from 'app/core/store/actions/session.actions';
-import { initialState } from 'app/core/models/session/session.state';
 
 const SESSION_ID_KEY = 'SESSION_ID';
-const HEADER = { headers: new Headers({ 'Content-Type': 'application/json' }) };
 
 @Injectable()
 export class SessionService {

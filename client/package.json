@@ -51,6 +51,7 @@
     "@angular/compiler-cli": "^4.0.0",
     "@types/jasmine": "2.5.38",
     "@types/node": "~6.0.60",
+    "chance": "^1.0.16",
     "codelyzer": "~2.0.0",
     "gh-pages": "^1.0.0",
     "jasmine-core": "~2.5.2",

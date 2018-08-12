@@ -1,6 +1,6 @@
 import * as fromSave from '../actions/save.actions';
 import { initialState } from 'app/core/models/common/save.state';
-import { T, F, not, evolve } from 'ramda';
+import { T, F, evolve } from 'ramda';
 
 export function reducer(state = initialState, action) {
   switch (action.type) {

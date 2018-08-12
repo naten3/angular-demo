@@ -27,7 +27,7 @@ export const PROFILE_IMAGE_UPDATE_SUCCESS = '[User Update] UPDATE PROFILE IMAGE 
 export const PROFILE_IMAGE_UPDATE_FAILURE = '[User Update] UPDATE PROFILE IMAGE FAILURE';
 
 import { UserSaveRequest } from 'app/core/models/user-save';
-import { UserUpdateForm, UserUpdateRequest } from 'app/core/models/user-update';
+import { UserUpdateRequest } from 'app/core/models/user-update';
 import { UserInfo } from 'app/core/models/session';
 
 export const createUser = (userSaveRequest: UserSaveRequest) => {

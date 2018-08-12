@@ -1,6 +1,4 @@
-import { Component, Input, Output, ChangeDetectionStrategy, AfterViewInit, EventEmitter } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import { Component, Input, Output, ChangeDetectionStrategy, EventEmitter } from '@angular/core';
 import { chunk } from 'lodash';
 
 import { UserInfo } from 'app/core/models/session';

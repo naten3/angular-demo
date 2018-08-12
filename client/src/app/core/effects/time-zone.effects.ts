@@ -1,15 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http } from '@angular/http';
 import { Actions, Effect } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
-import { concat } from 'rxjs/observable/concat';
 import { Store } from '@ngrx/store';
-import { back, go } from '@ngrx/router-store';
 
 import { SessionService } from 'app/core/services';
-import { UserInfo } from 'app/core/models/session';
 import * as fromTimeZoneActions from 'app/core/store/actions/time-zone.actions';
-import * as fromTimeZone from 'app/core/models/time-zone';
 import * as fromToastActions from 'app/core/store/actions/toast.actions';
 import * as fromSession from 'app/core/store/actions/session.actions';
 import * as fromRoot from 'app/core/store';

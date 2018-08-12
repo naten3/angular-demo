@@ -1,10 +1,8 @@
-import { createSelector } from 'reselect';
-import { Action, combineReducers } from '@ngrx/store';
-import { cloneDeep, clone } from 'lodash';
+import { Action } from '@ngrx/store';
+import { clone } from 'lodash';
 
 import * as fromTimeZoneActions from 'app/core/store/actions/time-zone.actions';
 import { State, initialState } from 'app/core/models/time-zone';
-import { UserInfo } from 'app/core/models/session';
 import { LOGOUT } from 'app/core/store/actions/session.actions';
 import * as fromUserUpdate from 'app/core/store/actions/user-update.actions';
 

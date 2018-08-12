@@ -1,6 +1,4 @@
-import { createSelector } from 'reselect';
-import { Action, combineReducers } from '@ngrx/store';
-import { cloneDeep } from 'lodash';
+import { Action } from '@ngrx/store';
 
 import * as fromActions from 'app/core/store/actions/user-update.actions';
 import { initialState } from 'app/core/models/user-save';

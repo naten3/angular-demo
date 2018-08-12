@@ -1,6 +1,5 @@
 import * as fromUserInviteActions from 'app/core/store/actions/user-invite.actions';
 import { initialState } from 'app/core/models/user-invite/user-invite.state';
-import { T, F, not, evolve } from 'ramda';
 
 export function reducer(state = initialState, action) {
   switch (action.type) {

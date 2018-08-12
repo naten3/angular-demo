@@ -1,10 +1,9 @@
-import { Component, OnInit, OnDestroy, EventEmitter, Output, ViewChild, Input, ElementRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { OnDestroy, ViewChild, ElementRef } from '@angular/core';
+
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { Subscription } from 'rxjs/Subscription';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as fromRouter from '@ngrx/router-store';
 
@@ -13,16 +12,7 @@ import { SessionService } from 'app/core/services';
 import * as fromUserUpdate from 'app/core/store/actions/user-update.actions';
 
 import * as fromRoot from 'app/core/store';
-import {
-  UserInfo,
-  getDisplayProfileImage,
-  isAdmin,
-  ROLE_ADMIN,
-  ROLE_USER,
-  ROLE_USER_ADMIN,
-  highestLevelRole,
-  getRoleValue
-} from 'app/core/models/session';
+import { UserInfo, getDisplayProfileImage, ROLE_ADMIN, ROLE_USER, ROLE_USER_ADMIN, highestLevelRole } from 'app/core/models/session';
 import { UserUpdateForm } from 'app/core/models/user-update';
 import { updateUser, updatePassword } from 'app/core/store/actions/user-update.actions';
 
@@ -135,16 +125,6 @@ export abstract class UpdateUserComponent implements OnDestroy {
       default:
         return 'There was an error with user update';
     }
-  }
-
-  private deleteUser() {
-    if (confirm('Are you sure you want to delete this user?')) {
-      this.store.dispatch(fromUserUpdate.deleteUserRequest(this.userId));
-    }
-  }
-
-  private viewTimeZones() {
-    this.store.dispatch(fromRouter.go(`/home/users/${this.userId}/time-zones`));
   }
 
   manageUsers() {

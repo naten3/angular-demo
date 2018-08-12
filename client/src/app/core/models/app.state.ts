@@ -1,4 +1,3 @@
-import { createSelector } from 'reselect';
 import { RouterState, initialState as initialRouterState } from '@ngrx/router-store';
 
 import * as fromSessionState from 'app/core/models/session';
