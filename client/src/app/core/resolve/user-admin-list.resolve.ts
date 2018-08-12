@@ -10,10 +10,10 @@ import * as fromAdminUserList from 'app/core/models/admin-user-list';
 
 // Get the admin user list before activating
 @Injectable()
-export class UserAdminListResolver implements Resolve<number> {
+export class UserAdminListResolver implements Resolve<fromAdminUserList.State> {
   constructor(private store: Store<fromRoot.State>) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<number> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<fromAdminUserList.State> {
     return this.store
       .select(fromRoot.getAdminUserList)
       .pipe(
