@@ -9,7 +9,7 @@ import { replace } from '@ngrx/router-store';
 import { includes } from 'lodash';
 
 import { State } from 'app/core/models/session/session.state';
-import { checkIfAdmin } from 'app/core/models/session/user-info.model';
+import { checkIfAdmin } from 'app/core/models/session';
 
 import * as fromRoot from 'app/core/store';
 // Make sure the user is an ADMIN or owns the resource,
